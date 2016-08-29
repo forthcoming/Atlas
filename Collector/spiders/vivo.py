@@ -23,7 +23,7 @@ class VivoSpider(Spider):
       yield self.make_requests_from_url(url)    #Y系列及其他
 
   def parse(self, response):
-    #print response.url
+    #pri(response.url)
     for sel in response.xpath('//*[@id="moderate"]/table//tbody[re:test(@id,"[a-z]+_\d+")]'):   #watch it  !!!
       url=sel.xpath('.//td[@class="thread_con"]//a[3]/@href').extract()[0]   #watch it !!!
       yield Request(url,callback=self.parse_thread)
@@ -38,7 +38,7 @@ class VivoSpider(Spider):
     series=response.xpath('/html/head/meta[@name="keywords"]/@content').extract()[0]   
     title=response.xpath('/html/head/meta[@name="description"]/@content').extract()[0]
 
-    if u'系列' in series:
+    if '系列' in series:
       '''
       #这么写容易断，注意理解其缺点
       urls=response.xpath('(//div[@class="pg"])[1]/a[last()]/@href').extract()      #watch it!!!
