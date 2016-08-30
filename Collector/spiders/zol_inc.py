@@ -43,7 +43,7 @@ class ZOl_incSpider(CrawlSpider):
 
     def parse_item(self, response):
       sel=Selector(text=response.body.decode('unicode_escape').replace('\/','/'))
-      yesterday=strftime('%Y-%m-%d',localtime(time()-24*3600))
+      yesterday=strftime('%Y-%m-%d',localtime(time()-24*3600)    #时间戳格式转换成具体日期
 
       for _ in sel.xpath('//li[@class="comment-item"]/div[@class="comments-list-content"]'):
         DATE=_.xpath('div[@class="single-score clearfix"]/span/text()').extract()[0]
