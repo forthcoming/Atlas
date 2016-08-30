@@ -146,8 +146,8 @@ class WeiboSpider(Spider):
       _=sel.xpath('string(div[last()])').extract()[0]
     regex=re.compile('http://.+|赞\[\d*\].+')   #赞那个是针对转发做的，注意通用性
     _=regex.sub('',_)                          #去网址及后面的内容   
-    if '【' in _ and '】' in _:                        #一定要是u
-      regex=re.compile('(?<=【).*(?=】)|(?<=】).*')   #一定要是u
+    if '【' in _ and '】' in _:
+      regex=re.compile('(?<=【).*(?=】)|(?<=】).*')
       return regex.findall(_)                         #一旦出错便会终止
     else:
       return ['',_]
