@@ -81,7 +81,9 @@ class JsonPipeline(object):
     self.f=open('{}{}.json'.format(self.path,spider.name),'w',encoding='utf-8')
 
   def process_item(self, item, spider):
-    self.f.write('{}\n'.format(json.dumps(dict(item),ensure_ascii=False)))
+    #self.f.write('{}\n'.format(json.dumps(dict(item),ensure_ascii=False)))
+    #self.f.write('{}\n'.format(dict(item)))
+    self.f.write('{}\n'.format(json.dumps(dict(item))))  #使用时只需要json.loads即可,你不需要转码
     return item
 
 class MyRedisPipeline(object):
