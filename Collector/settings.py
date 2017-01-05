@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from os import path
 
-
 BOT_NAME = 'Collector'
 SPIDER_MODULES = ['Collector.spiders']
 NEWSPIDER_MODULE = 'Collector.spiders'
@@ -18,11 +17,19 @@ DOWNLOADER_MIDDLEWARES = {
 
 COOKIES_ENABLED=True      #Default True,If disabled, no cookies will be sent to web servers.
 
-DOWNLOAD_DELAY=0.5 
+DOWNLOAD_DELAY=0.5
 #当设置DOWNLOADER_MIDDLEWARES时，默认的USER_AGENT就无效了
 USER_AGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36'
 
 ROBOTSTXT_OBEY = False
+
+LOG_ENABLED = True   #default True
+LOG_ENCODING = "utf-8"
+LOG_FILE = "log/spider.log"
+LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
+LOG_DATEFORMAT = "%Y-%m-%d %H:%M:%S"
+LOG_LEVEL = 'INFO'
+LOG_STDOUT=False #default false,If True, all standard output (and error) of your process will be redirected to the log
 
 '''
 DUPEFILTER_CLASS = 'Collector.utils.middlewares.MyRFPDupeFilter'
@@ -40,4 +47,3 @@ DEFAULT_REQUEST_HEADERS={
 
 DATAPATH='{}/../data/'.format(path.split(__file__)[0])
 PHOTOPATH='{}/../photo/'.format(path.split(__file__)[0])
-

@@ -11,7 +11,7 @@ class Test1Spider(Spider):
     "http://detail.zol.com.cn/xhr3_Review_GetListAndPage_isFilter=0%5EproId=392008%5Epage=4.html",
   ]
   def parse(self,response):
-    
+    self.logger.info('Parse function called on {}'.format(response.url))
     if 'pconline' in response.url:
       for i in response.xpath('//div[@class="contentdiv"]/ul/li'):
         _=i.xpath('./div[1]/dl[1]/dd/text()').extract()
