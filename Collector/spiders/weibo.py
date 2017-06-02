@@ -37,7 +37,8 @@ class WeiboSpider(Spider):
       yield Request(url,dont_filter=True,callback=self.parse_tweet,cookies=Login('sina')(),headers=head,meta={'cookiejar':8},)
 
   def parse_tweet(self,response):
-    #print response.request.headers['Cookie']
+    #response.request即代表了产生response的request对象，可以获取到诸如headers,callback,url等信息
+    #print(response.request.headers['Cookie'])
     item=TweetItem()
     for sel in response.xpath('//div[@class="c" and starts-with(@id,"M_")]'):
       item['news_id'] = sel.xpath('@id').extract()[0]
