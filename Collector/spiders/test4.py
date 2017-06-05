@@ -12,7 +12,7 @@ item_key(self, item, spider)此处可以自定义item_key
 SCHEDULER_PERSIST = True，中断程序，dmoz:dupefilter和dmoz:requests会存在，程序执行完后还会保存dmoz:dupefilter（此时已不存在dmoz:requests）
 SCHEDULER_PERSIST = False，(默认)中断程序，dmoz:dupefilter和dmoz:requests会存在，程序执行完后会删除dmoz:dupefilter（此时已不存在dmoz:requests）
 type dmoz:dupefilter返回set
-
+type dmoz:requests返回zset
 '''
 
 from scrapy import Request,Spider
