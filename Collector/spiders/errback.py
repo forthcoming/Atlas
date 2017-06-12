@@ -34,7 +34,7 @@
 # 一旦发生重定向,DUPEFILTER_CLASS会把所有重定向过的url都记录下来
 #只有当函数里面出现yield关键字时，response.meta才会有depth属性
 
-from scrapy import Spider
+from scrapy import Spider,Request
 from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import TimeoutError, TCPTimedOutError,DNSLookupError,ConnectionRefusedError
 
@@ -60,7 +60,7 @@ class Errback(Spider):
 
     def start_requests(self):
         for url in self.start_urls:
-            yield scrapy.Request(url,callback=self.parse,errback=self.errback_httpbin,dont_filter=True,meta={'item':{'name':'avatar','age':11}})
+            yield Request(url,callback=self.parse,errback=self.errback_httpbin,dont_filter=True,meta={'item':{'name':'avatar','age':11}})
 
     def parse(self, response):
         print(f'Got successful response from {response.url}',response.status,response.meta)
@@ -77,7 +77,7 @@ class Errback(Spider):
             print(f'DNSLookupError on {request.url}',request.meta,request.callback.__name__)
         elif failure.check(TimeoutError,TCPTimedOutError,ConnectionRefusedError):
             request = failure.request   
-            print(f'TimeoutError on {request.url}',request.meta,request.callback.__name__)  #只在最后一次超时后才执行
+            print(f'TimeoutError on {request.url}',request.priority,request.meta,request.callback.__name__)  #只在最后一次超时后才执行
         else:
             request = failure.request   
             print(f'UnknownError on {request.url}',request.callback.__name__)
