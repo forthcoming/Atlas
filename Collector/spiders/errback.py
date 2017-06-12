@@ -51,9 +51,10 @@ class Errback(Spider):
 
     ]
     custom_settings = {
-        'RETRY_TIMES':3,          # Default: 2 Maximum number of times to retry,每次重试请求都会经过自定义的DownloadMiddleware,无须加dont_filter=True属性
-        'DOWNLOAD_TIMEOUT':.9,     # 注意该参数如果过小，会影响到网页抛出的异常
-        'DEPTH_PRIORITY':1,       # BFS
+        'RETRY_TIMES':3,            # Default: 2 Maximum number of times to retry,每次重试请求都会经过自定义的DownloadMiddleware,无须加dont_filter=True属性
+        'RETRY_PRIORITY_ADJUST':-4, # Default: -1    
+        'DOWNLOAD_TIMEOUT':.9,      # 注意该参数如果过小，会影响到网页抛出的异常
+        'DEPTH_PRIORITY':1,         # BFS
         'SCHEDULER_DISK_QUEUE':'scrapy.squeues.PickleFifoDiskQueue',
         'SCHEDULER_MEMORY_QUEUE':'scrapy.squeues.FifoMemoryQueue',
     }
