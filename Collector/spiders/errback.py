@@ -38,7 +38,7 @@ from scrapy import Spider
 from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import TimeoutError, TCPTimedOutError,DNSLookupError,ConnectionRefusedError
 
-class ErrbackSpider(Spider):
+class Errback(Spider):
     name = "errback"
     start_urls = [
         # "http://www.httpbin.org",               # HTTP 200 expected
@@ -56,10 +56,6 @@ class ErrbackSpider(Spider):
         'DEPTH_PRIORITY':1,       # BFS
         'SCHEDULER_DISK_QUEUE':'scrapy.squeues.PickleFifoDiskQueue',
         'SCHEDULER_MEMORY_QUEUE':'scrapy.squeues.FifoMemoryQueue',
-        'DOWNLOADER_MIDDLEWARES':{
-            'Collector.utils.middlewares.MyUserAgentMiddleware': 543,
-            'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-        },
     }
 
     def start_requests(self):
@@ -85,4 +81,3 @@ class ErrbackSpider(Spider):
         else:
             request = failure.request   
             print(f'UnknownError on {request.url}',request.callback.__name__)
- 
