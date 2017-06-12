@@ -46,7 +46,7 @@ class BFS(Spider):
         'REDIRECT_PRIORITY_ADJUST':2, # Default: +2
         'RETRY_PRIORITY_ADJUST':-4,   # Default: -1
         'CONCURRENT_REQUESTS_PER_IP':6,
-        'CONCURRENT_REQUESTS':6,       
+        'CONCURRENT_REQUESTS':6,      # 一次性读入start_urls个数，然后局部BFS，然后再进行下一轮BFS
     }
 
     def start_requests(self): 
