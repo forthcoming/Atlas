@@ -69,7 +69,7 @@ class Errback(Spider):
         print(repr(failure))
         if failure.check(HttpError):    # you can get the non-200 response
             response = failure.value.response
-            print(f'HttpError on {response.url}', response.status,response.meta,response.request.callback.__name__)
+            print(f'HttpError on {response.url}', response.status,response.request.priority,response.meta,response.request.callback.__name__)
             if response.meta['depth']<3:
                 yield failure.request #每次请求都会经过自定义的DownloadMiddleware,无须加dont_filter=True属性
         elif failure.check(DNSLookupError):
