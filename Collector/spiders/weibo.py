@@ -79,7 +79,7 @@ class WeiboSpider(Spider):
   
     nextpage=response.xpath('//*[@id="pagelist"]/form/div/a[1]/@href').extract()
     if nextpage:
-      yield Request(response.urljoin(nextpage[0]),callback = self.parse_attitude,meta={'news_id':item['news_id'],'dont_redirect':'True','handle_httpstatus_list': [302],'cookiejar': response.meta['cookiejar']})
+      yield Request(response.urljoin(nextpage[0]),callback = self.parse_attitude,meta={'news_id':item['news_id'],'dont_redirect':True,'handle_httpstatus_list': [302],'cookiejar': response.meta['cookiejar']})
       # 'handle_httpstatus_list': [302,]表示状态码为302的也抓取，但仅针对请求的地址有效，
 	  # 要想对整个工程起效，应该定义如下：handle_httpstatus_list = [404]
 	  
@@ -96,7 +96,7 @@ class WeiboSpider(Spider):
         yield item  
     nextpage=response.xpath('//*[@id="pagelist"]/form/div/a[1]/@href').extract()
     if nextpage:
-      yield Request(response.urljoin(nextpage[0]),callback = self.parse_relay,meta={'news_id':item['news_id'],'dont_redirect':'True','cookiejar': response.meta['cookiejar']}) #自动去重
+      yield Request(response.urljoin(nextpage[0]),callback = self.parse_relay,meta={'news_id':item['news_id'],'dont_redirect':True,'cookiejar': response.meta['cookiejar']}) #自动去重
     
 
   def parse_comment(self,response):
