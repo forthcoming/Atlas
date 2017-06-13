@@ -111,7 +111,7 @@ class WeiboSpider(Spider):
       yield item  
     nextpage=response.xpath('//*[@id="pagelist"]/form/div/a[1]/@href').extract()
     if nextpage:
-      yield Request(response.urljoin(nextpage[0]),callback = self.parse_comment,meta={'news_id':item['news_id'],'dont_redirect':'True','cookiejar': response.meta['cookiejar']}) #自动去重
+      yield Request(response.urljoin(nextpage[0]),callback = self.parse_comment,meta={'news_id':item['news_id'],'dont_redirect':True,'cookiejar': response.meta['cookiejar']}) #自动去重
 
       #去除字符串中空白符（ \n等）
       #content= sel.xpath('string(//div[@id="article"])').extract()[0]
