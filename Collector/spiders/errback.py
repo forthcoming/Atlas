@@ -21,6 +21,8 @@ class Errback(Spider):
         'DEPTH_PRIORITY':1,         # BFS
         'SCHEDULER_DISK_QUEUE':'scrapy.squeues.PickleFifoDiskQueue',
         'SCHEDULER_MEMORY_QUEUE':'scrapy.squeues.FifoMemoryQueue',
+        # 重定向过程就是每个页面的请求过程,会经过自定义中间件并将途经的URL记录到Dupefilter,但经重定向后的请求depth不自增
+        # 当REDIRECT_ENABLED=True时,并不会抛出HttpError,自然不会被errback捕捉到,只有当其为False时才会抛出HttpError
         # 'REDIRECT_ENABLED':False, #重定向过程就是每个页面的请求过程,会经过自定义中间件并将途经的URL记录到Dupefilter,但经重定向后的请求depth不自增
     }
 
