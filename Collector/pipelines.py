@@ -4,32 +4,6 @@ from scrapy import Request
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exceptions import DropItem
 from Collector.items import *
-from scrapy.utils.serialize import ScrapyJSONEncoder
-from twisted.internet.threads import deferToThread
-from Collector.utils import connection
-
-
-class RedisPipeline(object):  #Thanks to scrapy-redis project on github !
-  """Pushes serialized item into a redis list/queue"""
-
-  def __init__(self, server):
-    self.server = server
-    self.encoder = ScrapyJSONEncoder()
-
-  @classmethod
-  def from_settings(cls, settings):
-    server = connection.from_settings(settings)
-    return cls(server)
-
-  def process_item(self, item, spider):
-    return deferToThread(self._process_item, item, spider)
-
-  def _process_item(self, item, spider):
-    key = "{}:items".format(spider.name)    #此处可以自定义item_key的名字
-    data = self.encoder.encode(item)
-    self.server.rpush(key, data)
-    return item
-
 
 class SqlPipeline(object):
 
@@ -85,12 +59,6 @@ class JsonPipeline(object):
     #self.f.write('{}\n'.format(dict(item)))
     self.f.write('{}\n'.format(json.dumps(dict(item))))  #使用时只需要json.loads即可,你不需要转码
     return item
-
-class MyRedisPipeline(object):
-  def process_item(self, item, spider):
-    item["name"] = 'master'
-    return item
-
 
 class ImagePipeline(ImagesPipeline):
 
