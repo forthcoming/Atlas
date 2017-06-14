@@ -75,23 +75,6 @@ class JobItem(Item):
   datailLink = Field() #职位详情页连接
   publishTime = Field() #发布时间
 
-class StatsItem(Item):
-  province = Field()
-
-  code1=Field()
-  city=Field()
-
-  code2=Field()
-  county=Field()
-
-  code3=Field()
-  town=Field()
-
-  code4=Field()
-  classify=Field()
-  village=Field()
-
-
 class PhoneItem(Item):
   customer_id=Field()
   customer_name=Field()
