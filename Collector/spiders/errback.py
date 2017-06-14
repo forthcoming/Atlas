@@ -15,7 +15,7 @@ class Errback(Spider):
 
     ]
     custom_settings = {
-        'RETRY_TIMES':3,            # Default: 2 Maximum number of times to retry,每次重试请求都会经过自定义的DownloadMiddleware,无须加dont_filter=True属性
+        'RETRY_TIMES':3,            # Default: 2 每次重试请求都会经过自定义的DownloadMiddleware
         'RETRY_PRIORITY_ADJUST':-4, # Default: -1    
         'DOWNLOAD_TIMEOUT':.9,      # 注意该参数如果过小，会影响到网页抛出的异常
         'DEPTH_PRIORITY':1,         # BFS
@@ -30,19 +30,23 @@ class Errback(Spider):
     def parse(self, response):
         print(f'Got successful response from {response.url}',response.status,response.meta)
 
+    #注意DNSLookupError,TimeoutError等异常,网页并没有访问成功,因此不存在depth属性,更不会自增,也不会把对应的URL加入到Dupefilter中
     def errback_httpbin(self, failure): # get all failures
         print(repr(failure))
-        if failure.check(HttpError):    # you can get the non-200 response
+        if failure.check(HttpError):    # you can get the non-200 response,有depth属性,且每请求一次depth自增1
             response = failure.value.response
             print(f'HttpError on {response.url}', response.status,response.request.priority,response.meta,response.request.callback.__name__)
             if response.meta['depth']<3:
                 yield failure.request #每次请求都会经过自定义的DownloadMiddleware,无须加dont_filter=True属性
+                
         elif failure.check(DNSLookupError):
             request = failure.request  # this is the original request
             print(f'DNSLookupError on {request.url}',request.meta,request.callback.__name__)
+        
         elif failure.check(TimeoutError,TCPTimedOutError,ConnectionRefusedError):
             request = failure.request   
             print(f'TimeoutError on {request.url}',request.priority,request.meta,request.callback.__name__)  #只在最后一次超时后才执行
+        
         else:
             request = failure.request   
             print(f'UnknownError on {request.url}',request.callback.__name__)
