@@ -31,8 +31,7 @@
 # SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
 # SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
 
-# 一旦发生重定向,DUPEFILTER_CLASS会把所有重定向过的url都记录下来
-#只有当函数里面出现yield关键字时，response.meta才会有depth属性
+# 只有当函数里面出现yield关键字时，response.meta才会有depth属性
 
 from scrapy import Spider,Request,FormRequest
 import re
