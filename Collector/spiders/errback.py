@@ -21,6 +21,7 @@ class Errback(Spider):
         'DEPTH_PRIORITY':1,         # BFS
         'SCHEDULER_DISK_QUEUE':'scrapy.squeues.PickleFifoDiskQueue',
         'SCHEDULER_MEMORY_QUEUE':'scrapy.squeues.FifoMemoryQueue',
+        # 'REDIRECT_ENABLED':False, #重定向过程就是每个页面的请求过程,会经过自定义中间件并将途经的URL记录到Dupefilter,但经重定向后的请求depth不自增
     }
 
     def start_requests(self):
