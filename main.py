@@ -2,7 +2,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
 process=CrawlerProcess(get_project_settings())
-for spider in ('weibo','zol','zol_plus','pcpop'):
+for spider in ('weibo','zol','zol_plus',):
   process.crawl(spider)
 process.start()
 
