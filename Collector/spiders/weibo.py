@@ -17,9 +17,6 @@ class WeiboSpider(Spider):
 
   custom_settings = {
     'ITEM_PIPELINES':{'Collector.pipelines.SqlPipeline':301},
-    'CONCURRENT_ITEMS':50,
-    'CONCURRENT_REQUESTS':8,
-    'CONCURRENT_REQUESTS_PER_DOMAIN':4,   #以上3条减小服务器压力，防止死机
     'COOKIES_ENABLED':True,
   }
   name='weibo'
