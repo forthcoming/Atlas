@@ -17,7 +17,7 @@ class SieSpider(Spider):
 
     s = requests.session()
     r=s.get('http://saip.chinasie.com:8089/siebpm/cmslogin.jsp')
-    response=fromstring(r.text)
+    response=fromstring(r.content)
     regex = compile(r"name='service' value='(.+?)' /> ")
     service=response.xpath('//input[@name="service"]/@value')[0]
     #service=regex.search(r.text).group(1)   #either
