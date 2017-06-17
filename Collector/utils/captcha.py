@@ -67,7 +67,7 @@ def get_data():
       break
 
   r=s.get(req_url)
-  res=fromstring(r.text)
+  res=fromstring(r.content)
   data={
     '__VIEWSTATE':res.xpath('//*[@id="__VIEWSTATE"]/@value')[0],
     '__EVENTVALIDATION':res.xpath('//*[@id="__EVENTVALIDATION"]/@value')[0],
@@ -103,7 +103,7 @@ def get_data():
   s.headers.update(head)
 
   r=s.post(req_url,data=data)
-  res=fromstring(r.text) 
+  res=fromstring(r.content) 
   dic={}
   for sel in res.xpath('//*[@id="MQueryCtrl1_dgView"]/tr')[1:]:
     dic['关区代码']=sel.xpath('td[1]/text()')[0]
