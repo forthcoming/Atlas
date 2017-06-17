@@ -45,29 +45,6 @@ class ImageItem(Item):
   name = Field()
 
 class JobItem(Item):
-  companyLabelList=Field()
-  companyShortName=Field()
-  companyId=Field()
-  companyName=Field()
-  companyLogo=Field()
-  leaderName=Field()
-  companySize=Field()
-  workYear=Field()
-  education=Field()
-  financeStage=Field()
-  pvScore=Field()
-  city=Field()
-  industryField=Field()
-  formatCreateTime=Field()
-  salary=Field()
-  jobNature=Field()
-  positionName=Field()
-  positionFirstType=Field()
-  positionType=Field()
-  positionId=Field()
-  positionAdvantage=Field()
-  createTime=Field()
-  #----Tencent----#
   name = Field() #职位名称
   catalog = Field() #职位类别
   workLocation = Field() #工作地点
