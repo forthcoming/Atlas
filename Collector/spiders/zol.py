@@ -50,7 +50,7 @@ class ZOlSpider(CrawlSpider):
           ]
 
   def parse_item(self, response):
-    sel=Selector(text=response.body.decode('unicode_escape').replace('\/','/'))
+    sel=Selector(text=response.body.decode('unicode_escape').replace('\/','/'))  # 这一步不能少
     regex=re.compile(r'(?<=/)\d+(?=/review\.shtml)|(?<=proId=)\d+')    #注意这里断言的用法
     proID=regex.search(response.url).group()
     for url in sel.xpath('//div[@class="comments-content"]/h3/a/@href').extract(): #路径最好不要写相对位置如div[3]等
