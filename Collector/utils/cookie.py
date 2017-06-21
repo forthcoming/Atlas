@@ -121,6 +121,7 @@ class _Login():
         '--cookies-file=cookies.txt',  # why not come into force
         '--load-images=false',
         '--disk-cache=true',
+        '--log-path=/root/Desktop/phantom.log',
         #'--ignore-ssl-errors=true',
         #'--proxy=address:port',
         #'--proxy-type=http',
