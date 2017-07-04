@@ -46,4 +46,3 @@ DEFAULT_REQUEST_HEADERS={
 '''
 
 DATAPATH='{}/../data/'.format(path.split(__file__)[0])
-PHOTOPATH='{}/../photo/'.format(path.split(__file__)[0])
