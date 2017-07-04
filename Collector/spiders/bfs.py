@@ -31,7 +31,7 @@
 # SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
 # SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
 
-# 只有当函数里面出现yield关键字时，response.meta才会有depth属性
+# 只有当函数里面出现yield关键字时，response.meta才会有depth属性,在第n层请求网址时,到达新的回调函数后会是n+1层即response.meta['depth']=n+1
 
 from scrapy import Spider,Request,FormRequest
 import re
