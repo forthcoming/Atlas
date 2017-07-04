@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 import json
-from scrapy import Request
-from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exceptions import DropItem
 from Collector.items import *
 
@@ -59,44 +57,3 @@ class JsonPipeline(object):
     #self.f.write('{}\n'.format(dict(item)))
     self.f.write('{}\n'.format(json.dumps(dict(item))))  #使用时只需要json.loads即可,你不需要转码
     return item
-
-class ImagePipeline(ImagesPipeline):
-
-  @classmethod
-  def from_settings(cls, settings):
-    s3store = cls.STORE_SCHEMES['s3']
-    s3store.AWS_ACCESS_KEY_ID = settings['AWS_ACCESS_KEY_ID']
-    s3store.AWS_SECRET_ACCESS_KEY = settings['AWS_SECRET_ACCESS_KEY']
-    store_uri = settings.get('PHOTOPATH','./')     #watch it !!!!!!
-    return cls(store_uri, settings=settings)
-
-  def get_media_requests(self,item,info):
-    #return [Request(x) for x in item.get('my_image_urls', [])]
-    for image_url in item['my_image_urls']:
-      yield Request(image_url)
-
-  def file_path(self, request, response=None, info=None):
-    '''
-    image_guid = hashlib.sha1(to_bytes(url)).hexdigest()
-    return 'full/%s.jpg' % (image_guid)
-    '''
-    image_guid = request.url.split('/')[-1]
-    return 'full/{}'.format(image_guid)
-
-  def thumb_path(self, request, thumb_id, response=None, info=None):
-    '''
-    thumb_guid = hashlib.sha1(url).hexdigest()  # change to request.url after deprecation
-    return 'thumbs/%s/%s.jpg' % (thumb_id, thumb_guid)
-    '''
-    image_guid = thumb_id + response.url.split('/')[-1]
-    return 'thumbs/{}/{}'.format(thumb_id, image_guid)
-
-  '''
-  def item_completed(self,results,item,info):    #每完成一个item，调用一次
-    for _ in results:
-      print(_[0])   #True or False
-      print(_[1]['url'])
-      print(_[1]['path'])
-      print(_[1]['checksum'])
-  '''
-
