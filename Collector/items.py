@@ -38,12 +38,6 @@ class CommentItem(Item):
   comment_date = Field() #评论发布日期
   num_attitude=Field()    #评论被点赞数
 
-class ImageItem(Item):
-  image_urls=Field()
-  my_image_urls=Field()
-  url = Field()
-  name = Field()
-
 class JobItem(Item):
   name = Field() #职位名称
   catalog = Field() #职位类别
