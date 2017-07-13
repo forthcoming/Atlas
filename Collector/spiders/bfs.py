@@ -72,7 +72,7 @@ class BFS(Spider):
         rank=category=''
         if unicorn:
             rank=''.join(unicorn.group(1).split(','))
-            category=unicorn.group(2).strip()
+            category=unicorn.group(2).strip()  # delete both sides' blank(\n \t \r)
         item= {
             'ASIN': inputs.xpath('input[@id="ASIN"]/@value').extract_first(),
             'rank':rank,
