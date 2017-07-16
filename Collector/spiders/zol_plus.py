@@ -47,6 +47,7 @@ class Zol_plusSpider(CrawlSpider):
 
     if 'isFilter' in response.url:     #watch it!!!!!!!
       response=response.replace(body=str(response.body.decode('unicode_escape').replace('\/','/')))
+      # response.body r.content类型是bytes  response.text r.text类型是str
 
     #super()._parse_response(response, callback, cb_kwargs, follow=True),为什么不行？？？
     if callback:
