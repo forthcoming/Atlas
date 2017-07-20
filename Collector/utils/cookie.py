@@ -125,6 +125,7 @@ class _Login():
         #'--ignore-ssl-errors=true',
         #'--proxy=address:port',
         #'--proxy-type=http',
+        #'--proxy-type=socks5',   # tor
         #'--proxy-auth=username:password',
       ]
     self.driver = webdriver.PhantomJS(service_args=args)
