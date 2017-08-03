@@ -1,10 +1,8 @@
 #coding=utf-8
 from scrapy.spiders import CrawlSpider,Rule
 from scrapy.linkextractors import LinkExtractor as LE
-from Spider.items import JobItem
 
 class TencentSpider(CrawlSpider):
-
   custom_settings = {
       'DEPTH_LIMIT':1,
   }
@@ -20,7 +18,7 @@ class TencentSpider(CrawlSpider):
   )
 
   def parse_item(self,response):
-    print('\n***\n',response.url,response.meta['depth'],'\n***\n')
+    print(response.url,response.meta['depth'])
     '''
     当depth_limit=1时打印如下:
     http://hr.tencent.com/position.php?start=10 1
@@ -32,18 +30,6 @@ class TencentSpider(CrawlSpider):
     http://hr.tencent.com/position.php?start=70 1
     http://hr.tencent.com/position.php?start=1490 1
     注意第一页的depth=2,他是通过depth=1的页面获得的
-    再来看make_requests_from_url函数
-    def make_requests_from_url(self, url):
-      return Request(url, dont_filter=True)
+    再来看start_requests函数
     这里为什么要用dont_filter=True ?(本例中start_urls[0]就被访问了2次，所以要用dont_filter=True来说明)
     '''
-    for sel in response.xpath('//table[@class="tablelist"]/tr')[1:-1]:  #注意这里按数组处理 
-      item = JobItem(catalog='')
-      item['name'] = sel.xpath('td[1]/a/text()').extract()[0]
-      item['datailLink'] = response.url
-      catalog = sel.xpath('td[2]/text()').extract()
-      if catalog:item['catalog']=catalog #这里一定要判断，不然catalog有的是空
-      item['workLocation'] = sel.xpath('td[4]/text()').extract()[0]
-      item['recruitNumber'] = sel.xpath('td[3]/text()').extract()[0]
-      item['publishTime'] = sel.xpath('td[5]/text()').extract()[0]
-      yield item
