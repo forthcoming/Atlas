@@ -38,14 +38,6 @@ class CommentItem(Item):
   comment_date = Field() #评论发布日期
   num_attitude=Field()    #评论被点赞数
 
-class JobItem(Item):
-  name = Field() #职位名称
-  catalog = Field() #职位类别
-  workLocation = Field() #工作地点
-  recruitNumber = Field() #职位所需人数
-  datailLink = Field() #职位详情页连接
-  publishTime = Field() #发布时间
-
 class PhoneItem(Item):
   customer_id=Field()
   customer_name=Field()
