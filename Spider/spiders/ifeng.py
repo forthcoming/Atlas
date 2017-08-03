@@ -47,4 +47,4 @@ class IfengSpider(Spider):
       #self.crawler.stats.max_value('max_items_scraped', value)   #当新的值比原来的值大时设置数据
       #self.crawler.stats.min_value('min_free_memory_percent', value)
       #self.crawler.stats.get_value('pages_crawled')
-      #self.crawler.stats.get_stats()    #获取所有数据,set_stats,clear_stats
+      #self.crawler.stats.get_stats()    #获取所有数据(爬虫执行完后打印的字典),set_stats,clear_stats
