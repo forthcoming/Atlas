@@ -12,7 +12,7 @@ unicornHeader = {
     'Referer': 'https://www.amazon.com',
 }
 
-# detail+error-callback=parse=galance=7w
+# detail+error-callback=parse=galance
 class Amazon(Spider):
     name = "amazon"
     allowed_domains = ['amazon.com', 'amztracker.com']
