@@ -100,8 +100,6 @@ class Amazon(Spider):
                     if result:
                         sellers = sum(int(num) for num in result)
                 item= {
-
-
                     '_id': ASIN,  # 防止MongoDB生成_id字段
                     'title': res.xpath('.//a[@title]/@title').extract_first(),
                     'brand': res.xpath('string(div/div/div/div[2]/div[last()-1]/div[2])').extract_first(default=''),
@@ -220,9 +218,7 @@ class Amazon(Spider):
                     'priority': response.request.priority, 'status': response.status,
                     'callback': response.request.callback.__name__,
                     'key':response.meta.get('key') or response.meta.get('item',{}).get('key',''),
-                }   # 日志用
-                 
-
+                }   # 日志用          
         elif failure.check(TimeoutError, TCPTimedOutError, ConnectionRefusedError, DNSLookupError):
             request = failure.request
             yield {
@@ -232,7 +228,6 @@ class Amazon(Spider):
                 'callback': request.callback.__name__,
                 'key':request.meta.get('key') or request.meta.get('item',{}).get('key',''),
             }   # 日志用,只在最后一次超时后才执行
-
         else:
             request = failure.request
             yield {'url': request.url, 'error': 'UnknownError', 'priority': request.priority,
