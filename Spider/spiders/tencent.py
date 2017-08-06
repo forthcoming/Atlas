@@ -2,7 +2,7 @@
 from scrapy.spiders import CrawlSpider,Rule
 from scrapy.linkextractors import LinkExtractor as LE
 
-class TencentSpider(CrawlSpider):
+class Tencent(CrawlSpider):
   custom_settings = {
       'DEPTH_LIMIT':1,
   }

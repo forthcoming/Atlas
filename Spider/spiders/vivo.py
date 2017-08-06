@@ -4,7 +4,7 @@ from scrapy import Spider,Request
 from Spider.items import PhoneItem
 from scrapy.linkextractors import LinkExtractor as LE
 
-class VivoSpider(Spider):
+class Vivo(Spider):
   name = 'vivo'
   allowed_domains = ['vivo.com.cn']
 

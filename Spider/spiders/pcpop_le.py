@@ -4,7 +4,7 @@ from Spider.items import PhoneItem
 from scrapy.linkextractors import LinkExtractor as LE
 from scrapy.spiders import CrawlSpider, Rule
 
-class Pcpop_leSpider(CrawlSpider):
+class Pcpop_le(CrawlSpider):
   name='pcpop_le'
   allowed_domains=['pcpop.com']
   start_urls=[

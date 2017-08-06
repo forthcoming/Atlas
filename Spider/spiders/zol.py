@@ -6,7 +6,7 @@ from scrapy.linkextractors import LinkExtractor as LE
 from scrapy.spiders import CrawlSpider, Rule
 from Spider.items import PhoneItem
 
-class ZOlSpider(CrawlSpider):
+class ZOl(CrawlSpider):
   name = 'zol'
   allowed_domains = ['zol.com.cn']
 

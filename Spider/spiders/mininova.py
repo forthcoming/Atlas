@@ -22,7 +22,7 @@ from scrapy.linkextractors import LinkExtractor as LE
 from scrapy.utils.spider import iterate_spider_output
 from scrapy.http import Request, HtmlResponse
 
-class MininovaSpider(CrawlSpider):
+class Mininova(CrawlSpider):
 
   name = 'mininova'
   allowed_domains = ['mininova.org']

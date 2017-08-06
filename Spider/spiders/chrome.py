@@ -4,7 +4,7 @@ from scrapy import signals,Spider,Selector
 from selenium.common.exceptions import NoSuchElementException
 from Spider.settings import *
 
-class ChromeSpider(Spider):
+class Chrome(Spider):
     name = "chrome"
     start_urls = [
         'http://quotes.toscrape.com/js-onclick',

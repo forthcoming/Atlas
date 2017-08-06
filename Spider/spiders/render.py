@@ -1,6 +1,6 @@
 import scrapy
 
-class RenderSpider(scrapy.Spider):
+class Render(scrapy.Spider):
     name = "render"
     start_urls=['http://quotes.toscrape.com/js/']
     custom_settings={

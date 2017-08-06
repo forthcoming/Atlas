@@ -8,7 +8,7 @@ from Spider.items import PhoneItem
 from time import strftime,time,localtime
 
 #只要前一天的数据
-class ZOl_incSpider(CrawlSpider):
+class ZOl_inc(CrawlSpider):
     name = 'zol_inc'
     allowed_domains = ['zol.com.cn']
     start_urls = [

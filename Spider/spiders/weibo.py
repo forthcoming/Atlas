@@ -13,7 +13,7 @@ from scrapy import Spider,Request
 from Spider.items import TweetItem,CommentItem,RelayItem,AttitudeItem
 from time import strftime,time,localtime
 
-class WeiboSpider(Spider):
+class Weibo(Spider):
 
   custom_settings = {
     'ITEM_PIPELINES':{'Spider.pipelines.SqlPipeline':301},

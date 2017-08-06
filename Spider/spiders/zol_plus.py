@@ -5,7 +5,7 @@ from scrapy.spiders import CrawlSpider, Rule,Request
 from re import compile,sub,search
 from Spider.items import PhoneItem
 
-class Zol_plusSpider(CrawlSpider):
+class Zol_plus(CrawlSpider):
   name='zol_plus'
   allowed_domains = ['zol.com.cn']
 

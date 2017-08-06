@@ -9,7 +9,7 @@ from pydispatch import dispatcher
 from Spider.items import OilItemLoader
 from scrapy import signals
 
-class IfengSpider(Spider):
+class Ifeng(Spider):
   count=0
   name='ifeng'
   allowed_domains=['ifeng.com']
@@ -25,7 +25,7 @@ class IfengSpider(Spider):
   }
 
   def __init__(self, name=None, **kwargs):
-    super(IfengSpider, self).__init__(name=name, **kwargs)
+    super(Ifeng, self).__init__(name=name, **kwargs)
     dispatcher.connect(self.item_scraped, signals.item_scraped)
 
   def item_scraped(self):
@@ -39,7 +39,7 @@ class IfengSpider(Spider):
       l.add_xpath('key_name','//title/text()')
       l.add_value('key_name','AKATSUKI')
       l.add_xpath('price_y','td[2]/text()')
-      l.add_value('s_remark',''.decode('utf-8'))
+      l.add_value('s_remark','')
       l.add_value('s_type','crude')  #此处不用转码
       yield l.load_item()
       self.crawler.stats.inc_value('my_item_count')
