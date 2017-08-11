@@ -141,10 +141,8 @@ class Amazon(Spider):
             if 'Date first available' in _:
                 showtime=arr[index+1]
         # 获取color,dimension,showtime结束,获取rank,category开始
-        unicorn = response.xpath('string(//*[contains(.,"Best Sellers Rank")])').extract_first()
-        
+        unicorn = response.xpath('string(//*[contains(.,"Best Sellers Rank")])').extract_first()   
         result = re.search(r'#([0-9,]+)\s\w*\s*in\s([a-zA-Z& ,]+)', unicorn)
-        rank = category = ''
         if result:
             rank = ''.join(result.group(1).split(','))
             category = result.group(2).strip()
@@ -152,15 +150,15 @@ class Amazon(Spider):
         inputs = response.xpath('//form[@id="addToCart"]')
         item=response.meta['item']
         item.update({
-                    'soldBy': ' '.join(response.xpath('string(//*[@id="merchant-info"])').extract_first(default='').split()),
-                    'merchantID': inputs.xpath('input[@id="merchantID"]/@value').extract_first(),
-                    'rank': rank,
-                    'category': category,
-                    'color':color,
-                    'dimension':dimension,
-                    'showtime':showtime,
-                    'sales':'',  # 先给个默认值
-                    }
+                'soldBy': ' '.join(response.xpath('string(//*[@id="merchant-info"])').extract_first(default='').split()),
+                'merchantID': inputs.xpath('input[@id="merchantID"]/@value').extract_first(),
+                'rank': rank,
+                'category': category,
+                'color':color,
+                'dimension':dimension,
+                'showtime':showtime,
+                'sales':'',  # 先给个默认值
+                }
               )
         result=re.findall(r'#([0-9,]+)\s\w*\s*in\s([a-zA-Z& ,>]+)',unicorn)
         for index,each in enumerate(result[1:],1):
