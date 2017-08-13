@@ -1,18 +1,16 @@
 #coding=utf-8
 '''
 1. 调用start_requests
-2. 调用make_requests_from_url,
-3. 生成Request对象，由于未指定callback，默认调用parse
-4. 调用parse
-5. 调用parse_start_url
-6. 执行rules规则
+2. 生成Request对象，由于未指定callback，默认调用parse
+3. 调用parse
+4. 调用parse_start_url
+5. 执行rules规则
 rules执行顺序:
-6.1 restrict_xpaths & allow限定地址区域和类型
-6.2 LinkExtractor获取地址(LinkExtractor.extract_links()实现)
-6.3 process_links筛选地址
-6.4 process_request重新发送请求
-6.5 callback处理请求
-
+5.1 restrict_xpaths & allow限定地址区域和类型
+5.2 LinkExtractor获取地址(LinkExtractor.extract_links()实现)
+5.3 process_links筛选地址
+5.4 process_request重新发送请求
+5.5 callback处理请求
 如果不跟进的话，设置DEPTH_LIMIT也没用
 LinkExtractor提取链接，Rule定义如何抓取数据
 '''
