@@ -176,7 +176,7 @@ class Amazon(Spider):
             if not item['brand']:
                 item['brand']=response.xpath('string(//*[@id="centerCol"]/div[1]/div[1])').extract_first(default='').strip()
             if not item['totalReviews']:
-                item['totalReviews']=response.xpath('//*[contains(@class,"totalReviewCount")]/text()').extract_first(default='0')
+                item['totalReviews']=response.xpath('//*[contains(@class,"totalReviewCount")]/text()').extract_first(default='0') # 这里要使用contains,应为类属性不止一个
             if not item['avgStar']:
                 item['avgStar']=response.xpath('//*[@id="acrPopover"]/@title').extract_first(default='0')
             yield FormRequest(
