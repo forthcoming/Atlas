@@ -89,6 +89,8 @@ class Amazon(Spider):
 
     def galance(self, response):
         lis = response.xpath('//li[starts-with(@id,"result_")]')
+        # lis = response.xpath('//li[re:test(@id,"result_\d+")]')
+
         if lis:
             for res in lis:
                 ASIN = res.xpath('@data-asin').extract_first()  # It returns None if no element was found
