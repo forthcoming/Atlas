@@ -36,7 +36,7 @@ class Weibo(Spider):
   def parse_tweet(self,response):
     #response.request即代表了产生response的request对象，可以获取到诸如headers,callback,url等信息
     #print(response.request.headers['Cookie'])
-    item=TweetItem()
+    item=TweetItem()  # 在这里定义可能存在问题（可变对象）,待验证
     for sel in response.xpath('//div[@class="c" and starts-with(@id,"M_")]'):
       item['news_id'] = sel.xpath('@id').extract()[0]
       item['title'],item['content']=self.tweet_extract(sel,len(sel.xpath('div')))  #注意有的微博没有标题
