@@ -33,15 +33,15 @@ class Errback(Spider):
     def parse(self, response):
         print(f'Got successful response from {response.url}',response.status,response.meta)
 
-    #注意DNSLookupError,TimeoutError等异常,网页并没有访问成功,因此不存在depth属性,更不会自增,也不会把对应的URL加入到Dupefilter中
     def errback_httpbin(self, failure): # get all failures
         print(repr(failure))
-        if failure.check(HttpError):    # you can get the non-200 response,有depth属性,且每请求一次depth自增1
+        if failure.check(HttpError):    # 所有非200状态码(如果设有dont_redirect=True,也会接收302)都会被接收,有depth属性,且每请求一次depth自增1
             response = failure.value.response
             print(f'HttpError on {response.url}', response.status,response.request.priority,response.meta,response.request.callback.__name__)
             if response.meta['depth']<3:
                 yield failure.request #每次请求都会经过自定义的DownloadMiddleware,此处无须加dont_filter=True属性（建议加上以防出错）
                 
+        #注意DNSLookupError,TimeoutError等异常,网页并没有访问成功,因此不存在depth属性,更不会自增,也不会把对应的URL加入到Dupefilter中        
         elif failure.check(DNSLookupError):
             request = failure.request  # this is the original request
             print(f'DNSLookupError on {request.url}',request.meta,request.callback.__name__)
