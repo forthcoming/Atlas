@@ -3,8 +3,8 @@ import random,math,redis
 class Hash:
     def __init__(self,m):
         self.m=m
-        self.zoomin=random.randint(0,self.m)
-        self.offset=random.randint(0,self.m)
+        self.zoomin=random.randint(1,self.m)
+        self.offset=random.randint(1,self.m)
         self.fun=random.choice(['BKDRHash','DJBHash','JSHash'])
 
     def BKDRHash(self,key,radix=31):
