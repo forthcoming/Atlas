@@ -14,7 +14,6 @@ AGENT=[
     'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.71 Safari/537.1 LBBROWSER', 
     'SonyEricssonK810i/R1KG Browser/NetFront/3.3 Profile/MIDP-2.0 Configuration/CLDC-1.1', 
 ]
-WEBSITEID=1
 topK = 100
 DATE = datetime.now().strftime('%Y%m%d%H%M%S')
 con = pymysql.connect(
@@ -36,7 +35,7 @@ sess.headers={
 }
 
 with con.cursor() as cur:
-    cur.execute(f'select id,category_url from website_category where website_id={WEBSITEID} and category_url!="" order by id')
+    cur.execute(f'select id,category_url from website_category where website_id=1 and category_url!="" order by id')
     with open('lazada.sql','w',encoding='utf-8') as f:
        for each in cur:
             goods=set()
@@ -44,7 +43,6 @@ with con.cursor() as cur:
             category_id=each[0]
             start_url=each[1]
             page=1
-            sort_type=1
             flag=True
             while flag:
                 url=f'{start_url}?ajax=true&page={page}'
@@ -66,15 +64,10 @@ with con.cursor() as cur:
                                     _={
                                         'product_name': item.get('name', ''),
                                         'sale_price': float(item.get('price',0))/1000,
-                                        'original_price': float(item.get('originalPrice',0))/1000,
                                         'comment_count': item.get('review', 0),
                                         'product_url': re.sub(r'^//', '', item.get('productUrl', '')),
-                                        'product_image': item.get('image', ''),
                                         'rating': item.get('ratingScore', .0),
                                         'goods_sn':sku,
-                                        'website_id': WEBSITEID,
-                                        'sort_type': 1,
-                                        'image_status': 0,
                                         'category_id': category_id,
                                         'sort_num': index,
                                         'created_time': DATE,
@@ -91,4 +84,4 @@ with con.cursor() as cur:
                         
                         break
                     except:
-                        print(f'TimeoutError found in {url}!')
+                        print(f'Error found in {url}!')
