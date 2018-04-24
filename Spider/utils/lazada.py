@@ -1,6 +1,12 @@
 import requests,re,pymysql,time,random
 from datetime import datetime
 
+'''
+hint:
+需要带上cookie
+不能本并行调用品类接口，只能一个品类一个品类调用
+'''
+
 AGENT=[
     'SAMSUNG-SGH-A867/A867UCHJ3 SHP/VPP/R5 NetFront/35 SMM-MMS/1.2.0 profile/MIDP-2.0 configuration/CLDC-1.1 UP.Link/6.3.0.0.0', 
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.36 Safari/535.7', 
@@ -14,8 +20,8 @@ DATE = datetime.now().strftime('%Y%m%d%H%M%S')
 con = pymysql.connect(
     host='192.168.105.24',
     user='databot',
-    password='cuckoo201804',
-    db='d_clubfactory',
+    password='******',
+    db='clubfactory',
     charset='utf8mb4',
     use_unicode=True,
 )
