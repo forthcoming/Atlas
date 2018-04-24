@@ -36,8 +36,7 @@ sess.headers={
 }
 
 with con.cursor() as cur:
-    cur.execute(
-        f'select id,category_url from website_category where website_id={WEBSITEID} and category_url!="" order by id')
+    cur.execute(f'select id,category_url from website_category where website_id={WEBSITEID} and category_url!="" order by id')
     with open('lazada.sql','w',encoding='utf-8') as f:
        for each in cur:
             goods=set()
