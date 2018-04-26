@@ -42,6 +42,7 @@ class JSRenderMiddleware:
         options = webdriver.ChromeOptions()
         # options.add_argument('--headless')
         options.add_argument('--no-sandbox')
+        options.add_argument('--blink-settings=imagesEnabled=false')
         # options.add_argument('--proxy-server=http://127.0.0.1:8118')
         options.add_argument(f'--user-data-dir={CHROME_DATA}')
         # options.add_argument('--user-agent=Spider')
