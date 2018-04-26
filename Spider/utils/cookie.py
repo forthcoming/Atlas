@@ -112,17 +112,11 @@ class Login():
 
 class _Login():
 
-  def __init__(self, method,username=None, password=None,args=None):
+  def __init__(self, method,username=None, password=None,options=None):
     self.method = method
     self.username = username
     self.password = password
-    if args==None:
-      args=[
-        '--disk-cache=true',
-        #'--ignore-ssl-errors=true',
-      ]
-    self.driver = webdriver.PhantomJS(service_args=args)
-    #self.driver=webdriver.Firefox()
+    self.driver = webdriver.Chrome(chrome_options=options,executable_path='/opt/google/chrome/chromedriver')
     if username is None or password is None:
       self.username, self.password = choice(account[self.method])
 
