@@ -39,14 +39,14 @@ class MyRFPDupeFilter(RFPDupeFilter):
 class JSRenderMiddleware:
     def __init__(self):
         dispatcher.connect(self.spider_closed,signals.spider_closed)
-        options = webdriver.ChromeOptions()
+        options = webdriver.ChromeOptions()  # chrome和chromedriver一定要同时用最新版
         # options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--blink-settings=imagesEnabled=false')
         # options.add_argument('--proxy-server=http://127.0.0.1:8118')
         options.add_argument(f'--user-data-dir={CHROME_DATA}')
         # options.add_argument('--user-agent=Spider')
-        # options.add_argument('--start-maximized')
+        # options.add_argument('--start-maximized')  # 只适用于非headless模式
         # options.add_argument('--window-size=500,500')
         self.driver = webdriver.Chrome(chrome_options=options,executable_path='/opt/google/chrome/chromedriver')
 
