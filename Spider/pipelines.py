@@ -85,39 +85,32 @@ class ImagePipeline(ImagesPipeline):
       return item
 
 class MongoPipeline:
-
     def open_spider(self, spider):
-        self.client = MongoClient('localhost:27017')
-        self.log=self.client['log']
-        self.amazon = self.client['amazon']
-
+        self.client=MongoClient('mongodb://192.168.105.20:27017')
+        self.log = self.client['log'][ERROR]
+        self.info = self.client['Alibaba']['product_info']
+        self.data=[]
+        self.index=0
+        
     def process_item(self, item, spider):
         if 'error' in item:
-            self.log[ERROR].insert(dict(item))
-            raise DropItem("Error page found:")  #注意要阻断item向其他管道传播
-        elif 'number' in item:
-            item['date']=DATE  
-            self.log['count'].insert(dict(item))
-            raise DropItem("page number inserted!") 
+            self.log.insert(dict(item))
+            raise DropItem("Error page found:")  # 注意要阻断item向其他管道传播
         else:
-            if item['sales']=='':
-                item['sales']=0
-            else:
-                item['sales']=int(item['sales'])
+            self.data.append(item)
+            self.index+=1
+            if not (self.index%20):
+                self.info.insert_many(self.data)  # 会给每个item增加一个_id字段
+                for item in self.data:
+                    item.pop('_id','')
 
-            merchant=re.findall(r'(?<=[sS]old [bB]y ).+(?=\s[aA]nd)|(?<=[sS]old [bB]y )[aA]mazon|(?<=[sS]old [bB]y ).+',item['soldBy'])
-            item['soldBy']=merchant[0] if merchant else 'Unknown'
-            item['rank']=float(item['rank']) if item['rank'] else float('inf')
-            result=re.search(r'\$(\d+\.\d+)',item['price'].replace(',',''))
-            item['price']=float(result.group(1)) if result else 0.0
-            result=re.search(r'(\d+\.\d+ |\d+)', item['avgStar'])
-            item['avgStar']=float(result.group(1)) if result else 0.0
-            item['totalReviews']=int(item['totalReviews'].replace(',',''))
-            item['brand']= re.sub(r'^by ','',item['brand'],count=1)        
-            item['date']=DATE
-            self.amazon[GALANCE].insert(dict(item))
-            #self.amazon[GALANCE].update({'_id': item['_id']}, {'$setOnInsert': dict(item)}, upsert=True)  #没有则插入,有则不操作
+                self.data[:]=[]
+            # self.info.update({'_id': item['_id']}, {'$setOnInsert': dict(item)}, upsert=True)  #没有则插入,有则不操作
             return item
-            
+         
     def close_spider(self, spider):
+        if self.data:  # documents must be a non-empty list
+            self.info.insert_many(self.data)
+            for item in self.data:
+                item.pop('_id','')
         self.client.close()
