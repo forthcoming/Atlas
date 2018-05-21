@@ -101,6 +101,25 @@ class MongoPipeline:
             self.index+=1
             if not (self.index%20):
                 self.info.insert_many(self.data)  # 会给每个item增加一个_id字段
+                '''
+                PyMongo adds an _id field in this manner for a few reasons:
+                All MongoDB documents are required to have an _id field.
+                If PyMongo were to insert a document without an _id MongoDB would add one itself, but it would not report the value back to PyMongo.
+                Copying the document to insert before adding the _id field would be prohibitively expensive for most high write volume applications.
+                If you don’t want PyMongo to add an _id to your documents, insert only documents that already have an _id field, added by your application.
+                data={
+                    'string':'avatar',
+                    'array':[111,222],
+                    'double':12.4,
+                    'int':32,
+                    'bool':True,
+                    'null':None,
+                    'object':{'name':'value'},
+                }
+                _id=info.insert_one(data).inserted_id   # 返回主键  <class 'bson.objectid.ObjectId'> 
+                print(data)  # 自动给data增加_id字段
+                print(info.find_one({'_id': str(_id)}))  # None 必须要使用ObjectId对象才能查询到
+                '''
                 for item in self.data:
                     item.pop('_id','')
 
