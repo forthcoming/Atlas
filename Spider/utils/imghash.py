@@ -3,7 +3,7 @@ import numpy
 from scipy.fftpack import dct
 
 class ImageHash:
-
+    # refer to https://github.com/JohannesBuchner/imagehash
     def __str__(self):
         arr=self.signature.flatten()
         bit_string = ''.join(str(b) for b in 1*arr)
