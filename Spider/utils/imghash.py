@@ -9,7 +9,14 @@ class ImageHash:
         bit_string = ''.join(str(b) for b in 1*arr)
         width = int(numpy.ceil(len(bit_string)>>2))
         return '{:0>{width}x}'.format(int(bit_string, 2), width=width)
-
+    
+    @property    
+    def hasvalue(self):
+        hasvalue=0
+        for b in self.signature.flatten():
+            hasvalue=(hasvalue<<1)|int(b)
+        return hasvalue
+    
     def __sub__(self, other):
         return numpy.count_nonzero(self.signature != other.signature)
 
