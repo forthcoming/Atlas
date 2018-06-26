@@ -3,10 +3,17 @@ from lxml.html import fromstring
 
 class Log:
     def __init__(self,level=10,name='track.log'):
+        '''
+        logger.debug('this is debug info')
+        logger.info('this is information')
+        logger.warn('this is warning message')
+        logger.error('this is error message')
+        logger.critical('this is critical message')
+        '''
         logging.basicConfig(
             filename=name,
             filemode='a',
-            format='%(asctime)s - %(name)s - %(levelname)s - %(module)s: %(message)s',
+            format='%(asctime)s %(filename)s %(lineno)d %(process)s %(levelname)s %(module)s %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S %p',
             level=level,
         )
