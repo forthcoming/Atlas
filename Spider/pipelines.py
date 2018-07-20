@@ -94,7 +94,7 @@ class MongoPipeline:
         
     def process_item(self, item, spider):
         if 'error' in item:
-            self.log.insert(dict(item))
+            self.log.insert_one(dict(item))
             raise DropItem("Error page found:")  # 注意要阻断item向其他管道传播
         else:
             self.data.append(item)
@@ -122,9 +122,7 @@ class MongoPipeline:
                 '''
                 for item in self.data:
                     item.pop('_id','')
-
                 self.data[:]=[]
-            # self.info.update({'_id': item['_id']}, {'$setOnInsert': dict(item)}, upsert=True)  #没有则插入,有则不操作
             return item
          
     def close_spider(self, spider):
