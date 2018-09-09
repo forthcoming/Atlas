@@ -4,38 +4,13 @@ from datetime import datetime
 from flask import Flask,request,jsonify
 from atlas.models.tool.graph import Graph
 from atlas.models.tool.common import on_off_sale,check
-from atlas.config.settings import MONGO_URI,MONGO_ATLAS,MONGO_BI
+from common.settings import MONGO_URI,MONGO_ATLAS,MONGO_BI
 
 # MONGO_URI='mongodb://192.168.105.20:27017'
 # MONGO_ATLAS='Atlas'
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-
-"""
-@api {POST} /cluster/disassociation 解除Cluster关联关系
-@apiName 解除Cluster关联关系
-@apiGroup Cluster
-
-@apiParam {string} category Atlas中分类的英文名
-@apiParam {integer} come ERP传送过来的cuckoo_{产品ID}
-@apiParam {integer} to 界面上选择不匹配的system_id
-
-
-@apiSuccessExample  Success-Response:
-HTTP/1.1 200 OK
-   {
-    "code":0,
-    "msg":"success",
-   }
-
-@apiErrorExample {json} Error-Response:
- HTTP/1.1 200 OK
- {
-    "code":1,
-    "errmsg": "not found system_id"
-   }
-"""
 @app.route("/cluster/disassociation",methods=['POST'])
 def split_cluster(): # to is to be deleted
     params=request.form
@@ -89,28 +64,6 @@ def split_cluster(): # to is to be deleted
             "result" : ''
         })
 
-"""
-@api {POST} /product/offsale 商品下架接口
-@apiName 商品下架接口
-@apiGroup Product
-
-@apiParam {integer} system_id 对应mongodb中的system_id
-@apiParam {string} category Atlas中分类的英文名
-
-@apiSuccessExample  Success-Response:
-HTTP/1.1 200 OK
-   {
-    "code":0,
-    "msg":"success",
-   }
-
-@apiErrorExample {json} Error-Response:
- HTTP/1.1 200 OK
- {
-    "code":1,
-    "errmsg": "not found system_id"
-   }
-"""
 @app.route("/product/offsale",methods=['POST'])
 def off_sale():
     params=request.form

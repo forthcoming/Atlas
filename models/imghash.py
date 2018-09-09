@@ -3,11 +3,11 @@ from pymongo import MongoClient
 import requests,os,logging,imagehash
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Process,JoinableQueue
-from tool.common import init
-from tool.imghdr import what
+from common.common import init
+from common.imghdr import what
 from PIL import Image
-from atlas.log.log import Log
-from atlas.config.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID,OFFSET,PATH
+from common.common import Log
+from common.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID,OFFSET,PATH
 
 def scheduler(db,category):
     source=db['product_{}'.format(category)]

@@ -2,11 +2,11 @@
 import json,logging
 from pymongo import MongoClient,ASCENDING
 from pymongo.errors import CursorNotFound
-from tool.lshash import LSHash
+from common.lshash import LSHash
 from datetime import datetime
 from multiprocessing import Process,cpu_count
-from atlas.log.log import Log
-from atlas.config.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
+from common.common import Log
+from common.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
 
 def image_match(db,category,supply,retail,dis=4):
     logging.info('category:{} supply:{} retail:{}'.format(category,supply,retail))

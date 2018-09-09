@@ -2,8 +2,8 @@
 from pymongo import MongoClient
 from datetime import datetime
 import logging,time
-from atlas.log.log import Log
-from atlas.config.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
+from common.common import Log
+from common.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing.dummy import Lock 
 
