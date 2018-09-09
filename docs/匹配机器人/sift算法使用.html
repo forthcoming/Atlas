@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 7.2.3 (456885)"/><meta name="author" content="a798987859@126.com"/><meta name="created" content="2018-08-07 12:08:34 +0000"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2018-08-07 12:08:39 +0000"/><title>sift算法使用</title></head><body><div><span style="font-size: 12px; color: rgb(69, 69, 69);"><br/></span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/><span style="font: 12.0px '.PingFang SC'; color: #454545;">可以使用</span><span style="font: 12.0px 'Helvetica Neue'; color: #454545;">opencv</span><span style="font: 12.0px '.PingFang SC'; color: #454545;">的</span><span style="font: 12.0px 'Helvetica Neue'; color: #454545;">sift</span><span style="font: 12.0px '.PingFang SC'; color: #454545;">算法库</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/><span style="font: 12.0px '.PingFang SC'; color: #454545;">也可以参考</span><a href="http://www.vlfeat.org/overview/sift.html" style="font: 12.0px 'Helvetica Neue'; color: #e4af0a;">http://www.vlfeat.org/overview/sift.html</a></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;">
+sift</span><span style="font: 12.0px '.PingFang SC'; color: #454545;">算法用法很简单：</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/><span style="font: 12.0px '.PingFang SC'; color: #454545;">计算两张图片的</span><span style="font: 12.0px 'Helvetica Neue'; color: #454545;">sift</span><span style="font: 12.0px '.PingFang SC'; color: #454545;">关键点，然后计算匹配上的关键点。</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/><span style="font: 12.0px '.PingFang SC'; color: #454545;">所以这有两个特征，匹配率：匹配的关键点数／两个图片中关键点数量比较小的关键点数</span><span style="font: 12.0px 'Helvetica Neue'; color: #454545;" /><span style="font: 12.0px '.PingFang SC'; color: #454545;">、匹配的关键点数</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/><span style="font: 12.0px '.PingFang SC'; color: #454545;">把之前人工标记的数据当作训练数据，来寻找合适的阈值：</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/><span style="font: 12.0px '.PingFang SC'; color: #454545;">对于标错机器人，那就是</span><span style="font: 12.0px 'Helvetica Neue'; color: #454545;">100%</span><span style="font: 12.0px '.PingFang SC'; color: #454545;">匹配错误的阈值；</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/><span style="font: 12.0px '.PingFang SC'; color: #454545;">对于标对机器人，那就是</span><span style="font: 12.0px 'Helvetica Neue'; color: #454545;">100%</span><span style="font: 12.0px '.PingFang SC'; color: #454545;">匹配正确的阈值；</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/></div></body></html>
