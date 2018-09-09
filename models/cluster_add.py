@@ -2,7 +2,7 @@ import logging
 from pymongo import MongoClient
 from datetime import datetime
 from common.common import Log,check
-from common.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
+from settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
 
 def cluster_edge(db,category):
     edge=db['cluster_edge_{}'.format(category)]

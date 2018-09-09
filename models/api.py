@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import Flask,request,jsonify
 from atlas.models.tool.graph import Graph
 from atlas.models.tool.common import on_off_sale,check
-from common.settings import MONGO_URI,MONGO_ATLAS,MONGO_BI
+from settings import MONGO_URI,MONGO_ATLAS,MONGO_BI
 
 # MONGO_URI='mongodb://192.168.105.20:27017'
 # MONGO_ATLAS='Atlas'

@@ -15,8 +15,8 @@ THREAD_NUM = 10
 # [proxy]
 PROXY_HOST = "p10.t.16yun.cn"
 PROXY_PORT = "6446"
-PROXY_USER = "16WNCOMT"
-PROXY_PASS = "977933"
+PROXY_USER = "********"
+PROXY_PASS = "123456"
 
 # 当PRODUCT_SUM = string类型时，抓取数量为无限大， 为int时可限制抓取数量
 # [Offset]
@@ -29,11 +29,11 @@ MYSQL_PASSWORD = "erp123456"
 MYSQL_PRODUCT = "product"
 
 # 邮箱配置
-SP_MAIL_ADDRESS = 'itnotitfysercices@stosz.com'
+SP_MAIL_ADDRESS = 'itnotitfysercices@qq.com'
 SP_MAIL_SENDER = 'Asoulwangxiaohei'
 SP_MAIL_SMTP = 'smtp.qiye.163.com'
 SP_MAIL_SMTP_PORT = '465'
-SP_MAIL_LOGINNAME = 'itnotitfysercices@stosz.com'
+SP_MAIL_LOGINNAME = 'itnotitfysercices@qq.com'
 SP_MAIL_PASSWORD = 'Love2017!'
 
 # 路由分发

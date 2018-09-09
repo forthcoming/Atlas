@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from datetime import datetime
 import logging,time
 from common.common import Log
-from common.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
+from settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing.dummy import Lock 
 

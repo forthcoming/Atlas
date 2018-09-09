@@ -7,7 +7,7 @@ from common.common import init
 from common.imghdr import what
 from PIL import Image
 from common.common import Log
-from common.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID,OFFSET,PATH
+from settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID,OFFSET,PATH
 
 def scheduler(db,category):
     source=db['product_{}'.format(category)]
