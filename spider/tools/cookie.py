@@ -4,7 +4,7 @@ from scrapy.exceptions import CloseSpider
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from random import choice
-from spider.utils.dictionary import account
+from tools.dictionary import account
 
 class Login():
 

@@ -14,7 +14,7 @@ class Lazada(Spider):
     custom_settings={
 
         'DOWNLOADER_MIDDLEWARES': {
-            'spider.utils.middlewares.ProxiesMiddleware': 400,
+            'tools.middlewares.ProxiesMiddleware': 400,
         },
         'ITEM_PIPELINES': {
             # 'spider.pipelines.MongoPipeline': 299,  #该pipeline优先级应大于Sqlpipeline

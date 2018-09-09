@@ -3,7 +3,7 @@ from scrapy import Request, FormRequest
 from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import TimeoutError, TCPTimedOutError, DNSLookupError, ConnectionRefusedError
 import re
-from spider.utils.dictionary import key
+from tools.dictionary import key
 from urllib.parse import quote
 
 RETRY = 8  # 数字越小速度越快，数据丢失越严重
@@ -31,8 +31,8 @@ class Amazon(Spider):
         'IMAGES_STORE':'../photo',    # 没有则新建,已经存在的图片不会再下载
         'IMAGES_EXPIRES':90,          # 单位是天，调整失效期限，避免下载最近已经下载的图片
         'DOWNLOADER_MIDDLEWARES': {
-            'spider.utils.middlewares.ProxiesMiddleware': 400,
-            'spider.utils.middlewares.HeadersMiddleware': 543,
+            'tools.middlewares.ProxiesMiddleware': 400,
+            'tools.middlewares.HeadersMiddleware': 543,
             'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
         },
 

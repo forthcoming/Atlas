@@ -8,5 +8,5 @@ from scrapy.utils.project import get_project_settings
 
 
 from scrapy import cmdline
-cmdline.execute('scrapy crawl tencent'.split())
+cmdline.execute('scrapy crawl zol'.split())
 

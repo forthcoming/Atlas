@@ -8,7 +8,7 @@ proxy用来设置代理,eg meta={'proxy':'http://ip:port'}
 '''
 
 import re
-from spider.utils.cookie import Login
+from tools.cookie import Login
 from scrapy import Spider,Request
 from spider.items import TweetItem,CommentItem,RelayItem,AttitudeItem
 from time import strftime,time,localtime

@@ -7,7 +7,7 @@ class Render(scrapy.Spider):
         # 'DOWNLOAD_DELAY':2,
         'CONCURRENT_REQUESTS':1,
         "DOWNLOADER_MIDDLEWARES":{
-            'spider.utils.middlewares.JSRenderMiddleware': 543,
+            'tools.middlewares.JSRenderMiddleware': 543,
         },
     }
 

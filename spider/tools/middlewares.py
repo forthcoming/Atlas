@@ -1,6 +1,6 @@
 #coding:utf-8
 import random,os
-from spider.utils.dictionary import agent_list,ip_list
+from tools.dictionary import agent_list,ip_list
 from scrapy.dupefilters import RFPDupeFilter
 from scrapy import signals
 from scrapy.http import HtmlResponse
