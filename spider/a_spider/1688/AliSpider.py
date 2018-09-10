@@ -11,29 +11,18 @@ class AliSpider(AtlasSpider):
         self._queue = Queue()
 
     def run(self):
-        # step 1 : construct queue
         for part in self.getKeyword():
             self._queue.put(part)
 
-        # step 2 : start thread
-        self.start_thread()
-
-    def start_thread(self, num=10):
         _threadList = []
-        for i in range(num):
+        for i in range(10):
             ka = alibaba_kw.AutoSpider(self._queue)
-            t = Thread(target=ka.main, args=())
-
-            t.daemon = True
+            t = Thread(target=ka.main, args=(),daemon = True)
             _threadList.append(t)
-
-
             t.start()
 
         for t in _threadList:
             t.join()
-
-
 
 As = AliSpider()
 As.run()

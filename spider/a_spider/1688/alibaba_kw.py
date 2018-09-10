@@ -1,18 +1,15 @@
 import re
-# import sys
 import time
 import copy
 import json
 import Queue
 import hashlib
 import logging
-# import requests
 import datetime
 import threading
 from lxml import etree
 from urllib import quote
 from atlas.log.log import Log
-# from pymongo import MongoClient
 from atlas.config.settings import *
 from atlas.models.tool.common import on_off_sale
 from atlas.utils.request_tools.request_tool import *
@@ -20,15 +17,10 @@ from atlas.database.atlasDatabase import AtlasDatabase
 from atlas.datamodel.product import Product, HistoryProduct
 from atlas.utils.httprequest.many_request import ManyRequest
 from atlas.utils.analyze_match.alibaba_match import AlibabaMatch
-from alibaba_update import query_data
 
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
 mutex = threading.Lock()  # 互斥锁，用来协调0.1秒发送请求
 
-
-class AutoSpider(object):
+class AutoSpider:
     def __init__(self, keyword_queue, atlas_database, **kwargs):
         # time 2018-8-28-13-57#
         # add keyword parameter: **kwargs
@@ -158,8 +150,6 @@ class AutoSpider(object):
 
     def __product_detail(self, p_id_big_li, category, kw_name):
         p_id_big_li = p_id_big_li[:self.sum] if isinstance(self.sum, int) else p_id_big_li
-        # p_id_big_li = ["567106814327", "569304700932", "556781441758", "569432650964", "558332089897",
-        #                "566185896908", "550291120095", "568511074645", ]
         # p_id_big_li = ["556781441758", "567106814327", "568511074645", "520589497412"]
         length = len(p_id_big_li)
         for n in range(length):
@@ -275,16 +265,6 @@ class AutoSpider(object):
         saled_count = self.__int(saled_count)
         comment_totals = self.__int(comment_totals)
 
-        print "[INFO]: 商品ID：", pid
-        print "[INFO]: 商品名称：", p_name
-        print "[INFO]: 价格：", lt_price
-        print "[INFO]: 价格区间：", ext_price
-        print "[INFO]: 销量：", saled_count
-        print "[INFO]: 商品库存：", canbook_count
-        print "[INFO]: 评论量：", comment_totals
-        print "[INFO]: 商品评分：", star_level
-        print "[INFO]: 商品图片：", image_list
-
         detail_dict = {
              "p_name": p_name,
              "image_list": image_list,
@@ -320,15 +300,11 @@ class AutoSpider(object):
                 phone_num = re.findall(r'archive-sheet-item phone">(.*?)</div>', res, re.S)
             except Exception:
                 company_name = contact_address = phone_num = ''
-        print "[INFO]: 联系方式", '/'.join(phone_num)
-        print "[INFO]: 公司名称", ''.join(company_name)
-        print "[INFO]: 联系地址", ''.join(contact_address)
         contact_information["phone_num"] = '/'.join(phone_num)
         contact_information["contact_address"] = ''.join(contact_address)
         seller_info_li.extend([''.join(company_name), contact_information])
         product_dict.seller_name = history_dict.seller_name = ''.join(company_name)
         product_dict.contact = contact_information
-        print '\n'
 
     def __comment_info(self, offer_id, user_id, product_dict):
         page = 1
@@ -384,8 +360,6 @@ class AutoSpider(object):
                                                 exclude_keys=["is_hash", "comment"])
 
         self.Database.insertHistory(history_dict.category, history_dict, product_dict.platform)
-
-        print '+-' * 40
 
     # mian函数，处理所有关键字，get一个关键字进行爬取
     @Log(level=logging.INFO, name='Alibaba.log')
