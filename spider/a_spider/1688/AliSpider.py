@@ -17,7 +17,7 @@ class AliSpider(AtlasSpider):
         _threadList = []
         for i in range(10):
             ka = alibaba_kw.AutoSpider(self._queue)
-            t = Thread(target=ka.main, args=(),daemon = True)
+            t = Thread(target=ka.main)
             _threadList.append(t)
             t.start()
 

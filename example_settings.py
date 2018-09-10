@@ -8,10 +8,6 @@ MONGO_ATLAS = "atlas_test"
 MONGO_BI = "Atlas_BI"
 MONGO_SET = "category_info"
 
-# [concurrent]
-# PROCESSOR_NUM = 20
-THREAD_NUM = 10
-
 # [proxy]
 PROXY_HOST = "p10.t.16yun.cn"
 PROXY_PORT = "6446"

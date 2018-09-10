@@ -55,20 +55,12 @@ def sync():
         from dwi.v_dwi_net_product_pool a where a.dw_etl_dt>={} order by a.dw_etl_dt asc'''.format(last_time)
     cursor.execute(sql)
     for each in cursor:
-        try:
-            sale_price=int(each[4]*100)
-        except:
-            sale_price=0
-        try:
-            original_price=int(each[5]*100)
-        except:
-            original_price=0
         data={
             'product_name':each[1],
             'cat_name':each[2],
             'currency':each[3],
-            'sale_price':sale_price,
-            'original_price':original_price,
+            'sale_price':int(each[4]*100),
+            'original_price':int(each[5]*100),
             'sale_num':each[6],
             'comment_count':each[7],
             'product_url':each[8],

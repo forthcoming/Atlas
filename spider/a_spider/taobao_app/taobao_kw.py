@@ -1,7 +1,6 @@
 # coding=utf-8
 import os
 import re
-import sys
 import time
 import copy
 import json
@@ -29,13 +28,11 @@ from atlas.database.atlasDatabase import AtlasDatabase
 from atlas.datamodel.product import Product, HistoryProduct
 from atlas.utils.httprequest.many_request import ManyRequest
 from atlas.utils.analyze_match.taobao_match import TaobaoMatch
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 mutex = threading.Lock()  # 互斥锁，用来协调0.1秒发送请求
 
 
-class AutoSpider(object):
+class AutoSpider:
     def __init__(self, keywordQueue, AtlasDatabase):
         self.manyreq = ManyRequest()
         self.tmatch = TaobaoMatch()
@@ -251,18 +248,6 @@ class AutoSpider(object):
             contact_address = p_info_dict['contact_address'] or contact_address
             contact_information = {"contact_address": contact_address}
 
-            print "[INFO]: 商品ID：", pid
-            print "[INFO]: 商品名称：", p_info_dict['p_name']
-            print "[INFO]: 价格：", p_info_dict['lt_price']
-            print "[INFO]: 价格区间：", p_info_dict['ext_price']
-            print "[INFO]: 销量：", p_info_dict['sell_count']
-            print "[INFO]: 商品库存：", p_info_dict['stock_dict']
-            print "[INFO]: 评论量：", p_info_dict['comment_count']
-            print "[INFO]: 商品图片：", p_info_dict['image_list']
-            print "[INFO]: 店铺名称：", p_info_dict['seller_name']
-            print "[INFO]: 联系地址：", ''
-            print "[INFO]: 联系方式：", ''
-
             product_dict.currency = "¥"
             product_dict.is_hash = False
             product_dict.product_id = pid
@@ -291,20 +276,6 @@ class AutoSpider(object):
             print '\n'
             yield product_dict, history_dict
 
-
-            # except Exception as e:
-            #     # self.atlas_log.case(e)
-            #     SyncLogisticsTrack()
-            #     s = sys.exc_info()
-            #     err = "Error '%s' happened on line %d" % (s[1], s[2].tb_lineno)
-            #     err_str = str(e) + '\n' + err + '\n' + time.ctime()
-            #     print err_str
-            #     with open('try_log.txt', 'a') as f:
-            #         f.write(pid + '\n' + err_str + '\n' + time.ctime() + '\n')
-
-    def __seller_info(self, member_id):
-        pass
-
     def __comment_info(self, pid, product_dict):
         comment_info_li = self.tc.comment(self.manyreq.many_request,
                                self.tmatch.match_comments,
@@ -324,20 +295,6 @@ class AutoSpider(object):
             self.Database.insertOrUpdateProduct(history_dict.category, product_dict, exclude_keys=["is_hash"])
 
         self.Database.insertHistory(history_dict.category, history_dict, product_dict.platform)
-
-        print '+-' * 40
-        # system_id = system_id.encode('utf-8')
-        # old_record = self.db_set[self.set_name].find_one({"system_id": system_id})
-        # if not old_record:
-        #     self.db_set[self.set_name].update({"system_id": system_id}, {"$set": db_data},
-        #                                       upsert=True)
-        # else:
-        #
-        #     db_data.pop('is_hash')
-        #     self.db_set[self.set_name].update({"system_id": system_id}, {"$set": db_data},
-        #                                       upsert=True)
-        #
-        # self.db_set[self.history_set_name].insert(history_data)
 
     @Log(level=logging.INFO, name='taobao.log')
     def main(self):

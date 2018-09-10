@@ -1,10 +1,6 @@
-import sys
 import time
 import json
 from jsonpath import jsonpath
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 
 def __integer(prices):
     price = int(prices) * 100 if prices else 0

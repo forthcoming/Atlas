@@ -5,15 +5,8 @@ import random
 import jsonpath
 import requests
 from lxml import etree
-import sys
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
-
-class Taobao_Comment(object):
-    def __init__(self):
-        pass
+class Taobao_Comment:
 
     def header(self):
         headers = {

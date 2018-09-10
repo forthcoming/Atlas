@@ -22,11 +22,7 @@ mutex = threading.Lock()  # 互斥锁，用来协调0.1秒发送请求
 
 class AutoSpider:
     def __init__(self, keyword_queue, atlas_database, **kwargs):
-        # time 2018-8-28-13-57#
-        # add keyword parameter: **kwargs
-        # add object property: self.category_queue = kwargs.get('category_q')#
-        self.category_kw_queue = kwargs.get('category_kw_q')
-        # ------------------ending-------------------------#
+
         self.product = Product()
         self.manyreq = ManyRequest()
         self.amatch = AlibabaMatch()
@@ -53,7 +49,6 @@ class AutoSpider:
         category = info[0]
         set_name = "product_%s" % category
         history_set_name = "history_1688_%s" % category
-        print '*' * 100, self.sum
         return kw_name, category, set_name, history_set_name
 
     def __h5tk(self):
@@ -362,38 +357,17 @@ class AutoSpider:
         self.Database.insertHistory(history_dict.category, history_dict, product_dict.platform)
 
     # mian函数，处理所有关键字，get一个关键字进行爬取
-    @Log(level=logging.INFO, name='Alibaba.log')
     def main(self, *args):
-        # time 2018-8-30-9-54 #
-        # 记录最新更新的时间
-        dt = (datetime.datetime.now()).strftime('%Y-%m-%d')
-        # ------------------ending-------------------------#
-
-        while not self.kwQueue.empty():
+        while self.kwQueue.qsize():
             kw_name, category, set_name, history_set_name = self.extract_queue()
             try:
                 h5_tk = self.__h5tk()
             except Exception:
-                # TODO 这里不建议使用 continue 出现错误时会跳过当前关键字！！！！
                 continue
             p_id_big_li = self.__get_pid(kw_name, h5_tk)
             for product_dict, history_dict, ext_dict in self.__product_detail(p_id_big_li, category, kw_name):
                 self.__seller_info(ext_dict.get("member_id"), product_dict, history_dict)
-                # self.__comment_info(ext_dict.get("offer_id"), ext_dict.get("user_id"), product_dict)
                 self.storage(product_dict, history_dict)
-
-        # time 2018-8-28-13-57 #
-        print '++++++++++update program starting++++++++++'
-        time.sleep(5)
-        while not self.category_kw_queue.empty():
-            category, kw_name = self.category_kw_queue.get(block=False)
-            product_id_list, category_name, kw_name = query_data(self.Database, category, kw_name, dt)
-            for product_dict, history_dict, ext_dict in self.__product_detail(product_id_list, category_name, kw_name):
-                self.__seller_info(ext_dict.get("member_id"), product_dict, history_dict)
-                # self.__comment_info(ext_dict.get("offer_id"), ext_dict.get("user_id"), product_dict)
-                self.storage(product_dict, history_dict)
-        # ------------------ending-------------------------#
-
 
 if __name__ == '__main__':
     MONGO_URI = "mongodb://192.168.105.20:27017"
