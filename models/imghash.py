@@ -1,10 +1,9 @@
 #coding: utf-8
 from pymongo import MongoClient
-import requests,os,logging,imagehash
+import os,logging,imagehash
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Process,JoinableQueue
-from common.common import init
-from common.imghdr import what
+from common.common import init,img_download
 from PIL import Image
 from common.common import Log
 from settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID,OFFSET,PATH
@@ -14,9 +13,7 @@ def scheduler(db,category):
     task=JoinableQueue()
     
     for i in range(2):
-        # process=Process(target=consumer, args=(category,task),daemon=True)  # py3
-        process=Process(target=consumer, args=(category,task))  # py2
-        process.daemon=True
+        process=Process(target=consumer, args=(category,task),daemon=True)
         process.start()
 
     blacklist=['lazada','wish','11street']
@@ -51,36 +48,19 @@ def consumer(category,task):
         except Exception as e:
             logging.error('error found in {},{}'.format(name,e))
         task.task_done()
-
-def producer(item,task,source,retry_times=5):
+        
+def producer(item,task,source):
     logging.info('processing _id:{}'.format(item['_id']))
     urls=item['image']
     if not isinstance(urls,list):
         data=source.find_one_and_delete({"_id":item['_id']})
         logging.error('error found product_url:{} image:{}'.format(data.get('product_url',''),urls))
         return
-    
     name=str(item['_id'])
     cat=PATH + str(int(name,16) & OFFSET)
     for index,url in enumerate(urls):
-        picture='{}/{}_{}'.format(cat,name,index)
-        if not os.path.exists(picture):
-            for i in range(retry_times): 
-                try:
-                    res=requests.get(url,timeout=30,stream=True,verify=False)
-                    chunk=next(res.iter_content(32))
-                    if not what(chunk):
-                        return
-                    with open(picture,'wb') as f:
-                        f.write(chunk)
-                        for chunk in res.iter_content(chunk_size=1024):
-                            f.write(chunk)
-                    break
-                except Exception as e:
-                    logging.error('Error {} found in {},retry_times={}'.format(e,url,i))
-            else:
-                logging.error('{} download error'.format(url))
-                break
+        if not img_download(url,cat,name,index):
+            break
     else:
         task.put(item)
 

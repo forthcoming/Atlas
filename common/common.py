@@ -31,6 +31,16 @@ class Log:
                 logging.exception(e)
         return wrapper
 
+def Singleton(cls):
+    _instance = {}
+
+    def _singleton(*args, **kargs):
+        if cls not in _instance:
+            _instance[cls] = cls(*args, **kargs)
+        return _instance[cls]
+
+    return _singleton
+    
 def check(node,cluster_id):
     if node.find_one({'cluster_id':cluster_id,'on_sale':True}):
         data=node.find({'cluster_id':cluster_id,'on_sale':True},{'serial_num':1,'_id':0}).sort([('serial_num',1)]).limit(1)

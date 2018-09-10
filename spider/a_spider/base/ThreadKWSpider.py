@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2018/7/17 下午4:57
-# @Author  : Jiangtao
-# @Site    : 
-# @File    : ThreadKWSpider
-# @Software: PyCharm
-
-
-
 class ThreadKWSpider:
     def __init__(self, queue):
         self._kwQueue = queue

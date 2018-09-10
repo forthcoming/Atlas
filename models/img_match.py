@@ -1,5 +1,5 @@
 #coding: utf-8
-import json,logging
+import json,logging,os
 from pymongo import MongoClient,ASCENDING
 from pymongo.errors import CursorNotFound
 from common.lshash import LSHash
@@ -52,10 +52,19 @@ def _image_match(db,category,supply,retail,filters1,filters2,dis): # filters1:su
             filters=filters2
             ends=count2
 
+        # for offset in range(0,ends,step):
+        #     pid=os.fork()
+        #     if pid==0:
+        #         task(offset,step,lsh,category,supply,retail,filters,dis)
+        #         os._exit(0)
+        #     elif pid<0:
+        #         logging.error('创建子程序失败')   
+        # for i in range(cpu):  # 必须阻塞,否则会执行完image_match,成为孤儿进程
+        #     os.waitpid(0,0)  # 在Manager中会出错
         processes=[Process(target=task, args=(offset,step,lsh,category,supply,retail,filters,dis)) for offset in range(0,ends,step)]
         for process in processes:
             process.start()
-        for process in processes:
+        for process in processes:  # 防止出现僵尸进程
             process.join()
 
 def task(offset,step,lsh,category,supply,retail,filters,dis): 
@@ -89,6 +98,7 @@ def task(offset,step,lsh,category,supply,retail,filters,dis):
     while loop:
         if not flag:
             supply,retail=retail,supply
+        # 由于前面的子进程已经开始,有可能使后面进程中游标数据比期望值要小,但不影响整个逻辑
         cursor = source.find(filters,{'system_id':1,'imageurl':1,'phash':1,'_id':1}).sort([('_id',ASCENDING)]).skip(offset).limit(step)
         try:
             for each in cursor:

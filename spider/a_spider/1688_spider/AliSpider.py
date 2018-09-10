@@ -1,11 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2018/7/17 下午4:44
-# @Author  : Jiangtao
-# @Site    : 
-# @File    : AliSpider
-# @Software: PyCharm
-
 import alibaba_kw
 from Queue import Queue
 from threading import Thread

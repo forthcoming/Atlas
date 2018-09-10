@@ -1,11 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2018/7/17 下午5:03
-# @Author  : Jiangtao
-# @Site    : 
-# @File    : AliKWSpider.py
-# @Software: PyCharm
-
 from atlas.spider.base.ThreadKWSpider import ThreadKWSpider
 
 class AliKWSpider(ThreadKWSpider):

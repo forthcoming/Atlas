@@ -23,7 +23,7 @@ def bi2atlas():
         erp_cat_id=outer['sub_category'][0]['keyword']
         for bi_cat_id in mapping.find({'erp_cat_id':erp_cat_id},{'bi_cat_id':1,'_id':0}):
             for category_id in get_children(bi,bi_cat_id['bi_cat_id']):
-                for each in source.find({'category_id':category_id}):
+                for each in source.find({'category_id':category_id,'goods_sn':{'$exists':True}}):
                     data={
                         'image':each['product_image'],
                         'sales':each['sale_num'],

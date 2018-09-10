@@ -42,10 +42,10 @@ def consumer(category,task):
         item=task.get()
         if item['mark']:
             target=db['image_match_result_{}'.format(category)]
-            threshold=-20  # 20
+            threshold=10
         else:
             target=db['item_match_result_{}'.format(category)]
-            threshold=900  # 90
+            threshold=90
         logging.info('category:{} qsize:{} _id:{}'.format(category,task.qsize(),item['_id']))
         name=str(item['_id'])
         cat=PATH + str(int(name,16) & OFFSET)

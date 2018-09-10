@@ -1,21 +1,7 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2018/7/18 下午1:53
-# @Author  : Jiangtao
-# @Site    :
-# @File    : reportAtlasStatus.py
-# @Software: PyCharm
-
-import sys
-sys.path.append('..')
-sys.path.append('../..')
 import datetime
 import time
-
-
 from pymongo import MongoClient
 from bson import ObjectId
-
 from atlas.config.settings import *
 from atlas.datamodel.categoryInfo import CategoryInfo, SubCategory
 from atlas.utils.sendemail.sendemail import sendEmail

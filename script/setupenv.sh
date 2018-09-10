@@ -18,10 +18,6 @@ print_fail()
 }
 
 
-
-
-
-
 ###############################################################
 # setup mongodb
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
@@ -34,7 +30,7 @@ apt-get install -y mongodb-org
 # setup apt-get package
 
 echo '****************************************************'
-for package in python-pip libxml2 libxml2-dev libxslt-dev python-libxml2 python-dev zlib1g-dev libtiff5-dev libjpeg8-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk liblapack-dev gfortran
+for package in python-pip libxml2 libxml2-dev libxslt-dev python-libxml2 python-dev zlib1g-dev libtiff5-dev libjpeg8-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk liblapack-dev gfortran python-matplotlib
 do
 
     echo '开始安装:' $package
