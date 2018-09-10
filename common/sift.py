@@ -1,5 +1,4 @@
 #!--coding=utf8--
-from __future__ import division
 import cv2
 import matplotlib.pyplot as plt
 from numpy import *
@@ -55,7 +54,6 @@ def pre_process(gray):
     :param gray: gray picture ndarray
     :return:
     """
-    # print('pre-process:', gray)
     ret, thresh = cv2.threshold(gray, 165, 255, cv2.THRESH_BINARY)
     image_gf = filters.gaussian_filter(thresh, 0.25)
     image_gf_eq = cv2.equalizeHist(image_gf)
@@ -74,7 +72,6 @@ def pre_process(gray):
     #             count2 += 1
     # plt.imshow(image_gf_eq, cmap='gray')
     # plt.show()
-    # print(count1, count2)
     return image_gf_eq
 
 def compute(image_path1, image_path2):
@@ -85,30 +82,18 @@ def compute(image_path1, image_path2):
     """
     # 图一的kp和des
     img_target = cv2.imread(image_path1)
-    # print("1---->", type(img_target))
     if isinstance(img_target, type(None)):
         img_target = plt.imread(image_path1)
-    # print("2---->", img_target.shape)
-    # print('image_target:', img_target)
     gray_target = cv2.cvtColor(img_target, cv2.COLOR_BGR2GRAY)
-    # print("2---->", gray_target.shape)
-    # print gray_target.dtype
     result_target = pre_process(gray_target)
-    # print result_target.dtype
-    # print(result_target.shape)
     kp_target, des_target = detector(result_target)
-    # print(type(des_target))
     # 图二的kp和des
     img_train = cv2.imread(image_path2)
-    # print("3--->", type(img_train))
     if isinstance(img_train, type(None)):
         img_train = plt.imread(image_path2)
-    # print("4---->", img_train.shape)
     gray_train = cv2.cvtColor(img_train, cv2.COLOR_BGR2GRAY)
-    # print("4---->", gray_train.shape)
     result_train = pre_process(gray_train)
     kp_train, des_train = detector(result_train)
-    # print(type(des_train))
 
     # 调用match方法
     matches_list = match(des_target, des_train)
