@@ -1,6 +1,5 @@
 # coding=utf-8
 from pymongo import MongoClient
-from hashlib import md5
 from datetime import datetime
 import os,cx_Oracle
 from atlas.config.settings import *
@@ -20,40 +19,40 @@ def sync():
         _last_time=datetime(1992,8,24)
     last_time="date'{}-{}-{}'".format(_last_time.year,_last_time.month,_last_time.day)
     sql='''
-    select 
-    id,
-    product_name,
-    cat_name,
-    currency,
-    sale_price,
-    original_price,
-    sale_num,
-    comment_count,
-    product_url,
-    product_image,
-    category_id,
-    dw_web_id,
-    dw_web_name,
-    sort_num, 
-    sort_type,
-    rating,
-    praise_cnt,
-    collection_cnt,
-    score_type,
-    score_a,
-    dw_sys_dt,
-    dw_etl_dt,
-    cross_cnt,
-    cross_info,
-    sort_num_7,
-    up_num,
-    up_rank,
-    sort_num_3,
-    data_source,
-    ps_product_sn,
-    dw_category_name,
-    goods_sn
-    from dwi.v_dwi_net_product_pool a where a.dw_etl_dt>={} order by a.dw_etl_dt asc'''.format(last_time)
+        select 
+        id,
+        product_name,
+        cat_name,
+        currency,
+        sale_price,
+        original_price,
+        sale_num,
+        comment_count,
+        product_url,
+        product_image,
+        category_id,
+        dw_web_id,
+        dw_web_name,
+        sort_num, 
+        sort_type,
+        rating,
+        praise_cnt,
+        collection_cnt,
+        score_type,
+        score_a,
+        dw_sys_dt,
+        dw_etl_dt,
+        cross_cnt,
+        cross_info,
+        sort_num_7,
+        up_num,
+        up_rank,
+        sort_num_3,
+        data_source,
+        ps_product_sn,
+        dw_category_name,
+        goods_sn
+        from dwi.v_dwi_net_product_pool a where a.dw_etl_dt>={} order by a.dw_etl_dt asc'''.format(last_time)
     cursor.execute(sql)
     for each in cursor:
         try:
@@ -97,7 +96,6 @@ def sync():
             'dw_category_name':each[30],
             'goods_sn':each[31]
         }
-        data['hash_url']=md5(data['product_url'].encode('utf-8')).hexdigest()
         print('processing {}'.format(data['product_url']))
         bi.update_one({"ps_product_sn":data["ps_product_sn"]},{'$setOnInsert': data},upsert=True)
     client.close()
