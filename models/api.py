@@ -6,8 +6,6 @@ from atlas.models.tool.graph import Graph
 from atlas.models.tool.common import on_off_sale,check
 from settings import MONGO_URI,MONGO_ATLAS,MONGO_BI
 
-# MONGO_URI='mongodb://192.168.105.20:27017'
-# MONGO_ATLAS='Atlas'
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
@@ -83,66 +81,6 @@ def off_sale():
             "msg" : 'success',
             "result" : ''
         })
-    except Exception as e:
-        return jsonify({
-            "code" : 1,
-            "msg" : str(e),
-            "result" : ''
-        })
-
-@app.route("/suppliers",methods=['POST'])
-def suppliers():
-    params=request.form
-    _category=params.get('category')
-    product_id=params.get('product_id')
-    platform=params.get('platform') 
-    page=params.get('page')
-    limit=params.get('limit')
-
-    try:   
-        client=MongoClient(MONGO_URI)
-        atlas=client[MONGO_ATLAS]
-        if _category.isdigit():
-            category=atlas['category_info'].find_one({'sub_category.source':'erp','sub_category.keyword':int(_category)},{'_id':0,'name_en':1})['name_en']
-        else:     
-            category=_category
-        node=atlas['cluster_node_{}'.format(category)]
-        product=atlas['product_{}'.format(category)]
-        limit=int(limit)
-        offset=(int(page)-1)*limit
-
-        system_id='{}_{}'.format(platform,product_id)
-        filters=node.find_one({'system_id':system_id},{'cluster_id':1,'_id':0})
-        data=[]
-        cnt=0
-        if filters:
-            filters['on_sale']=True
-            system_ids=[_['system_id'] for _ in node.find(filters,{'system_id':1,'_id':0})]
-            cursor=product.find(
-                {'system_id':{'$in':system_ids},'platform':'1688'},
-                {'currency':1,'_id':0,'image':1,'contact':1,'platform':1,'price':1,'product_url':1,'seller_name':1,'system_id':1,'title':1}
-            ).sort([('price',ASCENDING)]).skip(offset).limit(limit)
-            for item in cursor:
-                data.append({ 
-                    'currency':item['currency'],
-                    'img':item['image'][0],
-                    'phone_num':item['contact'].get('phone_num',0),
-                    'platform':item['platform'],
-                    'price':'{} {:.2f}'.format(item['currency'],item['price']/100),
-                    'product_url':item['product_url'],
-                    'seller_name':item['seller_name'],
-                    'system_id':item['system_id'],
-                    'title':item['title'],
-                })
-            cnt=cursor.count()
-        client.close()
-        return jsonify({
-            "code": 0,
-            "msg": 'Success',
-            "count":cnt,
-            "result": data
-        }) 
-        
     except Exception as e:
         return jsonify({
             "code" : 1,
