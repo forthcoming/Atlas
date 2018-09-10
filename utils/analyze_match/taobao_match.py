@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 from match_res import MatchRes
 

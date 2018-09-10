@@ -1,9 +1,6 @@
 # coding=utf-8
-import re
 import sys
 import time
-import json
-import jsonpath
 from atlas.utils.httprequest import request_model
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -31,11 +28,11 @@ class ManyRequest(object):
                 n += 1
                 time.sleep(5) if n % 3 == 0 else time.sleep(1)
 
-                continue
         print "[INFO]: 最终请求失败！！！！！！！！！！！！！！！！！"
         return None
 
-    def match(self, match_func, res):
+    @staticmethod
+    def match(match_func, res):
         if match_func is None:
             return True
         if match_func(res):

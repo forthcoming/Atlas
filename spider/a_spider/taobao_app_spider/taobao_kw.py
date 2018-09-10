@@ -49,7 +49,7 @@ class AutoSpider(object):
         self.params = tbparams
         try:
             self.sum = int(PRODUCT_SUM)
-        except:
+        except Exception:
             self.sum = float('inf')
 
     def __integer(self, prices):
@@ -218,7 +218,7 @@ class AutoSpider(object):
             history_dict = HistoryProduct()
             pid = p_id_big_li[n][0]
             contact_address = p_id_big_li[n][1]
-            # pid = "564650758899"
+            # pid = "566603286049"
             system_id = "taobao_%s" % pid
             node = self.Database.db['cluster_node_{}'.format(category)]
             data = '{"itemNumId":"%s"}' % pid

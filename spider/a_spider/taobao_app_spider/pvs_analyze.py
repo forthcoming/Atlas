@@ -33,9 +33,7 @@ def product_details(stack_data):
 
     p_name = stack_data.get("data", {}).get("item", {}).get("title", '')
     seller_name = stack_data.get("data", {}).get("seller", {}).get("shopName", '')
-    if seller_name:
-        seller_name = seller_name
-    else:
+    if not seller_name:
         return 'off_sales'
 
     pri_sto_li = splice_dict.get("skuCore", {}).get("sku2info", {})
@@ -51,16 +49,13 @@ def product_details(stack_data):
     # for props_dict in props_value:
     #     for values_dict in props_dict.get("values", []):
     #         values_dict.get("image", '')
-    if color_image_list:
-        color_image_list = color_image_list
-    elif color_image_list_two:
-        color_image_list = color_image_list_two
+    color_image_list = color_image_list if color_image_list else color_image_list_two
     # if jsonpath(stack_data, expr='$.splice.skuBase.props[*].values[*].image'):
     #     color_image_list = jsonpath(stack_data, expr='$.splice.skuBase.props[*].values[*].image')
     # elif jsonpath(stack_data, expr='$.data.values[*].image'):
     #     color_image_list = jsonpath(stack_data, expr='$.data.values[*].image')
-    else:
-        color_image_list = []
+    # else:
+    #     color_image_list = []
         
     turn_image_list = stack_data.get("data", {}).get("item", {}).get("images", [])
     # turn_image_list = jsonpath(stack_data, expr='$.data.item.images')
@@ -85,8 +80,8 @@ def product_details(stack_data):
     # elif jsonpath(stack_data, expr='$.data.skuBase.props'):
     #     props_li = jsonpath(stack_data, expr='$.data.skuBase.props')[0]
     else:
-        lt_price = __integer(float(pri_sto_li.get('0', {}).get("price", {}).get("priceText", '')))
-        stock_num = __int(pri_sto_li.get('0', {}).get("quantity", ''))
+        lt_price = __integer(float(pri_sto_li.get('0', {}).get("price", {}).get("priceText", '0')))
+        stock_num = __int(pri_sto_li.get('0', {}).get("quantity", '0'))
         lt_price_li.append(lt_price)
         ext_price.append(['价格', lt_price])
         stock_list.append(['库存', stock_num])
@@ -127,7 +122,8 @@ def product_details(stack_data):
             stock_list.append([s, stock])
             ext_price.append([s, price])
 
-    lt_price = sorted(lt_price_li)[0]
+    lt_price = sorted(lt_price_li)[0]  # 最小价格
+    # lt_price = sorted(lt_price_li)[-1]  # 最大价格
 
     p_info_dict = {
         'p_name': p_name,

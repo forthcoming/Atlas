@@ -2,12 +2,12 @@ import sys
 import time
 import Queue
 import random
-import logging
+# import logging
 import requests
 import linecache
 import threading
 from multiprocessing import Value
-from atlas.log.log import Log
+# from atlas.log.log import Log
 from atlas.config.settings import *
 from atlas.utils.request_tools.request_tool import *
 reload(sys)
@@ -40,40 +40,36 @@ def interval_delay():
     mutex.release()
     atomValue.value += 1
 
+
 # @Log(level=logging.INFO,name='req.log')
-class CuckooHttpRequest():
+class CuckooHttpRequest(object):
     def __init__(self):
         # 代理服务器
-        proxyHost = PROXY_HOST
-        proxyPort = PROXY_PORT
+        proxy_host = PROXY_HOST
+        proxy_port = PROXY_PORT
 
         # 代理隧道验证信息
-        proxyUser = PROXY_USER
-        proxyPass = PROXY_PASS
+        proxy_user = PROXY_USER
+        proxy_pass = PROXY_PASS
 
-        proxyMeta = "http://%(user)s:%(pass)s@%(host)s:%(port)s" % {
-            "host": proxyHost,
-            "port": proxyPort,
-            "user": proxyUser,
-            "pass": proxyPass,
+        proxy_meta = "http://%(user)s:%(pass)s@%(host)s:%(port)s" % {
+            "host": proxy_host,
+            "port": proxy_port,
+            "user": proxy_user,
+            "pass": proxy_pass,
         }
-        print '[INFO]: proxy：', proxyMeta
+        print '[INFO]: proxy：', proxy_meta
         self.proxy = {
-            "http": proxyMeta,
-            "https": proxyMeta,
+            "http": proxy_meta,
+            "https": proxy_meta,
         }
 
-        self.srequests = requests.session()
+        self.s_requests = requests.session()
         self.data_queue = Queue.Queue()
         self.startTime = time.time()
         self.cookies = ""
         self.headers = {}
         self.iswubai = 0
-        self.tmpsum = PRODUCT_SUM
-        try:
-            self.sum = int(self.tmpsum)
-        except:
-            self.sum = ""
 
     def get(self, url, ua=None, session=None, params=None, **kwargs):
         kwargs.setdefault('allow_redirects', True)
@@ -82,15 +78,16 @@ class CuckooHttpRequest():
     def post(self, url, ua=None, session=None, data=None, json=None, **kwargs):
         return self.request_func('post', url, ua=ua, session=session, data=data, json=json, **kwargs)
 
-    def change_ua(self, ua='pc'):
+    @staticmethod
+    def change_ua(ua='pc'):
         tunnel = random.randint(1, 998)
         if ua == 'pc':
-            file = '1000ua-pc.txt'
+            ua_file = '1000ua-pc.txt'
         elif ua == 'mob':
-            file = '1000ua-android.txt'
+            ua_file = '1000ua-android.txt'
         else:
             return None
-        user_agent = linecache.getline(file, tunnel)
+        user_agent = linecache.getline(ua_file, tunnel)
         # print user_agent
         return user_agent.strip().replace('\n', '').replace('\r', '')
 
@@ -102,11 +99,17 @@ class CuckooHttpRequest():
             "Accept-Language": "zh-CN,zh;q=0.9",
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
-            # "Cookie": 'ctoken=CNYRTQcjjRJf8PYdFfxUnaga; __cn_logon__=false; ali-ss=eyJ1c2VySWQiOm51bGwsImxvZ2luSWQiOm51bGwsInNpZCI6bnVsbCwiZWNvZGUiOm51bGwsIm1lbWJlcklkIjpudWxsLCJfZXhwaXJlIjoxNTI3MzAzNjAzMzc0LCJfbWF4QWdlIjo4NjQwMDAwMH0=; UM_distinctid=163953d2a022be-0ada2a3e62f6b4-2d604637-4a640-163953d2a03e96; cna=WcvBD7DRVhMCAT2UyQKF8VNj; webp=1; _m_h5_tk=f717234e6323b40456877cd1ef1ddcc9_1527219683426; _m_h5_tk_enc=72a92d87807fcd12f4c75b9a1192f061; isg=BNTUvIwuc4Bp1eY5pO7cgkKLpRuGhcOXja66U261Yd_iWXWjlj1Pp5KXXVdBoTBv',
+            # "Cookie": 'ctoken=CNYRTQcjjRJf8PYdFfxUnaga; __cn_logon__=false; ali-ss=eyJ1c2VySWQiOm51bGwsImxvZ2l
+            # uSWQiOm51bGwsInNpZCI6bnVsbCwiZWNvZGUiOm51bGwsIm1lbWJlcklkIjpudWxsLCJfZXhwaXJlIjoxNTI3MzAzNjAzMzc0L
+            # CJfbWF4QWdlIjo4NjQwMDAwMH0=; UM_distinctid=163953d2a022be-0ada2a3e62f6b4-2d604637-4a640-163953d2a0
+            # 3e96; cna=WcvBD7DRVhMCAT2UyQKF8VNj; webp=1; _m_h5_tk=f717234e6323b40456877cd1ef1ddcc9_152721968342
+            # 6; _m_h5_tk_enc=72a92d87807fcd12f4c75b9a1192f061; isg=BNTUvIwuc4Bp1eY5pO7cgkKLpRuGhcOXja66U261Yd_i
+            # WXWjlj1Pp5KXXVdBoTBv',
             # "Host": "h5api.m.1688.com",
             "Pragma": "no-cache",
             "Referer": "http://m.1688.com/?src=desktop",
-            # "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
+            # "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML,
+            #  like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
             'User-Agent': self.change_ua(),
         }
         return header
@@ -114,7 +117,7 @@ class CuckooHttpRequest():
     def request_func(self, method, url, ua=None, session=None, params=None, data=None, json=None, **kwargs):
 
         kwargs['proxies'] = self.proxy if 'proxies' in kwargs.keys() else {}
-        resquests_model = requests if not session else self.srequests
+        resquests_model = requests if not session else self.s_requests
         if 'headers' in kwargs.keys() and (ua == "pc" or ua == "mob"):
             if 'User-Agent' in kwargs['headers'].keys():
                 kwargs['headers']['User-Agent'] = self.change_ua(ua=ua)
@@ -136,5 +139,3 @@ class CuckooHttpRequest():
         print "[INFO]: Seconds: {}, Request_Count: {} ".format(time.time() - self.startTime, atomValue.value)
         return resquests_model.get(url, params=params, **kwargs) if method == "get" \
             else resquests_model.post(url, data=data, json=json, **kwargs)
-
-

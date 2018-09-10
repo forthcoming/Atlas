@@ -31,6 +31,18 @@ class AtlasSpider(object):
 
         return categoryNameToKeywords
 
+    # --------------------------------------------------------------------------------------#
+    # time 2018-8-24-13-50
+    # add the function to return back category#
+    def get_categoty(self):
+        AD = AtlasDatabase(uri=None, db=None)
+        category_info = AD.categoryInfo()
+        category_name_list = []
+        for category in category_info:
+            category_name_list.append(category.name_en)
+        return category_name_list
+    # -------------------------update category ending----------------------------------------#
+
 
     # 业务逻辑，不存在插入，存在则更新，更新的时候不复写is_hash
     @staticmethod

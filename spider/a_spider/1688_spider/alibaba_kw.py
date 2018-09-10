@@ -1,18 +1,18 @@
 import re
-import sys
+# import sys
 import time
 import copy
 import json
 import Queue
 import hashlib
 import logging
-import requests
+# import requests
 import datetime
 import threading
 from lxml import etree
 from urllib import quote
 from atlas.log.log import Log
-from pymongo import MongoClient
+# from pymongo import MongoClient
 from atlas.config.settings import *
 from atlas.models.tool.common import on_off_sale
 from atlas.utils.request_tools.request_tool import *
@@ -20,25 +20,27 @@ from atlas.database.atlasDatabase import AtlasDatabase
 from atlas.datamodel.product import Product, HistoryProduct
 from atlas.utils.httprequest.many_request import ManyRequest
 from atlas.utils.analyze_match.alibaba_match import AlibabaMatch
+from alibaba_update import query_data
 
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-'''
-Created on 2018年06月19日
-@author: lwq
-'''
 mutex = threading.Lock()  # 互斥锁，用来协调0.1秒发送请求
 
 
 class AutoSpider(object):
-    def __init__(self, keywordQueue, AtlasDatabase):
+    def __init__(self, keyword_queue, atlas_database, **kwargs):
+        # time 2018-8-28-13-57#
+        # add keyword parameter: **kwargs
+        # add object property: self.category_queue = kwargs.get('category_q')#
+        self.category_kw_queue = kwargs.get('category_kw_q')
+        # ------------------ending-------------------------#
         self.product = Product()
         self.manyreq = ManyRequest()
-        self.tmatch = AlibabaMatch()
+        self.amatch = AlibabaMatch()
 
-        self.kwQueue = keywordQueue
-        self.Database = AtlasDatabase
+        self.kwQueue = keyword_queue
+        self.Database = atlas_database
 
         self.db_client = MONGO_URI
         self.db_database = MONGO_ATLAS
@@ -48,7 +50,7 @@ class AutoSpider(object):
         print self.headers
         try:
             self.sum = int(PRODUCT_SUM)
-        except:
+        except Exception:
             self.sum = float('inf')
 
     def extract_queue(self):
@@ -65,7 +67,7 @@ class AutoSpider(object):
     def __h5tk(self):
         url = alih5url
         res = self.manyreq.many_request(url,
-                                        match_func=self.tmatch.match_h5tk,
+                                        match_func=self.amatch.match_h5tk,
                                         headers=self.headers,
                                         **self.params)
         cookies = res.cookies.get_dict()
@@ -75,7 +77,8 @@ class AutoSpider(object):
         self.headers['Cookie'] = string + alicookie
         return h5_tk
 
-    def __signlink(self, kw_name, h5_tk, begin_page):
+    @staticmethod
+    def __signlink(kw_name, h5_tk, begin_page):
         millis = int(time.time() * 1000)
         data = '{{"sortType":"pop","keywords":"{}","filtId":"","appName":"wap","beginPage":{},"pageSize":60}}'.format(
             kw_name, begin_page)
@@ -86,16 +89,17 @@ class AutoSpider(object):
         m2.update(string)
         sign = m2.hexdigest()
         link = 'http://h5api.m.1688.com/h5/mtop.1688.offerservice.getoffers/1.0/?jsv=2.4.11&appKey=12574478&t=' + str(
-            millis) + '&sign=' + sign + '&api=mtop.1688.offerService.getOffers&v=1.0&type=jsonp&dataType=jsonp&callback=mtopjsonp20&data=%s' % data
+            millis) + '&sign=' + sign + '&api=mtop.1688.offerService.getOffers&v=1.0&type=jsonp&dataType=jsonp&' \
+                                        'callback=mtopjsonp20&data=%s' % data
         print '\n'
         return link
 
     def __analyze_list_info(self, link):
         try:
             p_res = self.manyreq.many_request(link,
-                                            match_func=self.tmatch.match_list,
-                                            headers=self.headers,
-                                            **self.params).text
+                                              match_func=self.amatch.match_list,
+                                              headers=self.headers,
+                                              **self.params).text
         except Exception:
             return False
         res = re.findall(r'mtopjsonp20\((.*)\)', p_res, re.S)[0]
@@ -136,21 +140,26 @@ class AutoSpider(object):
                 begin_page += 1
         return p_id_big_li
 
-    def __integer(self, prices):
-        price = int(float(prices.split("-")[0]) * 100) if prices else 0
+    @staticmethod
+    def __integer(prices):
+        # price = int(float(prices.split("-")[0]) * 100) if prices else 0  # 最小价格
+        price = int(float(prices.split("-")[-1]) * 100) if prices else 0  # 最大价格
         return price
 
-    def __float(self, num):
+    @staticmethod
+    def __float(num):
         price = int(float(num.split("-")[0])) if num else 0
         return price
 
-    def __int(self, num):
+    @staticmethod
+    def __int(num):
         price = int(float(num.split("-")[0])) if num else 0
         return price
 
     def __product_detail(self, p_id_big_li, category, kw_name):
         p_id_big_li = p_id_big_li[:self.sum] if isinstance(self.sum, int) else p_id_big_li
-        # p_id_big_li = ["556781441758", "569432650964", "558332089897", "566185896908", "567106814327", "569304700932", "550291120095", "568511074645", ]
+        # p_id_big_li = ["567106814327", "569304700932", "556781441758", "569432650964", "558332089897",
+        #                "566185896908", "550291120095", "568511074645", ]
         # p_id_big_li = ["556781441758", "567106814327", "568511074645", "520589497412"]
         length = len(p_id_big_li)
         for n in range(length):
@@ -165,11 +174,11 @@ class AutoSpider(object):
             url = "https://m.1688.com/offer/%s.html" % pid
             print "[INFO]: thread_name", threading.current_thread().getName(), 'start'
             res = self.manyreq.many_request(url,
-                                            match_func=self.tmatch.match_details,
+                                            match_func=self.amatch.match_details,
                                             headers=self.headers,
                                             **self.params)
             print "[INFO]: thread_name", threading.current_thread().getName(), 'end'
-            if not res:
+            if ("暂时无法查看此商品" in res.text) or ("该商品无法查看或已下架" in res.text) or not res:
                 on_off_sale(node, system_id, False)
                 print "[INFO]: %s 商品已下架！！！！！" % system_id
                 continue
@@ -206,7 +215,7 @@ class AutoSpider(object):
                 history_dict.inventory = detail_dict.get("canbook_count")
                 history_dict.record_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                ext_dict = {}
+                ext_dict = dict()
                 ext_dict["user_id"] = detail_dict.get("user_id")
                 ext_dict["offer_id"] = detail_dict.get("offer_id")
                 ext_dict["member_id"] = detail_dict.get("member_id")
@@ -216,7 +225,8 @@ class AutoSpider(object):
 
                 yield product_dict, history_dict, ext_dict
 
-            except: pass
+            except Exception:
+                pass
 
     def __analyze_detail(self, pid, p_info_json):
         ext_price_list = []
@@ -233,9 +243,9 @@ class AutoSpider(object):
 
         ext_price = p_info_json.get('priceRanges', [])
         # 折扣价格
-        lt_price = p_info_json.get("skuDiscountPrice", '')
+        lt_price = p_info_json.get("skuDiscountPrice", '0')
         # 默认价格
-        lt_price = lt_price if lt_price else p_info_json.get("priceDisplay", '')
+        lt_price = lt_price if lt_price else p_info_json.get("priceDisplay", '0')
         for price_dict in ext_price:
             price_list = []
             for k, v in price_dict.items():
@@ -251,9 +261,10 @@ class AutoSpider(object):
             sku_map = p_info_json.get("skuMap", {})
             # 库存（分类库存）
             canbook_count = [[key, self.__int(value.get("canBookCount", 0))] for key, value in sku_map.items()]
-            mrak = re.findall('"discountPrice"', json.dumps(sku_map))
-            if mrak:
-                ext_price = [[key, self.__integer(value["discountPrice"])] for key, value in sku_map.items()]
+            # 以下3行是另外一种其他价格，内容是商品属性分类价格
+            # mrak = re.findall('"discountPrice"', json.dumps(sku_map))
+            # if mrak:
+            #     ext_price = [[key, self.__integer(value["discountPrice"])] for key, value in sku_map.items()]
 
         else:
             # 库存（总库存）
@@ -292,22 +303,22 @@ class AutoSpider(object):
         seller_info_li = []
         contact_information = {}
         url = "https://m.1688.com/winport/company/%s.html" % member_id
-        try:
-            res = self.manyreq.many_request(url,
-                                            match_func=self.tmatch.match_seller,
-                                            headers=self.headers,
-                                            **self.params).text
-        except Exception:
-            res = ''
+        res = self.manyreq.many_request(url,
+                                        match_func=self.amatch.match_seller,
+                                        headers=self.headers,
+                                        **self.params).text or ''
+
         html = etree.HTML(res)
         if re.findall(r'该会员暂未发布公司信息！', res, re.S) or html is None:
             company_name = contact_address = phone_num = ''
         else:
             try:
-                company_name = html.xpath('//*[@id="scroller"]/div[@class="archive-baseInfo-companyInfo"]/ul/li[1]/div/span/text()')
-                contact_address = html.xpath('//*[@id="scroller"]/div[@class="archive-baseInfo-contactInfo"]/ul/li[2]/div/span/text()')
+                xpath_str1 = '//*[@id="scroller"]/div[@class="archive-baseInfo-companyInfo"]/ul/li[1]/div/span/text()'
+                xpath_str2 = '//*[@id="scroller"]/div[@class="archive-baseInfo-contactInfo"]/ul/li[2]/div/span/text()'
+                company_name = html.xpath(xpath_str1)
+                contact_address = html.xpath(xpath_str2)
                 phone_num = re.findall(r'archive-sheet-item phone">(.*?)</div>', res, re.S)
-            except:
+            except Exception:
                 company_name = contact_address = phone_num = ''
         print "[INFO]: 联系方式", '/'.join(phone_num)
         print "[INFO]: 公司名称", ''.join(company_name)
@@ -338,14 +349,11 @@ class AutoSpider(object):
             "t": millis,
             "memberId": user_id,
         }
-        url = url + ''.join(key + '=' + str(value) + '&' for key, value in params.items())
-        try:
-            res = self.manyreq.many_request(url,
-                                            match_func=self.tmatch.match_comment,
-                                            headers=self.headers,
-                                            **self.params).text
-        except TypeError:
-            res = ''
+        url += ''.join(key + '=' + str(value) + '&' for key, value in params.items())
+        res = self.manyreq.many_request(url,
+                                        match_func=self.amatch.match_comment,
+                                        headers=self.headers,
+                                        **self.params).text or ''
         if res:
             try:
                 json_obj = json.loads(res)
@@ -360,7 +368,8 @@ class AutoSpider(object):
                     i['member'] = member_name[n]
                     comment_info_li.append(i)
                     n += 1
-            except: pass
+            except Exception:
+                pass
 
         print "[INFO]: 评论内容：", comment_info_li
         product_dict.comment = comment_info_li
@@ -371,7 +380,8 @@ class AutoSpider(object):
         if not old_record:
             self.Database.insertOrUpdateProduct(history_dict.category, product_dict)
         else:
-            self.Database.insertOrUpdateProduct(history_dict.category, product_dict, exclude_keys=["is_hash", "comment"])
+            self.Database.insertOrUpdateProduct(history_dict.category, product_dict,
+                                                exclude_keys=["is_hash", "comment"])
 
         self.Database.insertHistory(history_dict.category, history_dict, product_dict.platform)
 
@@ -380,6 +390,11 @@ class AutoSpider(object):
     # mian函数，处理所有关键字，get一个关键字进行爬取
     @Log(level=logging.INFO, name='Alibaba.log')
     def main(self, *args):
+        # time 2018-8-30-9-54 #
+        # 记录最新更新的时间
+        dt = (datetime.datetime.now()).strftime('%Y-%m-%d')
+        # ------------------ending-------------------------#
+
         while not self.kwQueue.empty():
             kw_name, category, set_name, history_set_name = self.extract_queue()
             try:
@@ -393,6 +408,18 @@ class AutoSpider(object):
                 # self.__comment_info(ext_dict.get("offer_id"), ext_dict.get("user_id"), product_dict)
                 self.storage(product_dict, history_dict)
 
+        # time 2018-8-28-13-57 #
+        print '++++++++++update program starting++++++++++'
+        time.sleep(5)
+        while not self.category_kw_queue.empty():
+            category, kw_name = self.category_kw_queue.get(block=False)
+            product_id_list, category_name, kw_name = query_data(self.Database, category, kw_name, dt)
+            for product_dict, history_dict, ext_dict in self.__product_detail(product_id_list, category_name, kw_name):
+                self.__seller_info(ext_dict.get("member_id"), product_dict, history_dict)
+                # self.__comment_info(ext_dict.get("offer_id"), ext_dict.get("user_id"), product_dict)
+                self.storage(product_dict, history_dict)
+        # ------------------ending-------------------------#
+
 
 if __name__ == '__main__':
     MONGO_URI = "mongodb://192.168.105.20:27017"
@@ -400,6 +427,5 @@ if __name__ == '__main__':
     keywordQueue = Queue.Queue()
     Database = AtlasDatabase(MONGO_URI, MONGO_ATLAS)
     keywordQueue.put(("women", "连衣裙"))
-    As = AutoSpider(keywordQueue, Database)
+    As = AutoSpider(keywordQueue, Database, category_kw_q=keywordQueue)
     As.main()
-
