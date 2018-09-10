@@ -58,4 +58,4 @@ if __name__ == '__main__':
     """ % ('xxxx', '192.168.105.xx')
     # 标题
     subject = 'Python 程序运行异常！'
-    sendEmail('liuwenqiang@stosz.com', mail_msg, subject)
+    sendEmail('qiang@qq.com', mail_msg, subject)

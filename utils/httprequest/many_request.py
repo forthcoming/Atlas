@@ -1,12 +1,8 @@
 # coding=utf-8
-import sys
 import time
 from atlas.utils.httprequest import request_model
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
-
-class ManyRequest(object):
+class ManyRequest:
     def __init__(self):
         self.cuc_req = request_model.CuckooHttpRequest()
 

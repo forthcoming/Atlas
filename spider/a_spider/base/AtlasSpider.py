@@ -63,10 +63,6 @@ if __name__ == '__main__':
     atlasSpider = AtlasSpider('1688')
     li = atlasSpider.getKeyword()
     print len(li)
-    # n = 0
-    # for i in li:
-    #     n += 1
-    #     print i, n
 
 
 

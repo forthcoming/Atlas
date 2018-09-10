@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
-
 alih5url = "http://h5api.m.1688.com/h5/mtop.1688.offerservice.getoffers/1.0/?jsv=2.4.11&appKey=12574478&" \
            "t=1527214611708&sign=da3f8580546c6e9934fbdc6533f773c9&api=mtop.1688.offerService.getOffers&v" \
            "=1.0&type=jsonp&dataType=jsonp&callback=mtopjsonp1"
