@@ -9,7 +9,7 @@ hours = 'hour.19 hour.20 hour.21 hour.22 hour.23 hour.0 hour.1 hour.2 hour.3 hou
 
 ########################################################################
 # 定时spider
-name = 'cron_1688_spider'
+name = 'cron_spider'
 cron.command('flock -xn /tmp/%s.lock -c %s.sh' % (name, os.path.join(crontabDir, name)), every='1.minute')
 
 
