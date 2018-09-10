@@ -1,6 +1,5 @@
-# coding=utf-8
 from pymongo import MongoClient
-from atlas.config.settings import MONGO_URI,MONGO_BI,MONGO_ATLAS
+from settings import MONGO_URI,MONGO_BI,MONGO_ATLAS
 
 def get_children(bi,cat_id):
     result=set()

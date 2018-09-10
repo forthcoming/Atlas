@@ -2,7 +2,7 @@
 from pymongo import MongoClient
 from datetime import datetime
 import os,cx_Oracle
-from atlas.config.settings import *
+from settings import *
 
 os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
 

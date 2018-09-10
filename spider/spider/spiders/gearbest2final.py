@@ -1,7 +1,7 @@
 # coding=utf-8
 from pymongo import MongoClient
 import pymysql,re
-from atlas.config.settings import *
+from settings import *
 from datetime import datetime
 
 db='d_gearbest'
