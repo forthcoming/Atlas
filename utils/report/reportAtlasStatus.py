@@ -28,7 +28,7 @@ class ReportAtlas:
     def __init__(self):
         self.client = MongoClient(MONGO_URI)
         self.db = self.client[MONGO_ATLAS]
-        self.htmlBody = open('template/monitoratlas.html').read()
+        self.htmlBody = open('monitoratlas.html').read()
         pass
 
 

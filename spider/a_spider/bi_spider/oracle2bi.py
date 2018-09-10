@@ -97,7 +97,7 @@ def sync():
             'dw_category_name':each[30],
             'goods_sn':each[31]
         }
-        data['hash_url']=md5(data['product_url'].encode('utf-8')).hexdigest()  #py3
+        data['hash_url']=md5(data['product_url'].encode('utf-8')).hexdigest()
         print('processing {}'.format(data['product_url']))
         bi.update_one({"ps_product_sn":data["ps_product_sn"]},{'$setOnInsert': data},upsert=True)
     client.close()
