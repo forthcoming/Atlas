@@ -46,7 +46,6 @@ def cluster_edge(db,category):
             check(node,b_cluster_id)  # to ensure atomic operation
             logging.info('{} and {} are in the same cluster'.format(b_id,c_id)) 
         edge.update_one({'from_node_id':b_id,'to_node_id':c_id,'is_effective':True},{'$setOnInsert':{'updated_at':updated_at}},upsert=True)                          
-        edge.update_one({'from_node_id':c_id,'to_node_id':b_id,'is_effective':True},{'$setOnInsert':{'updated_at':updated_at}},upsert=True)
         source.update_one({'_id':each['_id']},{"$set":{'added_to_cluster':True}})
 
 @Log(level=logging.INFO,name='cluster_add.log')

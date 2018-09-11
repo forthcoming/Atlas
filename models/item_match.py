@@ -52,6 +52,7 @@ def task(product,source,target,item,mutex,tasks_id):
     c_id=item['c_id']
     logging.info('b_id:{} c_id:{}'.format(b_id,b_id))
 
+    '''
     flag='{}{}'.format(b_id,c_id)
     _flag='{}{}'.format(c_id,b_id)
     with mutex:  # 也可以针对数据操作部分加锁,但速度会变慢(基本变成多线程串行),由于b_id,c_id已按照指定顺序排序,此处不需要再用锁
@@ -61,6 +62,7 @@ def task(product,source,target,item,mutex,tasks_id):
             else:
                 tasks_id.add(flag)  # flag mustn't exist in _id
                 break
+    '''
 
     updated_at=datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
     data=target.find_one({'b_id':b_id,'c_id':c_id},{'match_num':1,'hash_diff':1,'_id':1})
@@ -95,7 +97,7 @@ def task(product,source,target,item,mutex,tasks_id):
         target.update_one({'_id':data['_id']},{"$set":result})
     source.update_many({'_id':{'$in':item['keys']}},{"$set":{'added_to_item_match':True}})
 
-    tasks_id.remove(flag)
+    # tasks_id.remove(flag)
 
 
 @Log(level=logging.INFO,name='item_match.log')

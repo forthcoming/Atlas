@@ -31,14 +31,16 @@ class Log:
                 logging.exception(e)
         return wrapper
 
-def Singleton(cls):
+def singleton(cls):
+    '''
+    _singleton会判断某个类是否在字典instances中
+    如果不存在,则会将cls作为key,cls(*args, **kw)作为value存到instances中,否则直接返回 instances[cls]
+    '''
     _instance = {}
-
     def _singleton(*args, **kargs):
         if cls not in _instance:
             _instance[cls] = cls(*args, **kargs)
         return _instance[cls]
-
     return _singleton
     
 def check(node,cluster_id):
@@ -76,7 +78,7 @@ def show_cluster(db,category,cluster_id):
     edge=db['cluster_edge_{}'.format(category)]
     node=db['cluster_node_{}'.format(category)]
     system_ids=[each['system_id'] for each in node.find({'cluster_id':cluster_id},{'system_id':1,'_id':0})]
-    for each in edge.find({'is_effective':True,'$or':[{'from_node_id':{'$in':system_ids}},{'to_node_id':{'$in':system_ids}}]},{'from_node_id':1,'to_node_id':1,'_id':0}):
+    for each in edge.find({'is_effective':True,'from_node_id':{'$in':system_ids}},{'from_node_id':1,'to_node_id':1,'_id':0}):
         G.add_edge(each['from_node_id'],each['to_node_id'],weight=1)
     nx.draw(G, with_labels=True)
     plt.show()
@@ -101,3 +103,9 @@ def img_download(url,cat,name,index,retry_times=5):
             logging.error('{} download error'.format(url))
             return False
     return True
+
+if __name__=='__main__':
+    @singleton
+    class TestSingleton:pass
+    x=TestSingleton()
+    print(id(x) == id(TestSingleton()))  # True

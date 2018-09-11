@@ -1,6 +1,30 @@
 import requests,time,hashlib
 from lxml.html import fromstring
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.header import Header
 
+ADDRESS = 'itnotitfysercices@qq.com'
+NAME='itnotitfysercices@qq.com'
+PASSWORD = 'Love2017!'
+HOST = 'smtp.qiye.163.com'
+PORT = '465'
+
+def send_mail(content, receive, title,sender_addr=ADDRESS,sendername=NAME,password=PASSWORD,host=HOST,port=PORT):
+
+    msg = MIMEMultipart('related')
+    msg.attach(MIMEText(content, 'html', 'utf-8'))
+    msg['Subject'] = Header(title, 'utf-8')
+    msg['From'] = Header("综合项目部", 'utf-8')
+    msg['To'] = Header("Python组", 'utf-8')
+
+    smtp = smtplib.SMTP_SSL(host, port)  # 发件人邮箱中的SMTP服务器,端口
+    smtp.login(sendername, password)  # 括号中对应的是发件人邮箱账号、邮箱密码
+    smtp.sendmail(sender_addr, receive, msg.as_string())
+    smtp.quit()
+    print("邮件发送成功")
+    
 def translate(word):
     s=requests.Session()
     s.get('http://fanyi.youdao.com')   #作用是获取cookie
@@ -66,3 +90,8 @@ if __name__ == '__main__':
     # foo.sign()
     print(translate('今天星期五，心情大好，吃完饭准备跟朋友去抓鱼'))
 
+    content = """
+    <p>Python 数据部程序运行异常</p>
+    <b>请及时登录服务器查看程序状态</b>
+    """
+    send_mail(content, 'tao@qq.com','这是标题')

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-  
 from pymongo import MongoClient
 from datetime import datetime
 import logging
-from atlas.log.log import Log
-from atlas.config.settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
+from common.common import Log
+from settings import MONGO_URI,MONGO_ATLAS,MACHINE_ID
 from concurrent.futures import ThreadPoolExecutor
 
 def scheduler(db,category):
@@ -12,16 +11,11 @@ def scheduler(db,category):
     source=db['image_match_result_{}'.format(category)]
     target=db['item_match_result_{}'.format(category)]
     cursor=source.find(
-        # {'robot_match':True,'$or':[{'added_to_item_match':{'$exists':False}},{'added_to_item_match':False}]}, 
-        {'$or':[{'added_to_item_match':{'$exists':False}},{'added_to_item_match':False}]}, 
+        {'robot_match':True,'$or':[{'added_to_item_match':{'$exists':False}},{'added_to_item_match':False}]}, 
         {'added_to_item_match':0}
     ).limit(80000)
     result={}
     for item in cursor:
-        if item['b_id']>item['c_id']:
-            item['b_id'],item['c_id']=item['c_id'],item['b_id']
-            item['b_image_url'],item['c_image_url']=item['c_image_url'],item['b_image_url']
-            item['b_platform'],item['c_platform']=item['c_platform'],item['b_platform']
 
         key='{}:{}'.format(item['b_id'],item['c_id'])
         if key in result:

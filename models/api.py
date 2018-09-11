@@ -12,29 +12,22 @@ app.config['JSON_AS_ASCII'] = False
 @app.route("/cluster/disassociation",methods=['POST'])
 def split_cluster(): # to is to be deleted
     params=request.form
-    _category=params.get('category')
+    category=params.get('category')
     come=params.get('come')
     to=params.get('to')
     try:  
         client=MongoClient(MONGO_URI)
         atlas=client[MONGO_ATLAS]
-        if _category.isdigit():
-            category=atlas['category_info'].find_one({'sub_category.source':'erp','sub_category.keyword':int(_category)},{'_id':0,'name_en':1})['name_en']
-        else:     
-            category=_category
         edge=atlas['cluster_edge_{}'.format(category)]
         node=atlas['cluster_node_{}'.format(category)]
         cluster_id=node.find_one({'system_id':to},{'cluster_id':1,'_id':0})['cluster_id']   
         system_ids=[each['system_id'] for each in node.find({'cluster_id':cluster_id},{'system_id':1,'_id':0})]
-        graph=Graph(kind='DG')
-        # for each in edge.find({'is_effective':True,'from_node_id':{'$in':system_ids}},{'from_node_id':1,'to_node_id':1,'_id':0}):
-        for each in edge.find({'is_effective':True,'$or':[{'from_node_id':{'$in':system_ids}},{'to_node_id':{'$in':system_ids}}]},{'from_node_id':1,'to_node_id':1,'_id':0}):
+        graph=Graph(kind='UDG')
+        for each in edge.find({'is_effective':True,'from_node_id':{'$in':system_ids}},{'from_node_id':1,'to_node_id':1,'_id':0}):
             graph.add(each['from_node_id'],each['to_node_id'])
         for vertex in graph.get_vertices(come,to): 
-            edge.update_one({'from_node_id':vertex,'to_node_id':to},{'$set':{'is_effective':False}})
-            edge.update_one({'from_node_id':to,'to_node_id':vertex},{'$set':{'is_effective':False}})
+            edge.update_one({'from_node_id':min(vertex,to),'to_node_id':max(vertex,to)},{'$set':{'is_effective':False}})
             graph.delete(vertex,to)
-            graph.delete(to,vertex)
 
         vertices=graph.BFS(to)
         serial_num=node.find({'system_id':{'$in':vertices}},{'serial_num':1,'_id':0}).sort('serial_num').limit(1)
@@ -66,14 +59,10 @@ def split_cluster(): # to is to be deleted
 def off_sale():
     params=request.form
     system_id=params.get('system_id')
-    _category=params.get('category')
+    category=params.get('category')
     try:
         client=MongoClient(MONGO_URI)
         atlas=client[MONGO_ATLAS]
-        if _category.isdigit():
-            category=atlas['category_info'].find_one({'sub_category.source':'erp','sub_category.keyword':int(_category)},{'_id':0,'name_en':1})['name_en']
-        else:     
-            category=_category
         node=atlas['cluster_node_{}'.format(category)]
         on_off_sale(node,system_id,False)
         return jsonify({
