@@ -1,17 +1,11 @@
-import sys
 import time
 import Queue
 import random
-# import logging
 import requests
 import linecache
 import threading
 from multiprocessing import Value
-# from atlas.log.log import Log
-from atlas.config.settings import *
-from atlas.utils.request_tools.request_tool import *
-reload(sys)
-sys.setdefaultencoding('utf-8')
+from settings import *
 '''
 使用方法：
     导入本代码，创建CuckooHttpRequest()类对象

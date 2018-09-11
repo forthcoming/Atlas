@@ -42,39 +42,19 @@ def product_details(stack_data):
     props_value = splice_dict.get("skuBase", {}).get("props", [])
     color_image_list = [values_dict.get("image", '') for props_dict in props_value for values_dict in props_dict.get("values", [])]
     color_image_list_two = stack_data.get("data", {}).get("item", {}).get("image", [])
-    # for props_dict in props_value:
-    #     for values_dict in props_dict.get("values", []):
-    #         values_dict.get("image", '')
     color_image_list = color_image_list if color_image_list else color_image_list_two
-    # if jsonpath(stack_data, expr='$.splice.skuBase.props[*].values[*].image'):
-    #     color_image_list = jsonpath(stack_data, expr='$.splice.skuBase.props[*].values[*].image')
-    # elif jsonpath(stack_data, expr='$.data.values[*].image'):
-    #     color_image_list = jsonpath(stack_data, expr='$.data.values[*].image')
-    # else:
-    #     color_image_list = []
-        
     turn_image_list = stack_data.get("data", {}).get("item", {}).get("images", [])
-    # turn_image_list = jsonpath(stack_data, expr='$.data.item.images')
-    # turn_image_list = turn_image_list[0] if turn_image_list else []
         
     image_list.extend(turn_image_list)
     image_list.extend(color_image_list)
     image_list = map(lambda x: "https:" + x, image_list)
 
     contact_address = splice_dict.get("delivery", {}).get("from", None)
-    # contact_address = jsonpath(stack_data, expr='$.splice.delivery.from')
-    # contact_address = contact_address[0] if contact_address else False
-
-    # --------------------------------------
     props_li = stack_data.get("data", {}).get("skuBase", {}).get("props", [])
     if props_value:
         props_li = props_value
     elif props_li:
         props_li = props_li
-    # if jsonpath(stack_data, expr='$.splice.skuBase.props'):
-    #     props_li = jsonpath(stack_data, expr='$.splice.skuBase.props')[0]
-    # elif jsonpath(stack_data, expr='$.data.skuBase.props'):
-    #     props_li = jsonpath(stack_data, expr='$.data.skuBase.props')[0]
     else:
         lt_price = __integer(float(pri_sto_li.get('0', {}).get("price", {}).get("priceText", '0')))
         stock_num = __int(pri_sto_li.get('0', {}).get("quantity", '0'))
@@ -86,11 +66,6 @@ def product_details(stack_data):
     if has_skuBase:
         pvs_str_li = splice_dict.get("skuBase", {}).get("skus", [])
         pvs_str_li = pvs_str_li if pvs_str_li else stack_data.get("data", {}).get("skuBase", {}).get("skus", [])
-
-
-        # pvs_str_li = jsonpath(stack_data, expr='$.splice.skuBase.skus')
-        # pvs_str_li = pvs_str_li[0] if pvs_str_li else jsonpath(stack_data, expr='$.data.skuBase.skus')[0]
-
         for props in props_li:
             pvs_dict[props["pid"]] = props["name"]
             values = props["values"]
@@ -132,6 +107,4 @@ def product_details(stack_data):
         'comment_count': comment_count,
         'contact_address': contact_address,
     }
-    # for k,v in p_info_dict.items():
-    #     print k, v
     return p_info_dict

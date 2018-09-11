@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
 import json
-from match_res import MatchRes
 
-
-class TaobaoMatch(MatchRes):
+class TaobaoMatch:
     def match_list(self, res=None):
         re_bool = self.re_match_res(res, r'totalPage')
         return re_bool

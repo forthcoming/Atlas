@@ -42,12 +42,18 @@ class AutoSpider:
         self.kwQueue = keywordQueue
         self.Database = AtlasDatabase
 
-        self.headers = copy.copy(tbheaders)
-        self.params = tbparams
-        try:
-            self.sum = int(PRODUCT_SUM)
-        except Exception:
-            self.sum = float('inf')
+        self.headers = {
+            "accept": "*/*",
+            "scheme": "https",
+            "proxy-connection": "keep-alive",
+            "accept-encoding": "gzip, deflate, br",
+            "accept-language": "zh-CN,zh;q=0.9",
+            "cache-control": "no-cache",
+            "referer": "https://s.taobao.com/list?spm=a21bo.2017.201867-links-0.4.5af911d90wkkOt",
+            "User-Agent": "",
+        }
+        self.params = {'proxies': True, 'session': True, 'ua': 'mob', 'timeout': 15}
+        self.sum = float('inf')
 
     def __integer(self, prices):
         price = int(prices * 100) if prices else 0
@@ -164,12 +170,9 @@ class AutoSpider:
         print p_res
         json_obj = json.loads(p_res)
         listitem = json_obj.get("listItem", [])
-        # flag = jsonpath.jsonpath(json_obj, expr='$..listItem[*]')
         if listitem:
             p_id_li = [item.get("item_id", '') for item in listitem]
             contact_address = [item.get("sellerLoc", '') for item in listitem]
-            # p_id_li = jsonpath.jsonpath(json_obj, expr='$..listItem[*].item_id')
-            # contact_address = jsonpath.jsonpath(json_obj, expr='$..listItem[*].sellerLoc')
             list_page_data = [x for x in zip(p_id_li, contact_address)]
             return list_page_data
         else:
