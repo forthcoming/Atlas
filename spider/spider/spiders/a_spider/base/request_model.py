@@ -30,7 +30,7 @@ sys.setdefaultencoding('utf-8')
             也可在不传入headers时使用ua参数，会默认挂载以"User-Agent"作为键，传入请求中。（适合在编写代码时的快速测试）
 
 '''
-mutex = threading.Lock()
+mutex = threading.Lock()  # 互斥锁，用来协调0.1秒发送请求
 atomValue = Value('l', 0)
 
 

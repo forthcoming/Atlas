@@ -1,6 +1,6 @@
 #coding:utf-8
 import random,os
-from tools.dictionary import agent_list,ip_list
+from tools.dictionary import pc_agent,ip_list
 from scrapy.dupefilters import RFPDupeFilter
 from scrapy import signals
 from scrapy.http import HtmlResponse
@@ -11,7 +11,7 @@ from spider.settings import *
 class HeadersMiddleware:
     def process_request(self, request, spider):
         # print('Using HeadersMiddleware!')
-        request.headers['User-Agent'] = random.choice(agent_list)
+        request.headers['User-Agent'] = random.choice(pc_agent)
 
 class ProxiesMiddleware:
     def process_request(self, request, spider):

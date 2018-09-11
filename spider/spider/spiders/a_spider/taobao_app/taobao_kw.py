@@ -29,7 +29,7 @@ from atlas.datamodel.product import Product, HistoryProduct
 from atlas.utils.httprequest.many_request import ManyRequest
 from atlas.utils.analyze_match.taobao_match import TaobaoMatch
 
-mutex = threading.Lock()  # 互斥锁，用来协调0.1秒发送请求
+mutex = threading.Lock()  
 
 
 class AutoSpider:

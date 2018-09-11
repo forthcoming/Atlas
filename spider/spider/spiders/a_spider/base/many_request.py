@@ -6,10 +6,7 @@ class ManyRequest:
     def __init__(self):
         self.cuc_req = request_model.CuckooHttpRequest()
 
-    def many_request(self, url,
-                     match_func=None,
-                     headers=None,
-                     **kwargs):
+    def many_request(self, url,match_func=None, headers=None,**kwargs):
         n = 0
         try_count = 10
         while n < try_count:
@@ -20,12 +17,8 @@ class ManyRequest:
                     if self.match(match_func, res.text):
                         return res
             except Exception as e:
-                print '[INFO]: 数据请求失败...正在重试......', e, url
                 n += 1
                 time.sleep(5) if n % 3 == 0 else time.sleep(1)
-
-        print "[INFO]: 最终请求失败！！！！！！！！！！！！！！！！！"
-        return None
 
     @staticmethod
     def match(match_func, res):
