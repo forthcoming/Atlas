@@ -96,18 +96,14 @@ class AutoSpider:
         m2 = hashlib.md5()
         m2.update(string)
         sign = m2.hexdigest()
-        print "[INFO]: sign：", sign
         return sign
 
     def __geth5tk(self):
         print "[INFO]: thread_name", threading.current_thread().getName(), 'start'
         url = "https://h5api.m.taobao.com/h5/mtop.taobao.baichuan.smb.get/1.0/?jsv=2.4.11&appKey=12574478&t=1530602967150&sign=26d11c649f073b356e453a95743911aa&api=mtop.taobao.baichuan.smb.get&v=1.0&type=originaljson&dataType=jsonp&timeout=10000"
-        res = self.manyreq.many_request(url, match_func=self.tmatch.match_h5tk,
-                                        headers=self.headers,
-                                        **self.params)
+        res = self.manyreq.many_request(url, match_func=self.tmatch.match_h5tk,headers=self.headers,**self.params)
         cookies = res.cookies.get_dict()
         h5_tk = cookies['_m_h5_tk'].split('_')[0]
-        print '[INFO]: h5_tk: ', h5_tk
         return h5_tk
 
     def __construct_detailurl(self, millis, sign, data):
@@ -148,18 +144,6 @@ class AutoSpider:
             print "[INFO]: 商品已下架！！！！！"
             print '+-' * 40
             return True
-
-    def scheduler(self):
-        # 通过关键字获取列表页ID
-        # 判断列表页ID数量
-        # 循环ID列表，每个ID获取一次sign值
-        # 构建商品详情url参数
-        # 清洗Json
-        # 调用Product_details() 提取详情数据
-        # 判断上下架
-        # 获取商品评论数据
-        # 整理以上所有数据（商品数据，以及历史数据）入库
-        pass
 
     def extract_queue(self):
         info = self.kwQueue.get(block=False)
@@ -273,7 +257,6 @@ class AutoSpider:
 
             # 最好是插入成功后传入
             on_off_sale(node, system_id, True)
-            print '\n'
             yield product_dict, history_dict
 
     def __comment_info(self, pid, product_dict):
@@ -296,7 +279,6 @@ class AutoSpider:
 
         self.Database.insertHistory(history_dict.category, history_dict, product_dict.platform)
 
-    @Log(level=logging.INFO, name='taobao.log')
     def main(self):
         while not self.kwQueue.empty():
             kw_name, category, set_name, history_set_name = self.extract_queue()
@@ -307,12 +289,8 @@ class AutoSpider:
 
 
 if __name__ == '__main__':
-    MONGO_URI = "mongodb://192.168.105.20:27017"
-    MONGO_ATLAS = "atlas_test1"
+
     keywordQueue = Queue.Queue()
-    Database = AtlasDatabase(MONGO_URI, MONGO_ATLAS)
     keywordQueue.put(("women", "连衣裙"))
     As = AutoSpider(keywordQueue, Database)
     As.main()
-    # atlas.main(As.db_host, As.db_port, As.db_database)
-
