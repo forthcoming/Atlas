@@ -19,14 +19,6 @@ print_fail()
 
 
 ###############################################################
-# setup mongodb
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
-echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
-apt-get update
-apt-get install -y mongodb-org
-
-
-###############################################################
 # setup apt-get package
 
 echo '****************************************************'
@@ -45,48 +37,6 @@ do
     fi
 
 done
-
-sed -i "s/from pip import main/from pip._internal import main/g" /usr/local/bin/pip
-
-
-
-
-####################################################################
-echo '**********************************************************'
-echo '开始安装Python 依赖库'
-# setup pip package
-pip install numpy
-pip install plan
-pip install flask
-pip install cx_Oracle
-pip install crontab
-
-
-echo '************************************************************'
-echo '清理老环境'
-
-cd /usr/lib/python2.7/dist-packages
-mkdir bak_
-mv requests* bak_/
-pip uninstall requests -y
-
-mv chardet* bak_/
-pip uninstall chardet -y
-
-mv urllib3* bak_/
-pip uninstall urllib3 -y
-
-pip install requests==2.17.3
-
-
-mv setuptools* bak_/
-pip uninstall setuptools -y
-
-sudo wget https://bootstrap.pypa.io/ez_setup.py -O - | sudo python
-
-
-pip install pymysql
-
 
 cd $path
 pip install -r ../requirements.txt

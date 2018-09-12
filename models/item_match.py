@@ -14,7 +14,7 @@ def item_match(db,category):
     target=db['item_match_result_{}'.format(category)]
     pipeline=[
         {
-            '$match':{'$or':[{'added_to_item_match':{'$exists':False}},{'added_to_item_match':False}]}
+            '$match':{'robot_match':True,'$or':[{'added_to_item_match':{'$exists':False}},{'added_to_item_match':False}]}
         },
         {
             '$limit': 50000

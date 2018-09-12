@@ -1,9 +1,18 @@
+可以使用opencv的sift算法库<br>
+也可以参考http://www.vlfeat.org/overview/sift.html<br>
+sift算法用法很简单：<br>
+计算两张图片的sift关键点，然后计算匹配上的关键点。<br>
+所以这有两个特征，匹配率：匹配的关键点数／两个图片中关键点数量比较小的关键点数、匹配的关键点数<br>
+把之前人工标记的数据当作训练数据，来寻找合适的阈值：<br>
+对于标错机器人，那就是100%匹配错误的阈值；<br>
+对于标对机器人，那就是100%匹配正确的阈值；<br>
+对于标对机器人，那就是100%匹配正确的阈值；<br>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="exporter-version" content="Evernote Mac 7.2.3 (456885)"/><meta name="author" content="a798987859@126.com"/><meta name="created" content="2018-08-07 12:07:42 +0000"/><meta name="source" content="desktop.mac"/><meta name="updated" content="2018-08-07 12:07:55 +0000"/><title>自动匹配机器人综述</title></head><body><div><span style="font-size: 12px; line-height: normal; font-family: '.PingFang SC'; color: rgb(69, 69, 69);">自动匹配机器人分为标错机器人和标对机器人两个，使用的基础算法均为</span><span style="font-size: 12px; line-height: normal; font-family: 'Helvetica Neue'; color: rgb(69, 69, 69);">sift</span><span style="font-size: 12px; line-height: normal; font-family: '.PingFang SC'; color: rgb(69, 69, 69);">算法。</span><br/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
 /></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
 /><span style="font: 12.0px '.PingFang SC'; color: #454545;">从环节上来说，标错位于图片对转匹配对的上游，标对位于人工筛选的上游：</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
-/><img src="46339A611641.jpg" height="1080" width="1920"/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
+/><img src="4.jpg" height="1080" width="1920"/></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
 /></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
 /><span style="font: 12.0px '.PingFang SC'; color: #454545;">标错机器人的目的：去除那些</span><span style="font: 12.0px 'Helvetica Neue'; color: #454545;">hash</span><span style="font: 12.0px '.PingFang SC'; color: #454545;">匹配中确定匹配错误的图片</span></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"
 /></div><div><span style="font: 12.0px 'Helvetica Neue'; color: #454545;"

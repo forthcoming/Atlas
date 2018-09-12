@@ -2,11 +2,8 @@
 from os import path
 
 # 当MONGO_URI = mongodb://{ip}:{port} 为无密码模式  mongodb://{user}:{password}@{ip}:{port} 为用户密码登录模式
-# MONGO_{} = 数据库名 MONGO_SET = 固定的集合名
 MONGO_URI = "mongodb://192.168.105.20:27017"
 MONGO_ATLAS = "atlas_test"
-MONGO_BI = "Atlas_BI"
-MONGO_SET = "category_info"
 
 # [proxy]
 PROXY_HOST = "p10.t.16yun.cn"
@@ -19,14 +16,6 @@ MYSQL_HOST = "192.168.105.238"
 MYSQL_USER = "erp"
 MYSQL_PASSWORD = "erp123456"
 MYSQL_PRODUCT = "product"
-
-# 邮箱配置
-SP_MAIL_ADDRESS = 'itnotitfysercices@qq.com'
-SP_MAIL_SENDER = 'Asoulwangxiaohei'
-SP_MAIL_SMTP = 'smtp.qiye.163.com'
-SP_MAIL_SMTP_PORT = '465'
-SP_MAIL_LOGINNAME = 'itnotitfysercices@qq.com'
-SP_MAIL_PASSWORD = 'Love2017!'
 
 # 路由分发
 MACHINE_ID='atlas_192.168.105.20'
