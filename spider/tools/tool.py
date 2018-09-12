@@ -1,6 +1,5 @@
-import requests,time,hashlib
-from lxml.html import fromstring
-import smtplib
+import requests,time,hashlib,smtplib
+from lxml.html import fromstring 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.header import Header
@@ -41,6 +40,51 @@ def alibaba(keywords):
         cookies=res.cookies.get_dict(),
     )
     return r.text
+    '''
+    import requests,json
+    from urllib.parse import urlencode
+    from lxml.html import fromstring
+    
+    keywords=[
+        '调制解调器',
+        '充电器',
+    ]
+    headers={
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'accept-encoding': 'gzip, deflate, br',
+        'accept-language': 'en-US,en;q=0.9',
+        'cache-control': 'no-cache',
+        'pragma': 'no-cache',
+        'cookie': '_bl_uid=Chjwegy6zXv2ht1zkw9R9InpXahU; __sw_ktsz_count__=1; UM_distinctid=16344c8947110db-0467889a00c728-3c3c5905-1fa400-16344c8947217a; cna=MIBTEx27h2ICAS9LSR2fQyLi; __last_loginid__=avatar10086; last_mid=b2b-1863067459; ali_ab=47.52.203.97.1525867383322.3; JSESSIONID=5S8ZQfY-48eZ4LDGgjTiabrZX8-zS2GYrQ-mo37; cookie2=1e07bec3921cfa1c6bae8cd6e9c02f12; t=36d71d71aae435537f07280dbb8679b1; _tb_token_=e7f8b8e1be773; lid=avatar10086; alisw=swIs1200%3D1%7C; __cn_logon_id__=avatar10086; __cn_logon__=true; hng=CN%7Czh-CN%7CCNY%7C156; csg=13fc0c4d; ali_apache_track=c_mid=b2b-1863067459|c_lid=avatar10086|c_ms=1; ali_apache_tracktmp=c_w_signed=Y; LoginUmid=dGKw6Kz%2BE9ii5pE0au50fzwGRpCoSIsWdaY0AND%2B8dy89QAyb6jGqQ%3D%3D; tbsnid=6OHRvE29cPnvTFKpKuMc6gCFYYzknWlhbjJyCRge1Ws6sOlEpJKl9g%3D%3D; cn_tmp="Z28mC+GqtZ3vyGuZxZA+PFbUvF+qqQGLIMh3SxVeX9NbNdZ2IhiqyQbVBLGri8jW54wGDPlJkOHxdPyVafHyaxElP+6AIaUl+sMbuzCXtHJCSQOSIxhtCgF6+ZxNK9riqis50waLv/m/kAvylLhBynM51Bhsr29ctGWlz5e2lipVnZMxl2hyFGdKiDBhXuxbGd0NVh6zH08HL06WhIkLwZQavmZEektQI/zK2SOuoCxckUWNZpQwbQ=="; userID=4d6Tt8Q3nPAQ6sRcDanFBkV%2FvNql7OT%2BkbDbkKjOjk46sOlEpJKl9g%3D%3D; userIDNum=JBZ1q4Yd%2B5zPePDjweXi2A%3D%3D; _cn_slid_=InO19c2ocg; _csrf_token=1526003948601; h_keys="%u8c03%u5236%u89e3%u8c03%u5668#%u7537%u978b#%C4%D0%D0%AC#%u9422%u70fd%u7037#%u5973%u88c5#%u7537%u978b44-48%u7801#%u70ed%u6c34%u5668#%u70ed"; alicnweb=homeIdttS%3D65334365880598888314397053956155791822%7ChomeIdttSAction%3Dtrue%7Clastlogonid%3Davatar10086%7Ctouch_tb_at%3D1526005507726%7Cshow_inter_tips%3Dfalse; ad_prefer="2018/05/11 10:54:28"; _tmp_ck_0="LUGYM4%2BaK%2FXE7vd5cGGIYvrkprmwfAHPnYwPiWJh7ShOqRagovRse91%2FG0dNUTJOgVJ5SsIjLv7LJqw5%2FP1faNKrXcvmmDquttH392ulgTdboGxSrLkfIy8g0OSVYIrIVDF4ZkOoEovLxY7%2BpUAYg0nYeOV%2FV%2B0oKLY3SISQQuHVVErkO8j4TVtlQKCzxXg9nT9S3k3muqZwKfF6sX8th42BNU5tSdzEA9tVdZRLusfgUWPGmSpvsVo3QPboJMWit0DxcSI5cHJRfZcjgrb9wFUzJvK0BOCH20gKxMVutslZAiJiqI3BtYHS5DmwkgZk2mRAF0Ce7ZLGD1AP1pap14dhwlkv2lP6c6%2B7chS%2BgJJLb5hDlsq4ffd485t4teWNeB26yEe4IOcoSsAGwqmjm06YLuqiS6Ij3hwubf%2FvDXVahwVmBkcTxMeht0eR2fcuWoTDz29U%2FaojAZvjNp1g82ZaRE%2FMd80DdTt0dLODb6PriPcY8gkj5IW3irB9htJRO1o2rAdxWdUVO%2F18Hxhm9g%3D%3D"; isg=BIiIasRgRl57Y6rdEVMLlneMWfZamYduXAw7lUI51YP2HSiH6kG8yx6fkf1tLaQT',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36',
+    }
+    
+    params={
+        'pageSize':'100',
+        'asyncCount':'100',
+        'startIndex':'0',
+        'descendOrder':'true',
+        'sortType':'va_rmdarkgmv30',
+    }
+    with open('1688.json','w',encoding='utf-8') as f:
+        for keyword in keywords:
+            for page in range(1,2):
+                params['keywords']=keyword
+                params['beginPage']=page
+                r=requests.get(headers=headers,url=f"https://s.1688.com/selloffer/offer_search.htm?{urlencode(params,encoding='gbk')}")
+                res=fromstring(r.content)
+                for li in res.xpath('//*[@id="sm-offer-list"]/li'):
+                    data={
+                        'rank':li.xpath("@t-rank")[0],
+                        'url':li.xpath("div[2]/div[1]/a/@href")[0],
+                        'title':li.xpath("div[2]/div[1]/a/@title")[0],
+                        'img':li.xpath("div[2]/div[1]/a/img/@src")[0],
+                        'price':li.xpath("string(div[2]/div[2]/span)"),
+                    }
+                    f.write(json.dumps(data)+'\n')
+    '''
+
 
 def translate(word):
     s=requests.Session()
