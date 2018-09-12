@@ -35,27 +35,11 @@ def interval_delay():
     atomValue.value += 1
 
 
-# @Log(level=logging.INFO,name='req.log')
-class CuckooHttpRequest(object):
+class CuckooHttpRequest:
     def __init__(self):
-        # 代理服务器
-        proxy_host = PROXY_HOST
-        proxy_port = PROXY_PORT
-
-        # 代理隧道验证信息
-        proxy_user = PROXY_USER
-        proxy_pass = PROXY_PASS
-
-        proxy_meta = "http://%(user)s:%(pass)s@%(host)s:%(port)s" % {
-            "host": proxy_host,
-            "port": proxy_port,
-            "user": proxy_user,
-            "pass": proxy_pass,
-        }
-        print '[INFO]: proxy：', proxy_meta
         self.proxy = {
-            "http": proxy_meta,
-            "https": proxy_meta,
+            "http": f'http://{PROXY_USER}:{PROXY_PASS}@{PROXY_HOST}:{PROXY_PORT}',
+            "https": f'http://{PROXY_USER}:{PROXY_PASS}@{PROXY_HOST}:{PROXY_PORT}',
         }
 
         self.s_requests = requests.session()
@@ -77,7 +61,7 @@ class CuckooHttpRequest(object):
         tunnel = random.randint(1, 998)
         if ua == 'pc':
             ua_file = '1000ua-pc.txt'
-        elif ua == 'mob':
+        elif ua == 'wap':
             ua_file = '1000ua-android.txt'
         else:
             return None
@@ -93,17 +77,9 @@ class CuckooHttpRequest(object):
             "Accept-Language": "zh-CN,zh;q=0.9",
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
-            # "Cookie": 'ctoken=CNYRTQcjjRJf8PYdFfxUnaga; __cn_logon__=false; ali-ss=eyJ1c2VySWQiOm51bGwsImxvZ2l
-            # uSWQiOm51bGwsInNpZCI6bnVsbCwiZWNvZGUiOm51bGwsIm1lbWJlcklkIjpudWxsLCJfZXhwaXJlIjoxNTI3MzAzNjAzMzc0L
-            # CJfbWF4QWdlIjo4NjQwMDAwMH0=; UM_distinctid=163953d2a022be-0ada2a3e62f6b4-2d604637-4a640-163953d2a0
-            # 3e96; cna=WcvBD7DRVhMCAT2UyQKF8VNj; webp=1; _m_h5_tk=f717234e6323b40456877cd1ef1ddcc9_152721968342
-            # 6; _m_h5_tk_enc=72a92d87807fcd12f4c75b9a1192f061; isg=BNTUvIwuc4Bp1eY5pO7cgkKLpRuGhcOXja66U261Yd_i
-            # WXWjlj1Pp5KXXVdBoTBv',
             # "Host": "h5api.m.1688.com",
             "Pragma": "no-cache",
             "Referer": "http://m.1688.com/?src=desktop",
-            # "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML,
-            #  like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
             'User-Agent': self.change_ua(),
         }
         return header
@@ -127,9 +103,6 @@ class CuckooHttpRequest(object):
         elif 'headers' not in kwargs.keys() and (ua == "pc" or ua == "mob"):
             _ua = {'User-Agent': self.change_ua(ua=ua)}
             kwargs['headers'] = _ua
-
-        # print '[INFO]: 正在请求：', url
         interval_delay()
         print "[INFO]: Seconds: {}, Request_Count: {} ".format(time.time() - self.startTime, atomValue.value)
-        return resquests_model.get(url, params=params, **kwargs) if method == "get" \
-            else resquests_model.post(url, data=data, json=json, **kwargs)
+        return resquests_model.get(url, params=params, **kwargs) if method == "get" else resquests_model.post(url, data=data, json=json, **kwargs)

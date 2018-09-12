@@ -1,6 +1,5 @@
 import time
 import json
-from jsonpath import jsonpath
 
 def __integer(prices):
     price = int(prices) * 100 if prices else 0

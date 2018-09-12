@@ -2,32 +2,24 @@
 import os
 import re
 import time
-import copy
 import json
 import Queue
-import random
 import hashlib
-import logging
 import datetime
 import requests
-import jsonpath
 import threading
-import linecache
 from lxml import etree
 from urllib import quote
 from pymongo import MongoClient
 from multiprocessing.dummy import Pool
 from pvs_analyze import product_details
 from taobao_comment_spider import Taobao_Comment
-from atlas.log.log import Log
-from atlas.config.settings import *
-from atlas.log.atlas_log import atlas_Log
-from atlas.models.tool.common import on_off_sale
-from atlas.utils.request_tools.request_tool import *
+from settings import *
+from common.common import on_off_sale
 from atlas.database.atlasDatabase import AtlasDatabase
 from atlas.datamodel.product import Product, HistoryProduct
-from atlas.utils.httprequest.many_request import ManyRequest
-from atlas.utils.analyze_match.taobao_match import TaobaoMatch
+from many_request import ManyRequest
+from taobao_match import TaobaoMatch
 
 mutex = threading.Lock()  
 
@@ -36,7 +28,6 @@ class AutoSpider:
     def __init__(self, keywordQueue, AtlasDatabase):
         self.manyreq = ManyRequest()
         self.tmatch = TaobaoMatch()
-        self.atlas_log = atlas_Log()
         self.tc = Taobao_Comment()
 
         self.kwQueue = keywordQueue

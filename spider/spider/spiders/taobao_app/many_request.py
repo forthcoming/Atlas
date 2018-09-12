@@ -1,6 +1,4 @@
-# coding=utf-8
-import time
-from atlas.utils.httprequest import request_model
+import time,request_model
 
 class ManyRequest:
     def __init__(self):

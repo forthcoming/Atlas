@@ -24,7 +24,24 @@ def send_mail(content, receive, title,sender_addr=ADDRESS,sendername=NAME,passwo
     smtp.sendmail(sender_addr, receive, msg.as_string())
     smtp.quit()
     print("邮件发送成功")
+
+def alibaba(keywords):
+    res=requests.get('http://h5api.m.1688.com/h5/mtop.1688.offerservice.getoffers/1.0/?jsv=2.4.11&appKey=12574478')  # 获取_m_h5_tk和cookies信息
     
+    h5_tk=res.cookies.get_dict()['_m_h5_tk'].split('_')[0]
+    t=int(time.time()*1000)
+    data='{"sortType":"pop","keywords":"'+keywords+'","filtId":"","appName":"wap","beginPage":1,"pageSize":20}'
+    string=f"{h5_tk}&{t}&12574478&{data}"
+    sign=hashlib.md5(bytes(string,'utf-8')).hexdigest()
+    r=requests.get(
+        url=f'http://h5api.m.1688.com/h5/mtop.1688.offerservice.getoffers/1.0/?jsv=2.4.11&appKey=12574478&t={t}&sign={sign}&api=mtop.1688.offerService.getOffers&v=1.0&type=jsonp&dataType=jsonp&callback=mtopjsonp20&data={data}',
+        headers={
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
+        },
+        cookies=res.cookies.get_dict(),
+    )
+    return r.text
+
 def translate(word):
     s=requests.Session()
     s.get('http://fanyi.youdao.com')   #作用是获取cookie

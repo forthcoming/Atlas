@@ -2,7 +2,6 @@ import re
 import time
 import json
 import random
-import jsonpath
 import requests
 from lxml import etree
 
@@ -45,13 +44,10 @@ class Taobao_Comment:
         cmt_res_li = res.get("comments", [])
         # 所有评论日期
         str_date = [cmt_dict.get("date", '') for cmt_dict in cmt_res_li]
-        # str_date = jsonpath.jsonpath(res, expr='$..comments[*].date')
         # 获取所有评论人
         str_name = [cmt_dict.get("user", {}).get("nick", '') for cmt_dict in cmt_res_li]
-        # str_name = jsonpath.jsonpath(res, expr='$..comments[*].user.nick')
         # 获取所有文字评论,除追加评论外
         str_info = [cmt_dict.get("content", '') for cmt_dict in cmt_res_li]
-        # str_info = jsonpath.jsonpath(res, expr='$..comments[*].content')
 
         comment_info_list = []
         # 商品没有评价就退出

@@ -14,10 +14,6 @@ PROXY_PORT = "6446"
 PROXY_USER = "********"
 PROXY_PASS = "123456"
 
-# 当PRODUCT_SUM = string类型时，抓取数量为无限大， 为int时可限制抓取数量
-# [Offset]
-PRODUCT_SUM = '∞'
-
 # [mysql]
 MYSQL_HOST = "192.168.105.238"
 MYSQL_USER = "erp"
