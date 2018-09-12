@@ -34,10 +34,7 @@ class Taobao_Comment:
         #     "user-agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
         #     # "user-agent": user_agent,
         # }
-        html = request(url,
-                       headers=self.header(),
-                       match_func=match,
-                       **params).text
+        html = request(url, headers=self.header(), match_func=match, **params).text
         html = html.strip()
         html = html.strip("()")
         res = json.loads(html)
@@ -62,7 +59,6 @@ class Taobao_Comment:
             comment_info_dict["cmt_date"] = d
             comment_info_dict["cmt_content"] = i
             comment_info_list.append(comment_info_dict)
-            # print p,'---', d, ':',  i
         return comment_info_list
 
 if __name__ == '__main__':
@@ -71,5 +67,4 @@ if __name__ == '__main__':
     # category_name = 'LHZ_0222'
     # dir_name = '生活用品_家居用品'
     tc.comment(id)
-    print "[INFO]: %s商品所有评论内容已抓取完成！！\n" % (id)
 

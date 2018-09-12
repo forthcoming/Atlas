@@ -11,8 +11,6 @@ import threading
 from lxml import etree
 from urllib import quote
 from pymongo import MongoClient
-from multiprocessing.dummy import Pool
-from pvs_analyze import product_details
 from taobao_comment_spider import Taobao_Comment
 from settings import *
 from common.common import on_off_sale
@@ -41,7 +39,6 @@ class AutoSpider:
             "accept-language": "zh-CN,zh;q=0.9",
             "cache-control": "no-cache",
             "referer": "https://s.taobao.com/list?spm=a21bo.2017.201867-links-0.4.5af911d90wkkOt",
-            "User-Agent": "",
         }
         self.params = {'proxies': True, 'session': True, 'ua': 'mob', 'timeout': 15}
         self.sum = float('inf')
@@ -82,7 +79,6 @@ class AutoSpider:
                 no_value = True
 
             if length >= self.sum:
-                print '-' * 100
                 break
             else:
                 begin_page += 1
@@ -139,7 +135,6 @@ class AutoSpider:
             on_off_sale(node, system_id, False)
             print '\n'
             print "[INFO]: 商品已下架！！！！！"
-            print '+-' * 40
             return True
 
     def extract_queue(self):
@@ -150,15 +145,10 @@ class AutoSpider:
         category = info[0]
         set_name = "product_%s" % category
         history_set_name = "history_taobao_%s" % category
-        print '*' * 100, self.sum
         return kw_name, category, set_name, history_set_name
 
     def __analyze_list_info(self, link):
-        p_res = self.manyreq.many_request(link,
-                                          match_func=self.tmatch.match_list,
-                                          headers=self.headers,
-                                          **self.params).text
-        print p_res
+        p_res = self.manyreq.many_request(link,match_func=self.tmatch.match_list,headers=self.headers,**self.params).text
         json_obj = json.loads(p_res)
         listitem = json_obj.get("listItem", [])
         if listitem:
@@ -168,22 +158,6 @@ class AutoSpider:
             return list_page_data
         else:
             return False
-
-    def dummy_func(self, p_id_li):
-        if isinstance(self.sum, int):
-            p_id_li = p_id_li[:self.sum]
-        print ('[INFO]: dummy_func内测试长度：'), len(p_id_li)
-
-        index_li = [i + 1 for i in range(len(p_id_li))]
-        info = zip(index_li, p_id_li)
-        # 创建10个线程的线程池
-        pool = Pool(11)
-        # map()高阶函数，用来批量处理函数传参
-        pool.map(self.__product_detail, info)
-        # 关闭线程池
-        pool.close()
-        # 阻塞主线程，等待子线程结束
-        pool.join()
 
     def __product_detail(self, p_id_big_li, category, kw_name):
         p_id_big_li = p_id_big_li[:self.sum]
@@ -199,25 +173,17 @@ class AutoSpider:
             data = '{"itemNumId":"%s"}' % pid
 
             print "[INFO]: 正在请求 >>> “%s”关键字的第%s件商品。。。。。。" % (kw_name, str(n+1))
-            print "[INFO]: system_id : %s" % system_id
-            print "[INFO]: data：{}".format(data)
-
             millis = int(time.time() * 1000)
-
             h5_tk = self.__geth5tk()
-
             sign = self.__getsign(h5_tk, millis, data)
-
             url = self.__construct_detailurl(millis, sign, data)
-
-            res = self.manyreq.many_request(url, match_func=self.tmatch.match_details,
-                                            headers=self.headers,
-                                            **self.params).text
-
-            print "[INFO]: 商品详情：", res
+            res = self.manyreq.many_request(url, match_func=self.tmatch.match_details,headers=self.headers,**self.params).text
             json_obj = self.__wash_json(res)
-            print json_obj
-            p_info_dict = product_details(json_obj)
+            p_info_dict ={
+                'p_name': 1,
+                'lt_price': 2,
+                'ext_price': 3,
+            }
 
             if self.on_off_sale(p_info_dict, node, system_id):
                 print "[INFO]: 无法购买ID：", pid
