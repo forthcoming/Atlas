@@ -119,13 +119,13 @@ class LSHash:
             for i, table in enumerate(self.hash_tables):
                 binary_hash = self._hash(self.uniform_planes[i], query_point)
                 for key in table.keys():
-                    distance = LSHash.hamming_dist(key, binary_hash)
+                    distance = self.hamming_dist(key, binary_hash)
                     if distance < 2:
                         candidates.update(table.get_list(key))  # cant use add here
-            query_point=LSHash.list_to_num(query_point)
+            query_point=self.list_to_num(query_point)
             result=[]
             for each in candidates:
-                distance=LSHash.hamming_dist(query_point,LSHash.list_to_num(each[0]))
+                distance=self.hamming_dist(query_point,self.list_to_num(each[0]))
                 if distance<=dis:
                     result.append((each,distance))
             return result
