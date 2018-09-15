@@ -26,5 +26,5 @@ ORACLE_PASSWORD = "erp123456"
 ORACLE_DWTEST = "192.168.105.106/dwtest"
 
 # image
-OFFSET=(1<<6)-1
+OFFSET=0b111111
 PATH='/'.join(path.realpath(__file__).split('/')[:-3])+'/image/'
