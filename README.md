@@ -9,7 +9,6 @@
 ##### 职业技能
 :one: 擅长`Python` & `C` & `Javascript`,熟悉`MySQL` & `Redis` & `MongoDB`等常见数据库     
 :two: 熟悉数据结构与算法   
-:three: 熟练使用Scrapy & Flask框架   
 
 ##### 项目经历
 1. Atlas供应链系统  
