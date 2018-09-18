@@ -4,7 +4,7 @@
 - 英语水平: CET-6
 - 工作年限: \*年
 - 联系方式: 131\*\*\*\*4176 | 21\*\*\*\*\*78@qq.com
-- Github: [github.com](https://github.com)     
+- Github: [github.com/forthcoming](https://github.com/forthcoming)     
 
 ##### 职业技能
 :one: 擅长`Python` & `C` & `Javascript`,熟悉`MySQL` & `Redis` & `MongoDB`等常见数据库     
