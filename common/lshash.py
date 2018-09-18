@@ -151,7 +151,7 @@ class LSHash:
     def list_to_num(query_point):
         num=0
         for each in query_point:
-            num=(num<<4)+each
+            num=num<<4|each
         return num
 
     @staticmethod
