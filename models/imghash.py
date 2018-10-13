@@ -2,7 +2,7 @@
 from pymongo import MongoClient
 import os,logging,imagehash
 from concurrent.futures import ThreadPoolExecutor
-from multiprocessing import Process,JoinableQueue
+from multiprocessing import Process,JoinableQueue  # Queue只能用于线程
 from common.common import init,img_download
 from PIL import Image
 from common.common import Log
