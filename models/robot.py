@@ -13,7 +13,8 @@ def scheduler(db,category):
         pid=os.fork()
         if pid==0:
             consumer(category,task)
-            os._exit(0)
+            os._exit(0) # 防止子进程向下执行
+            # print('此处不会被执行')    
         elif pid<0:
             logging.error('创建子进程失败')   
 
