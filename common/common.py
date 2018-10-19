@@ -31,16 +31,14 @@ class Log:
                 logging.exception(e)
         return wrapper
 
+# 最简单的方式是实例化一个类,然后在其他地方直接导入这个类实例即可实现单例
 def singleton(cls):
-    '''
-    _singleton会判断某个类是否在字典instances中
-    如果不存在,则会将cls作为key,cls(*args, **kw)作为value存到instances中,否则直接返回 instances[cls]
-    '''
-    _instance = {}
+    _instance = None
     def _singleton(*args, **kargs):
-        if cls not in _instance:
-            _instance[cls] = cls(*args, **kargs)
-        return _instance[cls]
+        nonlocal _instance
+        if not _instance:
+            _instance = cls(*args, **kargs)
+        return _instance
     return _singleton
     
 def check(node,cluster_id):
