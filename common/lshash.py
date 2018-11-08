@@ -56,7 +56,7 @@ class RedisStorage:
         self.storage.rpush(key, json.dumps(val)) # !!!
 
     def get_list(self, key):
-        return self.storage.lrange(key, 0, -1)  # 1. decode() 2. json.loads() 
+        return self.storage.lrange(key, 0, -1)  # 返回的是b型字符串,解码步骤: 1. decode() 2. json.loads() 
 
 class LSHash:
     def __init__(self, hash_size, input_dim, num_hashtables=1,storage_config={'dict': None}):
