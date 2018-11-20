@@ -26,9 +26,9 @@ def send_mail(content, receive, title,sender_addr=ADDRESS,sendername=NAME,passwo
 
 def alibaba(keywords):
     res=requests.get('http://h5api.m.1688.com/h5/mtop.1688.offerservice.getoffers/1.0/?jsv=2.4.11&appKey=12574478')  # 获取_m_h5_tk和cookies信息
-    
-    h5_tk=res.cookies.get_dict()['_m_h5_tk'].split('_')[0]
-    t=int(time.time()*1000)
+    cookies=res.cookies.get_dict()
+    h5_tk=cookies['_m_h5_tk'].split('_')[0]
+    t=int(time.time()*1000)  # t可以是任意整数,但必须保证url中的t跟string中的t一样,其他变量也类似,可以看出服务器也是用同样规则生成sign并同客户端传过来的sign进行对比
     data='{"sortType":"pop","keywords":"'+keywords+'","filtId":"","appName":"wap","beginPage":1,"pageSize":20}'
     string=f"{h5_tk}&{t}&12574478&{data}"
     sign=hashlib.md5(bytes(string,'utf-8')).hexdigest()
@@ -37,7 +37,7 @@ def alibaba(keywords):
         headers={
             "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
         },
-        cookies=res.cookies.get_dict(),
+        cookies=cookies,
     )
     return r.text
     '''
