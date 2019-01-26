@@ -32,22 +32,30 @@ def sync():
         except:
             last_time = datetime(1992, 8, 24)
         with mysql_con.cursor() as cur:
-            cur.execute('''select 
-                updated_time,
-                product_url,
-                sort_num,
-                sort_type,
-                sale_price,
-                sale_num,
-                rating,
-                product_name, 
-                product_image, 
-                original_price,
-                website_id as dw_web_id,
-                comment_count,
-                goods_sn
-                from website_product where category_id={} and updated_time>="{}" order by updated_time asc'''.format(each['bi_cat_id']-cat_offset,last_time)
-            )
+            sql='''
+                SELECT
+                    updated_time,
+                    product_url,
+                    sort_num,
+                    sort_type,
+                    sale_price,
+                    sale_num,
+                    rating,
+                    product_name,
+                    product_image,
+                    original_price,
+                    website_id AS dw_web_id,
+                    comment_count,
+                    goods_sn 
+                FROM
+                    website_product 
+                WHERE
+                    category_id =%s 
+                    AND updated_time >= "%s" 
+                ORDER BY
+                    updated_time ASC
+            '''
+            cur.execute(sql,(each['bi_cat_id']-cat_offset,last_time)) # 参数化调用防止SQL注入
             for item in cur:
                 data={
                     'product_url':item[1],
