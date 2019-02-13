@@ -6,13 +6,15 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 class Log:
-    def __init__(self,level=logging.INFO, name='track.log'):
+    def __init__(self,level=logging.NOTSET, name='track.log'):
         '''
-        logger.debug('this is debug info')
-        logger.info('this is information')
-        logger.warn('this is warning message')
-        logger.error('this is error message')
-        logger.critical('this is critical message')
+        # 默认情况下日志打印到屏幕,日志级别为WARNING
+        # 日志级别：CRITICAL > ERROR > WARNING > INFO > DEBUG > NOTSET
+        # logging.debug('this is debug info')
+        # logging.info('this is information')
+        # logging.warning('this is warning message')
+        # logging.error('this is error message')
+        # logging.critical('this is critical message')
         '''
         logging.basicConfig(
             filename=name,
