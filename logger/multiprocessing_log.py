@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-使用 fcntl 来控制TimedRotatingFileHandler
+使用fcntl来控制TimedRotatingFileHandler,按天分割日志
 NOTE: 只能使用在*UNIX*平台
 """
 
