@@ -19,7 +19,7 @@ def send_mail(content, receive, title,sender_addr=ADDRESS,sendername=NAME,passwo
     msg['To'] = Header("Python组", 'utf-8')
 
     smtp = smtplib.SMTP_SSL(host, port)  # 发件人邮箱中的SMTP服务器,端口
-    smtp.login(sendername, password)  # 括号中对应的是发件人邮箱账号、邮箱密码
+    smtp.login(sendername, password)  # 括号中对应的是发件人邮箱账号|邮箱密码
     smtp.sendmail(sender_addr, receive, msg.as_string())
     smtp.quit()
     print("邮件发送成功")
@@ -149,7 +149,7 @@ if __name__ == '__main__':
     # foo=V2ex()
     # foo.login()
     # foo.sign()
-    print(translate('今天星期五，心情大好，吃完饭准备跟朋友去抓鱼'))
+    print(translate('今天星期五,心情大好,吃完饭准备跟朋友去抓鱼.'))
 
     content = """
     <p>Python 数据部程序运行异常</p>
