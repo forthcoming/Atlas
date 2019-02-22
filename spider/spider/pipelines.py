@@ -28,7 +28,7 @@ class SqlPipeline:
   def process_item(self, item, spider):
     table=self._.get(item.__class__,'init')
     fields=','.join(item.keys())
-    values="','".join((str(_) for _ in item.values()))  #join只适用于都是字符串的情形
+    values="','".join(map(str,item.values()))  #join只适用于都是字符串的情形
     sql="insert into {}({}) values('{}');\n".format(table,fields,values)
     #sql="insert into {0}({1}) values('{2}');\n".format(table,fields,values)
     #sql="insert into {table}({fields}) values('{values}');\n".format(table=table,fields=fields,values=values)
