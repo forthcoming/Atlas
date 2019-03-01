@@ -41,7 +41,7 @@ class InMemoryStorage:
 class RedisStorage:
     def __init__(self, config):
         self.name = 'redis'
-        self.storage = redis.StrictRedis(**config)
+        self.storage = redis.Redis(**config)
 
     def keys(self, pattern="*"):
         return self.storage.keys(pattern)
