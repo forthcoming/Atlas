@@ -66,10 +66,14 @@ def init(db,offset,path):
             os.mkdir(cat)
     db.counters.update_one({'_id':'serial_num'},{'$setOnInsert': {'seq':.0}},upsert=True)
     for name_en in db['category_info'].distinct('name_en'):
-        db['product_{}'.format(name_en)].create_indexes([IndexModel([("system_id", HASHED)]), IndexModel([("product_id", ASCENDING)])])
         db['image_match_result_{}'.format(name_en)].create_index([('b_id',ASCENDING),('c_id',ASCENDING)])  # For a compound index on the key 'mike' descending and 'eliot' ascending we need to use a list of tuples
-        db['item_match_result_{}'.format(name_en)].create_indexes([IndexModel([('human_processed',ASCENDING)]),IndexModel([('human_match',ASCENDING)]), IndexModel([('human_processed',ASCENDING),('human_match',ASCENDING)])])
-        db['cluster_node_{}'.format(name_en)].create_indexes([IndexModel([("cluster_id", HASHED)]), IndexModel([("system_id", HASHED)])])
+        db['item_match_result_{}'.format(name_en)].create_indexes(
+            [
+                IndexModel([('human_processed',ASCENDING)]),
+                IndexModel([('human_match',ASCENDING)]), 
+                IndexModel([('human_processed',ASCENDING),('human_match',ASCENDING)]),
+            ]
+        )
         for platform in db['category_info'].distinct('sub_category.platform',{'name_en':name_en}):
             db['image_phash_{}_{}'.format(name_en,platform)].create_index([('imageurl',HASHED)])
 
