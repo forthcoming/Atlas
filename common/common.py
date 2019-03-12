@@ -69,7 +69,6 @@ def init(db,offset,path):
         db['image_match_result_{}'.format(name_en)].create_index([('b_id',ASCENDING),('c_id',ASCENDING)])  # For a compound index on the key 'mike' descending and 'eliot' ascending we need to use a list of tuples
         db['item_match_result_{}'.format(name_en)].create_indexes(
             [
-                IndexModel([('human_processed',ASCENDING)]),
                 IndexModel([('human_match',ASCENDING)]), 
                 IndexModel([('human_processed',ASCENDING),('human_match',ASCENDING)]),
             ]
