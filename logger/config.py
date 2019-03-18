@@ -60,7 +60,7 @@ LOG_CONFIG = {
         },
     },
     'root': {  # 保证所有的logger都会在屏幕上显示
-        'level': 'NOTSET',
+        'level': 'NOTSET',  # 只输出level大于等于WARNING
         'handlers': ['consoleHandler'],
         'propagate': False,
     },
