@@ -9,14 +9,12 @@ LOG_CONFIG = {
     'formatters': {
         'fileFormatter': {
             'format':
-                '[%(levelname)s] %(asctime)s [%(module)s - %(filename)s - line:%(lineno)d] \
-                [proc:%(process)d] %(message)s',
+                '[%(levelname)s] %(asctime)s [%(module)s - %(filename)s - line:%(lineno)d] [proc:%(process)d] %(message)s',
             # 'datefmt': '%m-%d-%Y %H:%M:%S,%f',
         },
         'consoleFormatter': {
             'format':
-                '[%(levelname)s] %(asctime)s [%(module)s - %(filename)s - line:%(lineno)d] \
-                [proc:%(process)d] %(message)s',
+                '[%(levelname)s] %(asctime)s [%(module)s - %(filename)s - line:%(lineno)d] [proc:%(process)d] %(message)s',
             # 'datefmt': '%m-%d-%Y %H:%M:%S,%f',
         },
         'default': {
@@ -34,54 +32,34 @@ LOG_CONFIG = {
             'stream': sys.stdout
         },
         'AccessTimedRotatingFileHandler': {
-            'level':
-                'INFO',
+            'level':'INFO',
             # 'class': 'handlers.TimedRotatingFileHandler',
-            'class':
-                'logger.multiprocessing_log.MultiProcessTimedRotatingFileHandler',
-            'formatter':
-                'fileFormatter',
+            'class':'logger.multiprocessing_log.MultiProcessTimedRotatingFileHandler',
+            'formatter':'fileFormatter',
             # TimedRotatingFileHandler args:
             # (filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False）
-            'filename':
-                '/home/avatar/Desktop/access.log',
-            'when':
-                'MIDNIGHT',
-            'interval':
-                1,
-            'backupCount':
-                60,
-            'encoding':
-                None,
-            'delay':
-                False,
-            'utc':
-                False
+            'filename':'/home/avatar/Desktop/access.log',
+            'when':'MIDNIGHT',
+            'interval':1,
+            'backupCount':60,
+            'encoding':None,
+            'delay':False,
+            'utc':False
         },
         'ErrorTimedRotatingFileHandler': {
-            'level':
-                'ERROR',
+            'level':'ERROR',
             # 'class': 'handlers.TimedRotatingFileHandler',
-            'class':
-                'logger.multiprocessing_log.MultiProcessTimedRotatingFileHandler',
-            'formatter':
-                'fileFormatter',
+            'class':'logger.multiprocessing_log.MultiProcessTimedRotatingFileHandler',
+            'formatter':'fileFormatter',
             # TimedRotatingFileHandler args:
             # (filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False）
-            'filename':
-                '/home/avatar/Desktop/error.log',
-            'when':
-                'MIDNIGHT',
-            'interval':
-                1,
-            'backupCount':
-                60,
-            'encoding':
-                None,
-            'delay':
-                False,
-            'utc':
-                False
+            'filename':'/home/avatar/Desktop/error.log',
+            'when':'MIDNIGHT',
+            'interval':1,
+            'backupCount':60,
+            'encoding':None,
+            'delay':False,
+            'utc':False
         },
     },
     'loggers': {
@@ -91,14 +69,12 @@ LOG_CONFIG = {
             'propagate': False,
         },
         'all': {
-            'level':
-                'NOTSET',
+            'level':'NOTSET',
             'handlers': [
                 'AccessTimedRotatingFileHandler',
                 'ErrorTimedRotatingFileHandler'
             ],
-            'propagate':
-                True,
+            'propagate':True,
         },
         'access': {
             'level': 'INFO', # 小于该级别的日志不输出
