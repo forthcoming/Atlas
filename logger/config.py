@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# todo: 为什么handlers和loggers两处都有level参数,如何做到多进程日志
 import sys
 import logging.config
 
@@ -25,16 +24,15 @@ LOG_CONFIG = {
     },
     'handlers': {
         'consoleHandler': {
-            'level': 'NOTSET',
             'class': 'logging.StreamHandler',  # 输出到控制台
             'formatter': 'consoleFormatter',
             # logging.StreamHandler args
             'stream': sys.stdout
         },
         'AccessTimedRotatingFileHandler': {
-            'level':'INFO',
+            # 'level': 'INFO',  # 也可以设置级别
             # 'class': 'handlers.TimedRotatingFileHandler',
-            'class':'logger.multiprocessing_log.MultiProcessTimedRotatingFileHandler',
+            'class':'multiprocessing_log.MultiProcessTimedRotatingFileHandler',
             'formatter':'fileFormatter',
             # TimedRotatingFileHandler args:
             # (filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False）
@@ -47,9 +45,8 @@ LOG_CONFIG = {
             'utc':False
         },
         'ErrorTimedRotatingFileHandler': {
-            'level':'ERROR',
             # 'class': 'handlers.TimedRotatingFileHandler',
-            'class':'logger.multiprocessing_log.MultiProcessTimedRotatingFileHandler',
+            'class':'multiprocessing_log.MultiProcessTimedRotatingFileHandler',
             'formatter':'fileFormatter',
             # TimedRotatingFileHandler args:
             # (filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False）
@@ -62,12 +59,12 @@ LOG_CONFIG = {
             'utc':False
         },
     },
+    'root': {  # 保证所有的logger都会在屏幕上显示
+        'level': 'NOTSET',
+        'handlers': ['consoleHandler'],
+        'propagate': False,
+    },
     'loggers': {
-        'vsing': {
-            'level': 'NOTSET',
-            'handlers': ['consoleHandler'],
-            'propagate': False,
-        },
         'all': {
             'level':'NOTSET',
             'handlers': [
@@ -86,11 +83,6 @@ LOG_CONFIG = {
             'handlers': ['ErrorTimedRotatingFileHandler'],
             'propagate': True,
         },
-    },
-    'root': {
-        'level': 'NOTSET',
-        'handlers': ['consoleHandler'],
-        'propagate': False,
     },
 }
 
