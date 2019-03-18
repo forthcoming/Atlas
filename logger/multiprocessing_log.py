@@ -17,8 +17,6 @@ class MultiProcessTimedRotatingFileHandler(TimedRotatingFileHandler):
         then we have to get a list of matching filenames, sort them and remove
         the one with the oldest suffix.
         """
-        # if self.stream:
-        #    self.stream.close()
         # get the time that this sequence started at and make it a TimeTuple
         t = self.rolloverAt - self.interval
         if self.utc:
@@ -42,7 +40,7 @@ class MultiProcessTimedRotatingFileHandler(TimedRotatingFileHandler):
             #    os.remove(s[0])
             for s in self.getFilesToDelete():
                 os.remove(s)
-        # print "%s -> %s" % (self.baseFilename, dfn)
+        # print("{} -> {}".format(self.baseFilename, dfn))
         if self.stream:
             self.stream.close()
         self.mode = 'a'
