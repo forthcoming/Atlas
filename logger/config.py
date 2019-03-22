@@ -7,25 +7,18 @@ LOG_CONFIG = {
     'disable_existing_loggers': False,
     'formatters': {
         'fileFormatter': {
-            'format':
-                '[%(levelname)s] %(asctime)s [%(module)s - %(filename)s - line:%(lineno)d] [proc:%(process)d] %(message)s',
-            # 'datefmt': '%m-%d-%Y %H:%M:%S,%f',
-        },
-        'consoleFormatter': {
-            'format':
-                '[%(levelname)s] %(asctime)s [%(module)s - %(filename)s - line:%(lineno)d] [proc:%(process)d] %(message)s',
+            'format':'[%(levelname)s] %(asctime)s [%(module)s - %(filename)s - line:%(lineno)d] [proc:%(process)d] %(message)s',
             # 'datefmt': '%m-%d-%Y %H:%M:%S,%f',
         },
         'default': {
-            'format':
-                '%(asctime)s %(levelname)s [%(name)s: %(lineno)s] -- %(message)s',
+            'format':'%(asctime)s %(levelname)s [%(name)s: %(lineno)s] -- %(message)s',
             # 'datefmt': '%m-%d-%Y %H:%M:%S,%f'
         },
     },
     'handlers': {
         'consoleHandler': {
             'class': 'logging.StreamHandler',  # 输出到控制台
-            'formatter': 'consoleFormatter',
+            'formatter': 'default',
             # logging.StreamHandler args
             'stream': sys.stdout
         },
