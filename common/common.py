@@ -1,9 +1,10 @@
-import os,requests,logging
+import os,requests,logging,time
 from datetime import datetime
 from pymongo import HASHED,ASCENDING,IndexModel
 from .imghdr import what
 import networkx as nx
 import matplotlib.pyplot as plt
+from multiprocessing.dummy import Process,Lock
 
 class Log:
     def __init__(self,level=logging.NOTSET, name='track.log'):
@@ -35,12 +36,13 @@ class Log:
 
 # 最简单的方式是实例化一个类,然后在其他地方直接导入这个类实例即可实现单例
 def singleton(cls):
-    _instance = None
+    _instance = {}
+    lock = Lock()
     def _singleton(*args, **kargs):
-        nonlocal _instance
-        if not _instance:
-            _instance = cls(*args, **kargs)
-        return _instance
+        with lock:  # 线程安全单例模式
+            if cls not in _instance:
+                _instance[cls] = cls(*args, **kargs)
+        return  _instance[cls]
     return _singleton
     
 def check(node,cluster_id):
@@ -109,6 +111,9 @@ def img_download(url,cat,name,index,retry_times=5):
 
 if __name__=='__main__':
     @singleton
-    class TestSingleton:pass
+    class TestSingleton:
+        def __init__(self):
+        time.sleep(.1)
+        print('in __init__')
     x=TestSingleton()
     print(id(x) == id(TestSingleton()))  # True
