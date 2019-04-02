@@ -38,13 +38,26 @@ class Log:
 def singleton(cls):
     _instance = {}
     lock = Lock()
-    def _singleton(*args, **kargs):
+    def _singleton(*args, **kwargs):
         with lock:  # 线程安全单例模式
             if cls not in _instance:
-                _instance[cls] = cls(*args, **kargs)
+                _instance[cls] = cls(*args, **kwargs)
         return  _instance[cls]
     return _singleton
     
+def singleton_pool(cls):
+    _instance_pool = []
+    lock = Lock()
+    def _singleton(*args, **kwargs):
+        with lock:  # 线程安全单例池
+            for _args,_kwargs,_instance in _instance_pool:
+                if (_args,_kwargs) == (args,kwargs):
+                    return _instance
+            _instance = cls(*args, **kwargs)
+            _instance_pool.append((args, kwargs, _instance))
+            return _instance
+    return _singleton
+
 def check(node,cluster_id):
     if node.find_one({'cluster_id':cluster_id,'on_sale':True}):
         data=node.find({'cluster_id':cluster_id,'on_sale':True},{'serial_num':1,'_id':0}).sort([('serial_num',1)]).limit(1)
@@ -113,7 +126,7 @@ if __name__=='__main__':
     @singleton
     class TestSingleton:
         def __init__(self):
-        time.sleep(.1)
-        print('in __init__')
+            time.sleep(.1)
+            print('in __init__')
     x=TestSingleton()
     print(id(x) == id(TestSingleton()))  # True
