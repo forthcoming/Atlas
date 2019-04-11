@@ -32,7 +32,7 @@ class MultiProcessTimedRotatingFileHandler(TimedRotatingFileHandler):
             os.rename(self.baseFilename, dfn)
             with open(self.baseFilename, 'a'):
                 pass
-        if self.backupCount > 0:
+        if self.backupCount > 0:  # backupCount是保留日志的文件个数
             # find the oldest log file and delete it
             # s = glob.glob(self.baseFilename + ".20*")
             # if len(s) > self.backupCount:
