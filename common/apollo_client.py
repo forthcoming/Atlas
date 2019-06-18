@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
 import json, logging, threading, time, requests
 
 class ApolloClient:
     '''
+    https://github.com/filamoon/pyapollo
+    https://github.com/ctripcorp/apollo
     Namespace是配置项的集合,类似于一个配置文件的概念
     Apollo在创建项目的时候,都会默认创建一个application的Namespace
     Namespace的获取权限分为两种: private & public
