@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json, logging, threading, time, requests
 
-
 class ApolloClient:
     '''
     Namespace是配置项的集合,类似于一个配置文件的概念
@@ -72,8 +71,10 @@ class ApolloClient:
             notifications.append({'namespaceName': key, 'notificationId': self._notification_map[key]})
         try:
             r = requests.get(  # 如果检测到服务器的notificationId与本次提交一致,则最多等待30s,在这之间只要是服务器配置更新了,请求会立马返回
-                url=url, params={'appId': self.appId, 'cluster': self.cluster,
-                                 'notifications': json.dumps(notifications, ensure_ascii=False)}, timeout=self.timeout)
+                url=url, 
+                params={'appId': self.appId, 'cluster': self.cluster,'notifications': json.dumps(notifications, ensure_ascii=False)}, 
+                timeout=self.timeout
+            )
 
             if r.status_code == 304:
                 logging.getLogger(__name__).debug('No change, loop...')
@@ -100,8 +101,7 @@ class ApolloClient:
     # 该接口会从缓存中获取配置,适合频率较高的配置拉取请求,如简单的每30秒轮询一次配置,缓存最多会有一秒的延时
     # ip参数可选,应用部署的机器ip,用来实现灰度发布
     def _cached_http_get(self, key, default_val, namespace='application'):
-        url = '{}/configfiles/json/{}/{}/{}?ip={}'.format(self.config_server_url, self.appId, self.cluster, namespace,
-                                                          self.ip)
+        url = '{}/configfiles/json/{}/{}/{}?ip={}'.format(self.config_server_url, self.appId, self.cluster, namespace,self.ip)
         r = requests.get(url)
         if r.ok:  # ok?
             data = r.json()
