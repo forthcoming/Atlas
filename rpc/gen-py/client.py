@@ -26,19 +26,15 @@ print(res,type(res))
 transport.close()
 
 
-
-
-
 # transport = TSocket.TSocket('127.0.0.1', 8000)
 # transport = TTransport.TBufferedTransport(transport)
 # protocol = TBinaryProtocol.TBinaryProtocol(transport)
 
-# room_client = CcktvRoom.Client(protocol)
+# room_client = Calculator.Client(protocol)
 
 # transport.open()
 
-# res = room_client.getBannerList({'1':'11'},10)
+# res = room_client.sayMsg('ava')
 # print(res,type(res))
-
 
 # transport.close()
