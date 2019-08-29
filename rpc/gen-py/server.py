@@ -37,11 +37,12 @@ if __name__=="__main__":
     server.serve()
 
 
-    # handler = CcktvRoomHandler()
-    # processor = CcktvRoom.Processor(handler)
+#     handler = TransmitHandler()
+#     processor = Calculator.Processor(handler)
 
-    # transport = TSocket.TServerSocket('127.0.0.1', 8000)
-    # tfactory = TTransport.TBufferedTransportFactory()
-    # pfactory = TBinaryProtocol.TBinaryProtocolFactory()
-    # server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
-    # server.serve()
+#     transport = TSocket.TServerSocket('127.0.0.1', 8000)
+#     tfactory = TTransport.TBufferedTransportFactory()
+#     pfactory = TBinaryProtocol.TBinaryProtocolFactory()
+#     server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
+#     server.serve()
+
