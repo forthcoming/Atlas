@@ -1,8 +1,8 @@
 from celery import Celery
 import time
 
-app = Celery('task')
-app.config_from_object('sync.config')
+app = Celery('tasks')
+app.config_from_object('config')
 
 @app.task(name='tobedone',ignore_result=False)
 def todo(x,y):
