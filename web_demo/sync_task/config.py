@@ -1,9 +1,13 @@
 ### config.py
 from celery.schedules import crontab
 
-# celery -A tasks worker -l info -B --logfile=../logs/%n.log
-#Celery的配置, 修改配置需要重启celery 和 celery beat
-
+'''
+celery -A tasks worker -l info -B --logfile=../logs/%n.log
+-B 开启定时任务,Please note that there must only be one instance of this service.
+-l 显示日志信息
+-c Number of child processes processing the queue. The default is the number of CPUs available on your system.
+Celery的配置, 修改配置需要重启celery 和 celery beat
+'''
 
 broker_url = 'redis://localhost:6379/1'  # 消息代理器配置,格式redis://:password@hostname:port/db_number
 
@@ -25,7 +29,7 @@ enable_utc = True  # 默认为True,当前时间-8=utc时间
 # 使用前在 http://tool.lu/crontab/ 测试一遍
 beat_schedule = {
     'test_celery_beat': {  # 测试celery 定时任务
-        'task': 'sync_task.task.todo',
+        'task': 'tasks.todo',
         #'schedule': crontab(hour=7, minute=30, day_of_week=1),  Executes every Monday morning at 7:30 a.m.
         'schedule': 10,
         'args': (3,5),
