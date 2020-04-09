@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
-from rediscluster import RedisCluster
+# from rediscluster import RedisCluster
 from redis import Redis
 
 app = Flask(__name__)
@@ -18,14 +18,14 @@ db.session.add, Model.query.filter不会产生事务,Model.query.filter.first/al
 db.init_app有一个shutdown_session函数,用于接口请求结束后提交事务,释放链接到连接池,删除当前线程session
 '''
 
-
-rc = RedisCluster(
-    startup_nodes=Config.STARTUP_NODES,
-    max_connections=Config.REDIS_CLUSTER_MAX_CONNECTIONS,
-    max_connections_per_node=Config.REDIS_CLUSTER_MAX_CONNECTIONS_PER_NODE,
-    skip_full_coverage_check=True,
-    socket_timeout=10,
-)
+# redis-py-cluster 2.0.0 has requirement redis<3.1.0,>=3.0.0,但celery需要更高的redis-py版本
+# rc = RedisCluster(
+#     startup_nodes=Config.STARTUP_NODES,
+#     max_connections=Config.REDIS_CLUSTER_MAX_CONNECTIONS,
+#     max_connections_per_node=Config.REDIS_CLUSTER_MAX_CONNECTIONS_PER_NODE,
+#     skip_full_coverage_check=True,
+#     socket_timeout=10,
+# )
 rds = Redis(
     host=Config.REDIS_HOST,
     port=Config.REDIS_PORT,
