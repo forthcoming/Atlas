@@ -4,9 +4,10 @@ import re
 
 '''
 celery multi start -A sync_task.tasks worker -B -Q todo,test -l=info -f=logs/%n.log  # 后台启动
-celery -A sync_task.tasks worker -B -Q todo,test -l=info -f=logs/%n.log
-1. -B开启定时任务,Please note that there must only be one instance of this service.
+celery -A sync_task.tasks worker -B -s logs/celerybeat-schedule -Q todo,test -l=info -f=logs/%n.log
+1. -B开启定时任务,Please note that there must only be one instance of this service.otherwise you’d end up with duplicate tasks. 
 2. -Q,only process the todo and test queue,如果多个celery实例处理相同的queue,则任务在他们之间随机分配,不加Q则会处理task_queues中的所有queue
+3. -s,Beat needs to store the last run times of the tasks in a local database file (named celerybeat-schedule by default),u can specify a custom location
 
  -------------- celery@macbook.local v4.4.2 (cliffs)
 --- ***** ----- 
@@ -32,6 +33,8 @@ celery -A sync_task.tasks worker -B -Q todo,test -l=info -f=logs/%n.log
  
 celery的配置, 修改配置需要重启celery 和 celery beat
 celery的broker,backend,task,调用task的项目,都可以在不同机器上
+If the queue name is defined in task_queues it will use that configuration
+if it’s not defined in the list of queues Celery will automatically generate a new queue for you (depending on the task_create_missing_queues option)
 '''
 
 
@@ -105,6 +108,9 @@ result_serializer = 'pickle'
 '''
 使用前在 http://tool.lu/crontab/ 测试一遍
 schedule指定多久往broker中发送一个指定的task,并不是多久执行一次任务,执行任务的频率由task_annotations控制
+args: Positional arguments (list or tuple). 
+kwargs: Keyword arguments (dict).
+options: Execution options (dict).This can be any argument supported by apply_async() – exchange, routing_key, expires, and so on.
 '''
 beat_schedule = {
     'test_celery_beat': {
@@ -112,6 +118,8 @@ beat_schedule = {
         'schedule': crontab(hour=19, minute=37, day_of_week=1),  # Executes every Monday at 19:37,如果enable_utc=True,则需要当前时间-8小时
         # 'schedule': 5,
         'args': (3,2),
+        'kwargs': {},
+        'options':{},
     },
 }
 enable_utc = False  # 默认为True,当前时间-8小时=utc时间

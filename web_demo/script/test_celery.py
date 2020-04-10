@@ -13,5 +13,8 @@ the task will execute, at the earliest, countdown seconds after the message was 
 # print('return: ', result.get(timeout=4)) # 阻塞等待任务结果,等待超出timeout抛异常
 
 
-retry.delay(2)
+# retry.delay(1)
+
+
+(todo.s(1,2)|test.signature()).delay()  # a simple chain, the first task executes passing its return value to the next task in the chain, and so on.
 
