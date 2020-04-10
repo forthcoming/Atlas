@@ -24,3 +24,16 @@ def test(sec):
     time.sleep(sec)
     print(f'I have waited {sec} seconds')
     return sec
+
+
+'''
+任务最多执行1+max_retries次
+When you call retry it’ll send a new message, using the same task-id, and it’ll take care to make sure the message is delivered to the same queue as the originating task.
+When a task is to be retried, it can wait for default_retry_delay time before doing so
+'''
+@app.task(max_retries=3,name='retry',default_retry_delay=4,autoretry_for=(Exception,))
+def retry(sec):
+    print('in retry')
+    time.sleep(sec)
+    1/0
+    return sec

@@ -1,8 +1,9 @@
 from celery.schedules import crontab
-from kombu import Exchange, Queue, binding
+from kombu import Exchange, Queue
 import re
 
 '''
+celery multi start -A sync_task.tasks worker -B -Q todo,test -l=info -f=logs/%n.log  # 后台启动
 celery -A sync_task.tasks worker -B -Q todo,test -l=info -f=logs/%n.log
 1. -B开启定时任务,Please note that there must only be one instance of this service.
 2. -Q,only process the todo and test queue,如果多个celery实例处理相同的queue,则任务在他们之间随机分配,不加Q则会处理task_queues中的所有queue
