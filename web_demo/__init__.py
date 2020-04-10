@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from config import Config
+from web_demo.config import Config
 # from rediscluster import RedisCluster
 from redis import Redis
 
@@ -42,5 +42,3 @@ def get_info(response_or_exc):  # 不管是否有异常,注册的函数get_info�
     return response_or_exc
 
 
-from service.test_celery_api import test_celery_bp
-app.register_blueprint(test_celery_bp,url_prefix='/ccktv/v1/test_celery/')
