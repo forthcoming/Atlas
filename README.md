@@ -6,6 +6,6 @@
 - Github: [github.com/forthcoming](https://github.com/forthcoming)     
 
 ##### 职业技能
-:one: 擅长`Python` & `C` & `Javascript`,熟悉`MySQL` & `Redis` & `MongoDB`等常见数据库     
+:one: 擅长`Python` & `C`,熟悉`MySQL` & `Redis` & `MongoDB`等常见数据库     
 :two: 熟悉数据结构与算法   
 

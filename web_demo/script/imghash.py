@@ -4,9 +4,8 @@ from pymongo import MongoClient
 import os,logging,imagehash
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Process,JoinableQueue  # Queue只能用于线程
-from common.common import init,img_download
+from web_demo.common.common import init,img_download,Log
 from PIL import Image
-from common.common import Log
 
 OFFSET=0b111111
 PATH='/'.join(path.realpath(__file__).split('/')[:-3])+'/image/'

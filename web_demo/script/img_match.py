@@ -1,11 +1,11 @@
 #coding: utf-8
-import json,logging,os
+import json,logging
 from pymongo import MongoClient,ASCENDING
 from pymongo.errors import CursorNotFound
-from common.lshash import LSHash
+from web_demo.common.lshash import LSHash
+from web_demo.common.common import Log
 from datetime import datetime
 from multiprocessing import Process,cpu_count
-from common.common import Log
 
 def image_match(db,category,supply,retail,dis=4):
     logging.info('category:{} supply:{} retail:{}'.format(category,supply,retail))
