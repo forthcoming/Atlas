@@ -1,5 +1,5 @@
 from celery import Celery
-import time
+import time,os
 from web_demo import db
 from web_demo.common.model import RoomTrumpet
 
@@ -10,18 +10,25 @@ app.config_from_object('sync_task.config')
 
 @app.task(ignore_result=True)
 def red_package(sec):
-    print(db.engine.pool.status())
-    result = RoomTrumpet.query.with_entities(RoomTrumpet.amount,RoomTrumpet.user_id).filter(RoomTrumpet.user_id == 1).first()
-    time.sleep(sec)
-    print(f'I have waited {sec} seconds')
-    result1 = RoomTrumpet.query.filter(RoomTrumpet._id == 1).update({'amount':sec})  # 直接用result可以吗,看一下输出语句
-    print(db.engine.pool.status())
-    time.sleep(sec)
+    '''
+    celery子进程worker调用,db对象由celery主进程读__init__.py文件创建,由于没有shutdown_session对session做善后工作,当有异常如数据库重启导致连接丢失,需要手动rollback
+    session执行过程中,如果数据库重启或其他原因导致连接丢失时,sqlalchemy会将当前连接返回到连接池(此时需要手动rollback回滚代码层事务),下次再取出时被丢弃
+    如果查询完不提交,连接会在当前进程一直处于checkout状态(不进入连接池),事物也会一直存在
+    '''
+    connection_id = 0
+    print('pid:{} connection_id:{},status:{}'.format(os.getpid(), connection_id, db.engine.pool.status()))
     try:
+        # RoomTrumpet.query.count()  # 禁止使用该条语句,效率很低
+        RoomTrumpet.query.with_entities(RoomTrumpet.amount,RoomTrumpet.user_id).filter(RoomTrumpet.user_id == 1).first()
+        connection_id = db.session.execute('select connection_id();').first()[0]
+        print('pid:{} connection_id:{},status:{}'.format(os.getpid(),connection_id,db.engine.pool.status()))
+        time.sleep(sec)
+        RoomTrumpet.query.filter(RoomTrumpet._id == 1).update({'amount':sec})  # 只会update,不会select
         db.session.commit()
-    except:
+    except Exception as e:
+        print('Exception:{}'.format(e))
+        print('pid:{} connection_id:{},status:{}'.format(os.getpid(),connection_id,db.engine.pool.status()))
         db.session.rollback()
-    print(db.engine.pool.status())
 
 
 @app.task(name='tobedone',ignore_result=False)  # ignore_result是否保存结果到backend
