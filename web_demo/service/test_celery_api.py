@@ -13,7 +13,7 @@ def select():
         params = request.args
     else:
         params = request.form
-    product_id = params.get('product_id')
+    second = int(params.get('second'))
 
     # db.session.execute('insert into room_trumpet(amount,room_id,user_id) values(11,22,33);')
     # RoomTrumpet.query.filter(RoomTrumpet.amount==1).first()
@@ -23,6 +23,6 @@ def select():
     # time.sleep(20)
 
     from sync_task.tasks import app as celery_app
-    celery_app.send_task(name='tasks.red_package')
+    celery_app.send_task(name='sync_task.tasks.red_package',args=[second])
 
-    return jsonify({"code": 1, "msg": 'Success', "result": product_id})
+    return jsonify({"code": 1, "msg": 'Success', "result": second})

@@ -3,20 +3,25 @@ import time
 from web_demo import db
 from web_demo.common.model import RoomTrumpet
 
+
 app = Celery('tasks')
 app.config_from_object('sync_task.config')
 
 
 @app.task(ignore_result=True)
 def red_package(sec):
+    print(db.engine.pool.status())
     result = RoomTrumpet.query.with_entities(RoomTrumpet.amount,RoomTrumpet.user_id).filter(RoomTrumpet.user_id == 1).first()
     time.sleep(sec)
     print(f'I have waited {sec} seconds')
-    result1 = RoomTrumpet.query.filter(RoomTrumpet.id == 1).update({'amount':sec})  # 直接用result可以吗,看一下输出语句
+    result1 = RoomTrumpet.query.filter(RoomTrumpet._id == 1).update({'amount':sec})  # 直接用result可以吗,看一下输出语句
+    print(db.engine.pool.status())
+    time.sleep(sec)
     try:
         db.session.commit()
     except:
         db.session.rollback()
+    print(db.engine.pool.status())
 
 
 @app.task(name='tobedone',ignore_result=False)  # ignore_result是否保存结果到backend
