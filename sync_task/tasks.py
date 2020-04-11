@@ -12,7 +12,7 @@ def red_package(sec):
     result = RoomTrumpet.query.with_entities(RoomTrumpet.amount,RoomTrumpet.user_id).filter(RoomTrumpet.user_id == 1).first()
     time.sleep(sec)
     print(f'I have waited {sec} seconds')
-    result1 = RoomTrumpet.query.filter(RoomTrumpet.id == 1).update({'amount':sec})  # 直接用result可以吗
+    result1 = RoomTrumpet.query.filter(RoomTrumpet.id == 1).update({'amount':sec})  # 直接用result可以吗,看一下输出语句
     try:
         db.session.commit()
     except:
