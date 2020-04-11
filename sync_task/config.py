@@ -29,7 +29,7 @@ celery -A sync_task.tasks worker -l=info -B -s web_demo/logs/celerybeat-schedule
   . tobedone
 说明:
 [tasks]包含sync_task.tasks中的所有task
-[queues]包含Q指定的消息队列名
+[queues]包含Q指定的任务队列名
  
 celery的配置, 修改配置需要重启celery 和 celery beat
 celery的broker,backend,task,调用task的项目,都可以在不同机器上
@@ -42,7 +42,7 @@ worker_concurrency = 2  # 子进程个数
 
 
 task_queues = [
-    Queue('celery', Exchange('celery'), routing_key='celery'),  # 默认消息队列,The routing key also called binding key.
+    Queue('celery', Exchange('celery'), routing_key='celery'),  # 默认任务队列,The routing key also called binding key.
     Queue('test', Exchange('exchange_test'), routing_key='routing_test'),
 
     Queue('todo', Exchange('exchange_todo',type='direct'), routing_key='routing_todo'), # smembers _kombu.binding.exchange_todo => routing_todo1\x06\x16\x06\x16todo1, routing_todo\x06\x16\x06\x16todo
@@ -68,7 +68,7 @@ task_routes = {
 '''
 消息代理器配置, redis用例: redis://:password@hostname:port/db_number
 celery: list,无过期时间,内容对应unacked的value,celery重启后会接着执行未执行完的任务,unacked和unacked_index将被删除,并且其中的任务退回到celery列表,回写操作由worker在临死前完成,所以在关闭worker时为防止任务丢失,请务必使用正确的方法停止它
-unacked_index: zset,无过期时间,score是加入时间戳,field对应unacked的field,上限默认为8,这个是被worker接收但还没开始执行的task列表(任务来自多个消息队列)
+unacked_index: zset,无过期时间,score是加入时间戳,field对应unacked的field,上限默认为8,这个是被worker接收但还没开始执行的task列表(任务来自多个任务队列)
 unacked: hash,无过期时间,value大致[{"body": "W1s0LCAzXSwge30sIHsiY2FsbGJhY2tzIjogbnVsbCwgImVycmJhY2tzIjogbnVsbCwgImNoYWluIjogbnVsbCwgImNob3JkIjogbnVsbH1d", "content-encoding": "utf-8", "content-type": "application/json", "headers": {"lang": "py", "task": "tobedone", "id": "d0bc737e-e5fe-4ca1-b6ee-1ab5e78e85a9", "shadow": null, "eta": null, "expires": null, "group": null, "retries": 0, "timelimit": [null, null], "root_id": "d0bc737e-e5fe-4ca1-b6ee-1ab5e78e85a9", "parent_id": null, "argsrepr": "(4, 3)", "kwargsrepr": "{}", "origin": "gen9645@macbook.local"}, "properties": {"correlation_id": "d0bc737e-e5fe-4ca1-b6ee-1ab5e78e85a9", "reply_to": "5afc8388-8624-3c0b-90f3-ba3c5c2c38d3", "delivery_mode": 2, "delivery_info": {"exchange": "", "routing_key": "celery"}, "priority": 0, "body_encoding": "base64", "delivery_tag": "02294572-2692-4176-a505-208d515e0105"}}, "", "celery"]
 '''
 broker_url = 'redis://localhost:6379/1'
