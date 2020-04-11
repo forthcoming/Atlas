@@ -3,8 +3,8 @@ from kombu import Exchange, Queue
 import re
 
 '''
-celery multi start -A sync_task.tasks worker -B -Q todo,test -l=info -f=logs/%n.log  # 后台启动
-celery -A sync_task.tasks worker -B -s logs/celerybeat-schedule -Q todo,test -l=info -f=logs/%n.log
+celery multi start -A sync_task.tasks worker -l=info -B -Q todo,test -f=web_demo/logs/%n.log  # 后台启动
+celery -A sync_task.tasks worker -l=info -B -s web_demo/logs/celerybeat-schedule -Q todo,test -f=web_demo/logs/%n.log
 1. -B开启定时任务,Please note that there must only be one instance of this service.otherwise you’d end up with duplicate tasks. 
 2. -Q,only process the todo and test queue,如果多个celery实例处理相同的queue,则任务在他们之间随机分配,不加Q则会处理task_queues中的所有queue
 3. -s,Beat needs to store the last run times of the tasks in a local database file (named celerybeat-schedule by default),u can specify a custom location

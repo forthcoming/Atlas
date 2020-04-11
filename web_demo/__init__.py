@@ -15,7 +15,7 @@ db.session类型是ScopedRegistry,不是ThreadLocalRegistry
 db.engine对应sqlalchemy中的create_engine实例engine,autocommit=True
 db.session对应sqlalchemy中的scoped_session实例session,autoflush=True,autocommit=False
 db.session.add, Model.query.filter不会产生事务,Model.query.filter.first/all才会产生事务
-db.init_app有一个shutdown_session函数,用于接口请求结束后提交事务,释放链接到连接池,删除当前线程session
+db.init_app有一个shutdown_session函数,用于接口请求结束后结束事务(不会提交更新到数据库,SQLALCHEMY_COMMIT_ON_TEARDOWN=True除外),释放链接到连接池,删除当前线程session
 '''
 
 # redis-py-cluster 2.0.0 has requirement redis<3.1.0,>=3.0.0,但celery需要更高的redis-py版本
