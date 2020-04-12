@@ -45,3 +45,16 @@ def get_info(response_or_exc):  # 不管是否有异常,注册的函数get_info�
 from web_demo.service.test_celery_api import test_celery_bp
 app.register_blueprint(test_celery_bp,url_prefix='/ccktv/v1/test_celery/')
 
+
+
+# 客户端以requests.get/post(json={...})形式提交(浏览器默认行为)时,服务端只能接受request.json(dict类型)和request.data(bytes类型)
+# 客户端以requests.get(params={...})形式提交时,服务端只能接受request.args(ImmutableMultiDict类型)
+# 客户端以requests.post(data={...})形式提交时,服务端只能接受request.form(ImmutableMultiDict类型)
+# request.view_args(dict类型)用于接受地址栏形如<int:account_id>的变量,跟客户端如何提交无关
+# 每次请求过来flask都会产生一个新的线程
+# post
+# request.path       /select
+# request.full_path  /select?
+# get
+# request.path       /select
+# request.full_path  /select?name=avatar&product_id=540554959138
