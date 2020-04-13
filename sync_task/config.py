@@ -15,8 +15,8 @@ celery -A sync_task.tasks worker -l=info -B -s web_demo/logs/celerybeat-schedule
 - *** --- * --- 
 - ** ---------- [config]
 - ** ---------- .> app:         tasks:0x102f09890
-- ** ---------- .> transport:   redis://localhost:6379/1
-- ** ---------- .> results:     redis://localhost:6379/2
+- ** ---------- .> transport:   redis://localhost:2345/1
+- ** ---------- .> results:     redis://localhost:2345/2
 - *** --- * --- .> concurrency: 2 (prefork)
 -- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
 --- ***** ----- 
@@ -71,15 +71,15 @@ celery: list,无过期时间,内容对应unacked的value,celery重启后会接�
 unacked_index: zset,无过期时间,score是加入时间戳,field对应unacked的field,上限默认为8,这个是被worker接收但还没开始执行的task列表(任务来自多个任务队列)
 unacked: hash,无过期时间,value大致[{"body": "W1s0LCAzXSwge30sIHsiY2FsbGJhY2tzIjogbnVsbCwgImVycmJhY2tzIjogbnVsbCwgImNoYWluIjogbnVsbCwgImNob3JkIjogbnVsbH1d", "content-encoding": "utf-8", "content-type": "application/json", "headers": {"lang": "py", "task": "tobedone", "id": "d0bc737e-e5fe-4ca1-b6ee-1ab5e78e85a9", "shadow": null, "eta": null, "expires": null, "group": null, "retries": 0, "timelimit": [null, null], "root_id": "d0bc737e-e5fe-4ca1-b6ee-1ab5e78e85a9", "parent_id": null, "argsrepr": "(4, 3)", "kwargsrepr": "{}", "origin": "gen9645@macbook.local"}, "properties": {"correlation_id": "d0bc737e-e5fe-4ca1-b6ee-1ab5e78e85a9", "reply_to": "5afc8388-8624-3c0b-90f3-ba3c5c2c38d3", "delivery_mode": 2, "delivery_info": {"exchange": "", "routing_key": "celery"}, "priority": 0, "body_encoding": "base64", "delivery_tag": "02294572-2692-4176-a505-208d515e0105"}}, "", "celery"]
 '''
-broker_url = 'redis://localhost:6379/1'
+broker_url = 'redis://localhost:2345/1'
 
 
 '''
 保存(前提是任务的ignore_result=False)任务return的结果,否则保存null,类型是string,过期时间由result_expires控制
-127.0.0.1:6379[2]> get celery-task-meta-6c3dcd76-ce8f-43e7-89e3-486ef0054d5b
+127.0.0.1:2345[2]> get celery-task-meta-6c3dcd76-ce8f-43e7-89e3-486ef0054d5b
 {"status": "SUCCESS", "result": 7, "traceback": null, "children": [], "date_done": "2020-04-09T05:25:06.113925", "task_id": "6c3dcd76-ce8f-43e7-89e3-486ef0054d5b"}
 '''
-result_backend = 'redis://localhost:6379/2'
+result_backend = 'redis://localhost:2345/2'
 result_expires = 2000  # 任务结果存储周期
 
 
