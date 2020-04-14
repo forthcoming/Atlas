@@ -37,7 +37,7 @@ def scheduler(db,category):
             item['mark']=False # 标对
             executor.submit(producer, item, task)
     task.join()
-    os.kill(0,signal.SIGKILL)
+    os.kill(0,signal.SIGKILL)  # kill -9 pid,给进程号为pid的进程发送SIGKILL信号
 
 def consumer(category,task):
     client=MongoClient("mongodb://127.0.0.1:27017")
