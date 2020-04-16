@@ -44,7 +44,7 @@ class ApolloClient:
             signal.signal(signal.SIGINT, self._signal_handler)
             signal.signal(signal.SIGTERM, self._signal_handler)
             signal.signal(signal.SIGABRT, self._signal_handler)
-        t = threading.Thread(target=self._listener)
+        t = threading.Thread(target=self._listener,daemon=True)
         t.start()
 
     def get_value(self, key, default_val=None, namespace='application', auto_fetch_on_cache_miss=False):
