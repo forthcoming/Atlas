@@ -1,4 +1,5 @@
 // thrift --gen py tutorial.thrift
+// 客户端(client.py)和服务端(server.py)代码需要自己实现
 
 struct RpcResult{
     1:i32 status=0, //0成功,失败时填写业务错误码
