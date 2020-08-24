@@ -1,4 +1,4 @@
-// thrift --gen py tutorial.thrift
+// thrift --gen py tutorial.thrift,客户端和服务端都需要依赖其生成的代码,所以thrift文件很重要
 // 客户端(client.py)和服务端(server.py)代码需要自己实现
 
 struct RpcResult{
