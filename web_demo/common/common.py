@@ -36,15 +36,16 @@ class Log:
 
 # 最简单的方式是实例化一个类,然后在其他地方直接导入这个类实例即可实现单例
 def singleton(cls):
-    _instance = {}
+    _instance = None
     lock = Lock()
     def _singleton(*args, **kwargs):
+        nonlocal _instance
         with lock:  # 线程安全单例模式
-            if cls not in _instance:
-                _instance[cls] = cls(*args, **kwargs)
-        return  _instance[cls]
+            if not _instance:
+                _instance = cls(*args, **kwargs)
+        return _instance
     return _singleton
-    
+
 def singleton_pool(cls):
     _instance_pool = []
     lock = Lock()
