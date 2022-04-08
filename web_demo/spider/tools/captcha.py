@@ -78,7 +78,6 @@ def get_data():
     'MQueryCtrl1$ddlBillType':'E',
     'MQueryCtrl1$txtConveyance':'',
     'MQueryCtrl1$txtVoyage':'',
-    'MQueryCtrl1$txtParentNo':'578886719C',
     'MQueryCtrl1$txtParentNo':'177SWRAMXG0501T',
     'MQueryCtrl1$txtChildNo':'',
     #'MQueryCtrl1$txtCode':input('请输入验证码'),
@@ -91,7 +90,6 @@ def get_data():
     'select4':'世界海关组织',
     'select5':'在京直属事业单位',
     'select6':'社会团体',
-    'select6':'资讯网',
     'select8':'媒体',  #watch it!!!(注意select[0-8]的获得方法)
   }
 
