@@ -1,11 +1,24 @@
 import logging
 import os
 from datetime import datetime
-
+import matplotlib.pyplot as plt
+import networkx as nx
 import requests
 from pymongo import HASHED, ASCENDING, IndexModel
 
 from .imghdr import what
+
+
+def show_cluster(db, category, cluster_id):
+    G = nx.Graph()
+    edge = db['cluster_edge_{}'.format(category)]
+    node = db['cluster_node_{}'.format(category)]
+    system_ids = [each['system_id'] for each in node.find({'cluster_id': cluster_id}, {'system_id': 1, '_id': 0})]
+    for each in edge.find({'is_effective': True, 'from_node_id': {'$in': system_ids}},
+                          {'from_node_id': 1, 'to_node_id': 1, '_id': 0}):
+        G.add_edge(each['from_node_id'], each['to_node_id'], weight=1)
+    nx.draw(G, with_labels=True)
+    plt.show()
 
 
 def check(node, cluster_id):
