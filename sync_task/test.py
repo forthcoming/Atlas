@@ -1,6 +1,5 @@
 from sync_task.tasks import *
 
-
 '''
 如果celery服务没起来也不会报错,这些任务会先保存到任务队列celery中,任务名错了不报错,字典传param=param型参数,适于远程调用
 the task will execute, at the earliest, countdown seconds after the message was sent.
@@ -16,5 +15,5 @@ the task will execute, at the earliest, countdown seconds after the message was 
 # retry.delay(1)
 
 
-(todo.s(1,2)|test.signature()).delay()  # a simple chain, the first task executes passing its return value to the next task in the chain, and so on.
-
+# a simple chain, the first task executes passing its return value to the next task in the chain, and so on.
+(todo.s(1, 2) | test.signature()).delay()
