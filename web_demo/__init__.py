@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from web_demo.config import Config
 # from rediscluster import RedisCluster
 from redis import Redis
+
+from web_demo.config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -37,15 +38,14 @@ rds = Redis(
 
 @app.teardown_appcontext
 def get_info(response_or_exc):  # 不管是否有异常,注册的函数get_info都会在每次请求完之后执行,早于flask_sqlalchemy的shutdown_session执行
-    print('db.session.registry.registry',len(db.session.registry.registry))
-    print('db.engine.pool.status',db.engine.pool.status())
+    print('db.session.registry.registry', len(db.session.registry.registry))
+    print('db.engine.pool.status', db.engine.pool.status())
     return response_or_exc
 
 
 from web_demo.service.test_celery_api import test_celery_bp
-app.register_blueprint(test_celery_bp,url_prefix='/ccktv/v1/test_celery/')
 
-
+app.register_blueprint(test_celery_bp, url_prefix='/ccktv/v1/test_celery/')
 
 # 客户端以requests.get/post(json={...})形式提交(浏览器默认行为)时,服务端只能接受request.json(dict类型)和request.data(bytes类型)
 # 客户端以requests.get(params={...})形式提交时,服务端只能接受request.args(ImmutableMultiDict类型)

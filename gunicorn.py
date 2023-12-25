@@ -3,18 +3,16 @@ import multiprocessing
 
 bind = "127.0.0.1:1234"  # 只能通过127.0.0.1:1234访问
 # bind = ['10.1.2.143:7600','127.0.0.1:7600']
-workers = multiprocessing.cpu_count()*2 +1  # 子进程个数,gunicorn主进程不对外提供服务
+workers = multiprocessing.cpu_count() * 2 + 1  # 子进程个数,gunicorn主进程不对外提供服务
 # errorlog='./error.log'  # 提前建好目录,如果指定了输出文件,supervisor就捕捉不到来自子进程标准输出的日志了
 # accesslog='./access.log'
-loglevel='debug'
-daemon=False   # 注意: 如果配置了daemon=True或者有类似nohup &之类命令启动时,会看不到print输出信息
-#pidfile='/run/gunicorn.pid'
-timeout=120
+loglevel = 'debug'
+daemon = False  # 注意: 如果配置了daemon=True或者有类似nohup &之类命令启动时,会看不到print输出信息
+# pidfile='/run/gunicorn.pid'
+timeout = 120
 threads = 4
-worker_connections=100  # The maximum number of simultaneous clients.This setting only affects the Eventlet and Gevent worker types.
-max_requests=1000 # The maximum number of requests a worker will process before restarting.This is a simple method to help limit the damage of memory leaks.
-
+worker_connections = 100  # The maximum number of simultaneous clients.This setting only affects the Eventlet and Gevent worker types.
+max_requests = 1000  # The maximum number of requests a worker will process before restarting.This is a simple method to help limit the damage of memory leaks.
 
 # nohup gunicorn web:app -c conf.py  # 导入了app的文件web.py所在目录
 # kill -HUP `cat /run/gunicorn.pid`
-

@@ -13,12 +13,12 @@ class Config:
 
     # redis集群配置
     STARTUP_NODES = [
-        {"host": "localhost", "port": "8001"},
-        {"host": "localhost", "port": "8002"},
-        {"host": "localhost", "port": "8003"},
-        {"host": "localhost", "port": "8004"},
-        {"host": "localhost", "port": "8005"},
-        {"host": "localhost", "port": "8006"},
+        {"host": "localhost", "port": "7000"},
+        {"host": "localhost", "port": "7001"},
+        {"host": "localhost", "port": "7002"},
+        {"host": "localhost", "port": "7003"},
+        {"host": "localhost", "port": "7004"},
+        {"host": "localhost", "port": "7005"},
     ]
     REDIS_CLUSTER_MAX_CONNECTIONS_PER_NODE = True
     REDIS_CLUSTER_MAX_CONNECTIONS = 100

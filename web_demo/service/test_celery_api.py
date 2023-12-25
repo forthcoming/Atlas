@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from flask import request, jsonify, Blueprint
-from web_demo.common.model import RoomTrumpet
-import time
-from web_demo import db,app
 
 test_celery_bp = Blueprint("test_celery_api", __name__)
+
 
 @test_celery_bp.route("/select", methods=['GET', 'POST'])
 def select():
@@ -23,6 +20,6 @@ def select():
     # time.sleep(20)
 
     from sync_task.tasks import app as celery_app
-    celery_app.send_task(name='sync_task.tasks.red_package',args=[second])
+    celery_app.send_task(name='sync_task.tasks.red_package', args=[second])
 
     return jsonify({"code": 1, "msg": 'Success', "result": second})
