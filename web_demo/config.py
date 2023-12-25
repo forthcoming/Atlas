@@ -3,7 +3,7 @@ class Config:
     JSON_AS_ASCII = False
 
     # sqlalchemy配置
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1:3306/web_demo?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1:3306/mysql?charset=utf8mb4'
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_POOL_RECYCLE = 600
     SQLALCHEMY_POOL_SIZE = 3
