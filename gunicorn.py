@@ -14,5 +14,5 @@ threads = 4
 worker_connections = 100  # The maximum number of simultaneous clients.This setting only affects the Eventlet and Gevent worker types.
 max_requests = 1000  # The maximum number of requests a worker will process before restarting.This is a simple method to help limit the damage of memory leaks.
 
-# nohup gunicorn web:app -c conf.py  # 导入了app的文件web.py所在目录
+# nohup gunicorn web_demo:app -c gunicorn.py  # 导入了app的文件web.py所在目录
 # kill -HUP `cat /run/gunicorn.pid`
